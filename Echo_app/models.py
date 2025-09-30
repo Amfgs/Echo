@@ -121,3 +121,53 @@ class HistoricoInteresse(models.Model):
 
     def __str__(self):
         return f"{self.usuario.username} gosta de {self.categoria.nome}: {self.pontuacao} pontos"
+    
+
+# ===================== CLASSES OLIVEIRA =====================
+
+class Notificacao(models.Model):
+    
+    usuario = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='notificacoes',
+        verbose_name="Usuário Destinatário"
+    )
+
+    manchete = models.CharField(
+        max_length=255,
+        verbose_name="Manchete/Conteúdo"
+    )
+
+    noticia = models.ForeignKey(
+        Noticia,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='notificacoes',
+        verbose_name="Notícia Relacionada"
+    )
+
+    data_criacao = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name="Data de Criação"
+    )
+
+    lida = models.BooleanField(
+        default=False,
+        verbose_name="Lida"
+    )
+
+    class Meta:
+        verbose_name = "Notificação"
+        verbose_name_plural = "Notificações"
+        ordering = ['-data_criacao', 'lida']
+
+    def __str__(self):
+        status = "[LIDA]" if self.lida else "[NOVA]"
+        return f"{status} - Para {self.usuario.username}: {self.manchete}"
+
+    def marcar_como_lida(self):
+        if not self.lida:
+            self.lida = True
+            self.save()
