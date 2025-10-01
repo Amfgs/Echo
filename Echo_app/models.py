@@ -16,7 +16,6 @@ class Noticia(models.Model):
     curtidas_count = models.PositiveIntegerField(default=0, verbose_name="Total de Curtidas")
     salvamentos_count = models.PositiveIntegerField(default=0, verbose_name="Total de Salvamentos")
     
-    # NOVO: categoria da notícia
     categoria = models.ForeignKey('Categoria', on_delete=models.SET_NULL, null=True, blank=True, related_name='noticias', verbose_name="Categoria")
     
     class Meta:
@@ -29,25 +28,19 @@ class Noticia(models.Model):
 
     @staticmethod
     def recomendar_para(usuario):
-        """
-        Retorna queryset de notícias recomendadas para o usuário
-        com base em preferências e histórico de interesse.
-        """
+        
         if not usuario.is_authenticated:
             return Noticia.objects.all()
 
-        # Primeiro tenta pelas categorias preferidas
         prefs = getattr(usuario, 'preferencias', None)
         if prefs and prefs.categorias.exists():
             return Noticia.objects.filter(categoria__in=prefs.categorias.all())
 
-        # Se não houver preferências, usa histórico de interesse
         historico = usuario.historico_interesse.order_by('-pontuacao')
         if historico.exists():
-            top_categorias = [h.categoria for h in historico[:3]]  # top 3 categorias
+            top_categorias = [h.categoria for h in historico[:3]] 
             return Noticia.objects.filter(categoria__in=top_categorias)
 
-        # fallback: mostra todas as notícias
         return Noticia.objects.all()
 
 
@@ -106,10 +99,7 @@ class PreferenciaUsuario(models.Model):
 
 
 class HistoricoInteresse(models.Model):
-    """
-    Guarda pontuação de interesse do usuário em cada categoria
-    com base no comportamento (curtidas, salvamentos, etc).
-    """
+    
     usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name="historico_interesse", verbose_name="Usuário")
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, related_name="interesses", verbose_name="Categoria")
     pontuacao = models.PositiveIntegerField(default=0, verbose_name="Pontuação de Interesse")
