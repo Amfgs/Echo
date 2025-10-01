@@ -161,3 +161,37 @@ class Notificacao(models.Model):
         if not self.lida:
             self.lida = True
             self.save()
+
+# ===================== CLASSE RAUL =====================
+
+class PerfilUsuario(models.Model):
+    usuario = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        related_name="perfil",
+        verbose_name="Usuário"
+    )
+    biografia = models.TextField(
+        verbose_name="Biografia",
+        blank=True,
+        null=True
+    )
+    foto_perfil = models.ImageField(
+        upload_to="fotos_perfil/",
+        blank=True,
+        null=True,
+        verbose_name="Foto de Perfil"
+    )
+    data_criacao = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name="Data de Criação"
+    )
+
+    class Meta:
+        verbose_name = "Perfil de Usuário"
+        verbose_name_plural = "Perfis de Usuários"
+        ordering = ['-data_criacao']
+
+    def __str__(self):
+        return f"Perfil de {self.usuario.username}"
+

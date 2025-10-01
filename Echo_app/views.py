@@ -50,3 +50,4 @@ def dashboard(request):
         "email": user.email,
     }
     return render(request, "dashboard.html", context)
+
