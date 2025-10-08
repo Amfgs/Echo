@@ -84,7 +84,7 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
-AUTH_USER_MODEL = 'Echo_app.UsuarioPortal'
+#AUTH_USER_MODEL = 'Echo_app.UsuarioPortal'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
