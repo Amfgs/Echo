@@ -6,6 +6,7 @@ from django.contrib.auth import get_user_model
 from django.views.generic import DetailView
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse, HttpResponseBadRequest
+from .models import Noticia, InteracaoNoticia, Notificacao
 
 # Importe os modelos da sua aplicação de notícias
 from .models import Noticia, InteracaoNoticia
@@ -147,3 +148,31 @@ def curtir_noticia(request, noticia_id):
 @require_POST
 def salvar_noticia(request, noticia_id):
     return toggle_interacao(request, noticia_id, 'SALVAMENTO')
+
+# Parte das Notificações (Oliver)
+
+@login_required
+def lista_notificacoes(request):
+    notificacoes = Notificacao.objects.filter(usuario=request.user)
+
+    # Opcional: Contar quantas notificações não foram lidas para exibir no template
+    nao_lidas_count = notificacoes.filter(lida=False).count()
+    
+    context = {
+        'notificacoes': notificacoes,
+        'nao_lidas_count': nao_lidas_count
+    }
+    return render(request, 'notificacoes/lista.html', context)
+
+@login_required
+@require_POST 
+def marcar_notificacao_lida(request, notificacao_id):   
+    notificacao = get_object_or_404(Notificacao, id=notificacao_id, usuario=request.user)
+    notificacao.marcar_como_lida()
+    return redirect('lista_notificacoes')
+
+@login_required
+@require_POST
+def marcar_todas_lidas(request):
+    Notificacao.objects.filter(usuario=request.user, lida=False).update(lida=True)
+    return redirect('lista_notificacoes')
