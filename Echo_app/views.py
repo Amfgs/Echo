@@ -16,7 +16,7 @@ User = get_user_model()
 class RegistroForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ["username", "first_name", "email"] # Removi "password1" e "password2" pois UserCreationForm já trata isso
+        fields = ["username", "first_name", "email"]  # UserCreationForm já trata password1 e password2
 
 # Parte de Autenticação (Raul)
 def registrar(request):
@@ -49,6 +49,7 @@ def sair(request):
 @login_required
 def dashboard(request):
     user = request.user
+    print(f"[DEBUG] Usuário acessando dashboard: {user.username}")  # <<< linha adicionada para debug rápido
     context = {
         "nome": user.first_name or user.username,
         "email": user.email,
