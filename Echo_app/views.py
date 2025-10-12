@@ -46,6 +46,17 @@ def sair(request):
     logout(request)
     return redirect("entrar")
 
+@login_required
+def editar_perfil(request, nova_biografia=None, nova_foto=None):
+    perfil = get_object_or_404(PerfilUsuario, usuario=request.user)
+    if nova_biografia is not None:
+        perfil.biografia = nova_biografia
+    if nova_foto is not None:
+        perfil.foto_perfil = nova_foto
+    perfil.save()
+    return perfil
+
+
 # Parte do Dashboard (Fialho)
 @login_required
 def dashboard(request):

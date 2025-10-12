@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.utils import timezone
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 User = get_user_model()
 
@@ -195,3 +197,8 @@ class PerfilUsuario(models.Model):
     def __str__(self):
         return f"Perfil de {self.usuario.username}"
 
+
+@receiver(post_save, sender=User)
+def criar_perfil_automaticamente(sender, instance, created, **kwargs):
+    if created:
+        PerfilUsuario.objects.create(usuario=instance)
