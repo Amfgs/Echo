@@ -6,13 +6,25 @@ Com ele, o público pode **navegar** pelo portal com mais facilidade, **acessar 
 
 ---
 
-## 📑 Funcionalidades  
-- 🙎🏻‍♂️ **Criação de perfil para o usuário**: salve seus dados e seja reconhecido pela marca.  
-- ⭐ **Salvar as notícias**: curta ou favorite as notícias que você gostar.  
-- 🤳 **Recomendações pessoais**: notícias sugeridas especialmente pra você.  
-- 🖼️ **Manchetes atrativas**: uma maneira de prender seu interesse.  
-- 🎥 **Portal modernizado**: um visual mais limpo e funcional para o portal JC.  
+# 📑 Funcionalidades
 
+- 🙎🏻‍♂️ **Criação de perfil para o usuário**  
+  Salve seus dados e seja reconhecido pela marca.
+
+- ⭐ **Salvar as notícias**  
+  Curta ou favorite as notícias que você gostar.
+
+- 🤳 **Recomendações pessoais**  
+  Notícias sugeridas especialmente pra você.
+
+- 🖼️ **Manchetes atrativas**  
+  Uma maneira de prender seu interesse.
+
+- 🎥 **Portal modernizado**  
+  Um visual mais limpo e funcional para o portal JC.
+
+- 🧭 **Navegação limpa pelas páginas**  
+  Encontre o que procura com rapidez e fluidez, com menus intuitivos e organização otimizada.
 ---
 
 ## 👥 Time de Desenvolvimento  
