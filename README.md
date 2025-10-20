@@ -54,3 +54,10 @@ Com ele, o público pode **navegar** pelo portal com mais facilidade, **acessar 
 
 ## 🔗 Links Importantes  
 ---
+## 📦 Entregáveis  
+<details>
+  <summary>- ✅ Semana 10 </summary>
+
+  Implementação do Login do usuário.
+  
+</details>
