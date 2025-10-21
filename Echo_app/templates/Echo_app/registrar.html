@@ -1,62 +1,9 @@
 {% extends 'Echo_app/base.html' %}
+{% load static %} {% block title %}Crie sua Conta - Echo{% endblock %}
 
-{% block title %}Crie sua Conta - Echo{% endblock %}
 
 {% block content %}
-<style>
-    /* Estilos reutilizados da tela de login para consistência */
-    .auth-container {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        flex-grow: 1;
-        width: 100%;
-        max-width: 400px;
-        margin: 0 auto;
-    }
-    .auth-header { text-align: center; margin-bottom: 24px; }
-    .auth-header h1 { font-size: 2rem; color: var(--cor-primaria); }
-    .auth-header p { color: var(--cor-texto-secundario); }
-
-    .form-group { margin-bottom: 16px; }
-    .form-group label { display: block; margin-bottom: 4px; font-weight: 500; font-size: 0.9rem; }
-    
-    .form-input {
-        width: 100%;
-        padding: 14px;
-        font-size: 1rem;
-        border: 1px solid var(--cor-borda);
-        border-radius: 8px;
-        background-color: var(--cor-surface);
-    }
-    .form-input:focus {
-        outline: none;
-        border-color: var(--cor-primaria);
-        box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2);
-    }
-    .btn-submit {
-        width: 100%;
-        padding: 16px;
-        font-size: 1rem;
-        font-weight: bold;
-        color: white;
-        background-color: var(--cor-primaria);
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        margin-top: 8px;
-    }
-    .form-error-list {
-        list-style: none;
-        color: #dc3545;
-        font-size: 0.85rem;
-        padding-left: 5px;
-        margin-top: 6px;
-    }
-    .login-link { text-align: center; margin-top: 24px; }
-    .login-link a { color: var(--cor-primaria); text-decoration: none; font-weight: 500; }
-</style>
-
+<link rel="stylesheet" type="text/css" href="{% static 'Echo_app/css/registrar.css' %}">
 <div class="auth-container">
     <div class="auth-header">
         <h1>Crie sua Conta</h1>
