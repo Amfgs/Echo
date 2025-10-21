@@ -2,27 +2,19 @@
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+# Imports de formulários removidos
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from django.views.generic import DetailView
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse, HttpResponseBadRequest
+from django.db import IntegrityError 
 
 # Importe os modelos da sua aplicação
-from .models import Noticia, InteracaoNoticia, Notificacao, PerfilUsuario
+# ASSUMINDO que você tem um modelo Categoria em .models
+from .models import Noticia, InteracaoNoticia, Notificacao, PerfilUsuario, Categoria
 
 User = get_user_model()
-
-# --- Formulários ---
-# É uma boa prática manter os formulários em um arquivo separado (forms.py),
-# mas para manter a simplicidade, deixaremos aqui por enquanto.
-
-class RegistroForm(UserCreationForm):
-    class Meta:
-        model = User
-        # Adicionamos 'email' ao formulário de registro
-        fields = ["username", "first_name", "email"]
 
 
 # ===============================================
@@ -31,35 +23,135 @@ class RegistroForm(UserCreationForm):
 
 def registrar(request):
     """
-    Renderiza a página de registro e processa a criação de um novo usuário.
+    Renderiza a página de registro e processa a criação de um novo usuário
+    SEM usar Django Forms, mapeando os campos da imagem (Nome, Email, Senha, Categorias).
     """
+    # Adicionado 'dados_preenchidos' para repassar ao template em caso de erro
+    contexto = {'erros': [], 'dados_preenchidos': {}} 
+    
+    # 1. Busca todas as categorias para exibir no template (GET e POST com erro)
+    try:
+        contexto['todas_categorias'] = Categoria.objects.all()
+    except:
+        contexto['todas_categorias'] = []
+    
     if request.method == "POST":
-        form = RegistroForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            # Loga o usuário automaticamente após o registro
-            login(request, user)
-            return redirect("dashboard")
-    else:
-        form = RegistroForm()
-    # ATUALIZADO: Caminho do template corrigido
-    return render(request, "Echo_app/registrar.html", {"form": form})
+        # 2. Obter dados crus do POST (mapeando para os campos da imagem)
+        nome_completo = request.POST.get('nome_completo') # <--- Campo 'Nome completo' da imagem
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        password_confirm = request.POST.get('password_confirm')
+        # Obter categorias selecionadas (lista de valores do checkbox/input)
+        categorias_selecionadas_ids = request.POST.getlist('categoria') 
+
+        # Repassa os dados para repreencher o formulário em caso de erro
+        contexto['dados_preenchidos'] = {
+            'nome_completo': nome_completo,
+            'email': email,
+            # Mantém os IDs das categorias para re-checar os checkboxes
+            'categorias_selecionadas_ids': categorias_selecionadas_ids, 
+        }
+
+        # 3. Geração de Username (necessário pelo User padrão do Django)
+        # Usa a parte do email antes do '@' como base
+        username_base = email.split('@')[0].replace('.', '_').replace('-', '_') if email and '@' in email else None
+        username = username_base
+        
+        # 4. Validação manual
+        if not nome_completo or not email or not password or not password_confirm:
+            contexto['erros'].append('Todos os campos obrigatórios devem ser preenchidos: Nome completo, Email e Senha.')
+        
+        if password != password_confirm:
+            contexto['erros'].append('As senhas não coincidem.')
+        
+        if not username:
+             contexto['erros'].append('E-mail inválido.')
+        
+        # Verifica se o username gerado já está em uso, gerando um novo se necessário
+        counter = 1
+        while username and User.objects.filter(username=username).exists():
+            username = f"{username_base}_{counter}"
+            counter += 1
+        
+        if email and User.objects.filter(email=email).exists():
+            contexto['erros'].append('Este e-mail já está cadastrado.')
+
+        # 5. Se não houver erros, criar o usuário
+        if not contexto['erros']:
+            try:
+                user = User.objects.create_user(
+                    # Usa o username gerado/ajustado
+                    username=username, 
+                    email=email,
+                    password=password,
+                    # Usa o "Nome completo" como first_name
+                    first_name=nome_completo 
+                )
+                
+                # 6. Salvar as categorias no PerfilUsuario
+                if categorias_selecionadas_ids:
+                    # Busca as categorias pelos IDs (PKs)
+                    categorias = Categoria.objects.filter(pk__in=categorias_selecionadas_ids)
+                    
+                    # Assume que o PerfilUsuario é criado automaticamente ou que 
+                    # get_or_create garantirá sua existência.
+                    perfil, created = PerfilUsuario.objects.get_or_create(usuario=user)
+
+                    # ASSUMINDO que PerfilUsuario tem um campo:
+                    # categorias_de_interesse = models.ManyToManyField(Categoria, ...)
+                    perfil.categorias_de_interesse.set(categorias)
+                
+                # 7. Logar o usuário automaticamente
+                login(request, user)
+                return redirect("dashboard")
+                
+            except IntegrityError:
+                # Segurança extra
+                contexto['erros'].append('Erro ao criar usuário. Tente novamente.')
+                if 'user' in locals() and not user.pk: # Tenta deletar se criado e sem PK
+                     pass # Não se preocupa em deletar, o erro já deve ter impedido a criação.
+            except Exception as e:
+                # Captura outros erros inesperados
+                contexto['erros'].append(f'Ocorreu um erro: {e}')
+
+    # Se for GET ou se houver erros no POST, renderiza a página com o contexto
+    return render(request, "Echo_app/registrar.html", contexto)
+
+
+# === FUNÇÕES ADICIONADAS ===
 
 def entrar(request):
     """
-    Renderiza a página de login e processa a autenticação do usuário.
+    Renderiza a página de login e processa a autenticação do usuário
+    SEM usar Django Forms.
     """
+    contexto = {}
+    
     if request.method == "POST":
-        form = AuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
+        # 1. Obter dados crus do POST
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        if not username or not password:
+            contexto['erro_login'] = 'Por favor, preencha o usuário e a senha.'
+            return render(request, "Echo_app/entrar.html", contexto)
+
+        # 2. Autenticar o usuário
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            # 3. Se a autenticação for bem-sucedida, logar
             login(request, user)
-            # Redireciona para o dashboard após o login bem-sucedido
             return redirect("dashboard")
-    else:
-        form = AuthenticationForm()
-    # ATUALIZADO: Caminho do template corrigido
-    return render(request, "Echo_app/entrar.html", {"form": form})
+        else:
+            # 4. Se a autenticação falhar, enviar erro
+            contexto['erro_login'] = 'Usuário ou senha inválidos. Tente novamente.'
+            # Também é bom repassar o username para preencher o formulário novamente
+            contexto['username_preenchido'] = username
+
+    # Se for GET ou se a autenticação falhar, renderiza a página
+    return render(request, "Echo_app/entrar.html", contexto)
+
 
 def sair(request):
     """
@@ -68,20 +160,7 @@ def sair(request):
     logout(request)
     return redirect("entrar")
 
-@login_required
-def editar_perfil(request, nova_biografia=None, nova_foto=None):
-    """
-    Atualiza o perfil do usuário logado.
-    (Nota: Esta view pode ser melhorada para usar um formulário e um template)
-    """
-    perfil = get_object_or_404(PerfilUsuario, usuario=request.user)
-    if nova_biografia is not None:
-        perfil.biografia = nova_biografia
-    if nova_foto is not None:
-        perfil.foto_perfil = nova_foto
-    perfil.save()
-    # O ideal seria redirecionar para uma página de perfil
-    return redirect('dashboard')
+# === FIM DAS FUNÇÕES ADICIONADAS ===
 
 
 # ===============================================
@@ -97,10 +176,8 @@ def dashboard(request):
     context = {
         "nome": user.first_name or user.username,
         "email": user.email,
-        # Você pode adicionar aqui uma lista de notícias recomendadas
-        "noticias_recomendadas": Noticia.recomendar_para(user)
+        "noticias_recomendADAS": Noticia.recomendar_para(user)
     }
-    # ATUALIZADO: Caminho do template corrigido
     return render(request, "Echo_app/dashboard.html", context)
 
 
@@ -113,7 +190,6 @@ class NoticiaDetalheView(DetailView):
     Exibe os detalhes de uma única notícia.
     """
     model = Noticia
-    # ATUALIZADO: Caminho do template corrigido
     template_name = 'Echo_app/noticia_detalhe.html'
     context_object_name = 'noticia'
 
@@ -156,23 +232,19 @@ def toggle_interacao(request, noticia_id, tipo_interacao):
     )
 
     if not created:
-        # Se a interação já existia, ela foi encontrada. Agora vamos deletá-la.
         interacao.delete()
         acao_realizada = 'removida'
         status_interacao = False
     else:
-        # Se a interação não existia, ela foi criada.
         acao_realizada = 'adicionada'
         status_interacao = True
     
-    # Atualiza a contagem no modelo da notícia
     if tipo_interacao == 'CURTIDA':
         noticia.curtidas_count = noticia.interacoes.filter(tipo='CURTIDA').count()
     elif tipo_interacao == 'SALVAMENTO':
         noticia.salvamentos_count = noticia.interacoes.filter(tipo='SALVAMENTO').count()
     noticia.save()
 
-    # Responde com JSON se for uma requisição AJAX
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         return JsonResponse({
             'success': True,
@@ -182,7 +254,6 @@ def toggle_interacao(request, noticia_id, tipo_interacao):
             'tipo': tipo_interacao.lower()
         })
     
-    # Redireciona de volta para a página anterior como fallback
     return redirect(request.META.get('HTTP_REFERER', '/'))
 
 
@@ -216,7 +287,6 @@ def lista_notificacoes(request):
         'notificacoes': notificacoes,
         'nao_lidas_count': nao_lidas_count
     }
-    # ATUALIZADO: Caminho do template corrigido
     return render(request, 'Echo_app/lista_notificacoes.html', context)
 
 @login_required
@@ -227,7 +297,7 @@ def marcar_notificacao_lida(request, notificacao_id):
     """
     notificacao = get_object_or_404(Notificacao, id=notificacao_id, usuario=request.user)
     notificacao.marcar_como_lida()
-    return redirect('lista_notificacoes')
+    return redirect('lista_notificações')
 
 @login_required
 @require_POST

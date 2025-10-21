@@ -1,36 +1,55 @@
 {% extends 'Echo_app/base.html' %}
-{% load static %} {% block title %}Crie sua Conta - Echo{% endblock %}
-
+{% load static %}
+{% block title %}Registrar{% endblock %}
 
 {% block content %}
-<link rel="stylesheet" type="text/css" href="{% static 'Echo_app/css/registrar.css' %}">
-<div class="auth-container">
-    <div class="auth-header">
+<link rel="stylesheet" type="text/css" href="{% static 'Echo_app/css/login.css' %}">
+<div class="login-container">
+    <div class="login-header">
         <h1>Crie sua Conta</h1>
-        <p>Junte-se à comunidade Echo</p>
     </div>
 
-    <form method="post" novalidate>
+    <form method="post">
         {% csrf_token %}
 
-        {% for field in form %}
-        <div class="form-group">
-            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-            {{ field }} {% if field.errors %}
-                <ul class="form-error-list">
-                {% for error in field.errors %}
-                    <li>{{ error }}</li>
+        {% if erros %}
+            <div class="form-error">
+                {% for erro in erros %}
+                    <p>{{ erro }}</p>
                 {% endfor %}
-                </ul>
-            {% endif %}
+            </div>
+        {% endif %}
+        
+        <div class="form-group">
+            <label for="id_username">Usuário</label>
+            <input type="text" name="username" id="id_username" class="form-input" required>
         </div>
-        {% endfor %}
+        
+        <div class="form-group">
+            <label for="id_first_name">Nome (Opcional)</label>
+            <input type="text" name="first_name" id="id_first_name" class="form-input">
+        </div>
+
+        <div class="form-group">
+            <label for="id_email">E-mail</label>
+            <input type="email" name="email" id="id_email" class="form-input" required>
+        </div>
+
+        <div class="form-group">
+            <label for="id_password">Senha</label>
+            <input type="password" name="password" id="id_password" class="form-input" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="id_password_confirm">Confirme sua Senha</label>
+            <input type="password" name="password_confirm" id="id_password_confirm" class="form-input" required>
+        </div>
         
         <button type="submit" class="btn-submit">Registrar</button>
     </form>
-
-    <div class="login-link">
-        <p>Já tem uma conta? <a href="{% url 'entrar' %}">Faça o login</a></p>
+    
+    <div class="register-link">
+        <p>Já tem uma conta? <a href="{% url 'entrar' %}">Entre aqui</a></p>
     </div>
 </div>
 {% endblock %}

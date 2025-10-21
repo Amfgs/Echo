@@ -1,10 +1,13 @@
+# /Users/godoy/Desktop/Echo/Echo_app/urls.py
+
 from django.urls import path
 from . import views 
 from .views import NoticiaDetalheView
 
 urlpatterns = [
+    path("", views.entrar, name="entrar"), 
+    
     path("registrar/", views.registrar, name="registrar"),
-    path("entrar/", views.entrar, name="entrar"),
     path("sair/", views.sair, name="sair"),
     path("dashboard/", views.dashboard, name="dashboard"),
     
