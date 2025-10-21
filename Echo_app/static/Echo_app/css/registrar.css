@@ -1,51 +1,204 @@
-/* Estilos reutilizados da tela de login para consistência */
-    .auth-container {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        flex-grow: 1;
-        width: 100%;
-        max-width: 400px;
-        margin: 0 auto;
-    }
-    .auth-header { text-align: center; margin-bottom: 24px; }
-    .auth-header h1 { font-size: 2rem; color: var(--cor-primaria); }
-    .auth-header p { color: var(--cor-texto-secundario); }
+/* Definição de Variáveis CSS */
+:root {
+    --cor-primaria: #007bff; 
+    --cor-fundo: #f4f6f9; 
+    --cor-card: #ffffff; 
+    --cor-texto-principal: #343a40; 
+    --cor-texto-secundario: #495057; 
+    --cor-placeholder: #adb5bd;
+    --cor-borda-input: #ced4da;
+    --borda-radius-card: 8px; 
+    --borda-radius-input: 4px; 
+    --sombra-card: 0 0 15px rgba(0, 0, 0, 0.05); 
+}
 
-    .form-group { margin-bottom: 16px; }
-    .form-group label { display: block; margin-bottom: 4px; font-weight: 500; font-size: 0.9rem; }
-    
-    .form-input {
-        width: 100%;
-        padding: 14px;
-        font-size: 1rem;
-        border: 1px solid var(--cor-borda);
-        border-radius: 8px;
-        background-color: var(--cor-surface);
-    }
-    .form-input:focus {
-        outline: none;
-        border-color: var(--cor-primaria);
-        box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2);
-    }
-    .btn-submit {
-        width: 100%;
-        padding: 16px;
-        font-size: 1rem;
-        font-weight: bold;
-        color: white;
-        background-color: var(--cor-primaria);
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        margin-top: 8px;
-    }
-    .form-error-list {
-        list-style: none;
-        color: #dc3545;
-        font-size: 0.85rem;
-        padding-left: 5px;
-        margin-top: 6px;
-    }
-    .login-link { text-align: center; margin-top: 24px; }
-    .login-link a { color: var(--cor-primaria); text-decoration: none; font-weight: 500; }
+/* Estilos Globais e do Corpo (Centralização na Web) */
+/* Estilos Globais e do Corpo (Centralização Total) */
+html, body {
+    height: 100%; /* Garante altura total */
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto-principal);
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+    /* Essencial para centralizar a coluna de conteúdo: */
+    display: flex;
+    flex-direction: column; /* Organiza o conteúdo em coluna (topo para baixo) */
+    align-items: center;    /* Centraliza o conteúdo horizontalmente */
+    min-height: 100vh;
+}
+
+/* Certifique-se de que o app-content ocupe o espaço para empurrar o rodapé, 
+   MAS vamos centralizá-lo com Flexbox verticalmente */
+.app-content {
+    /* Estas três linhas garantirão a centralização vertical do seu conteúdo */
+    display: flex;
+    justify-content: center; /* Centraliza o conteúdo (o login-container) horizontalmente */
+    align-items: center;     /* Centraliza o conteúdo (o login-container) verticalmente */
+    flex-grow: 1;            /* Permite que o conteúdo principal ocupe todo o espaço disponível */
+    width: 100%; /* Garante que ocupe a largura total para centralização horizontal */
+}
+
+/* Opcional: Se a centralização for apenas do login-container */
+.login-container {
+    /* Mantenha suas regras aqui, e o Flexbox de .app-content irá centralizá-lo */
+    width: 100%;
+    max-width: 400px;
+    /* ... o resto do seu código ... */
+    margin: 0; /* Remova qualquer margem fixa que possa desalinhar */
+}
+/* Container Principal do Formulário */
+.login-container {
+    width: 100%;
+    max-width: 400px; /* Largura do formulário */
+    background-color: var(--cor-card); /* Fundo branco */
+    padding: 40px; 
+    border-radius: var(--borda-radius-card); 
+    box-shadow: var(--sombra-card);
+    /* Se a versão anterior tivesse "margin-left: 0;" ou algo similar, remova. */
+    margin: 0; /* Garante que não haja margens fixas puxando para a esquerda */
+}
+
+/* Cabeçalho/Ícone (Círculo Azul) */
+.login-header-icon {
+    width: 60px; /* Levemente maior para desktop */
+    height: 60px;
+    margin: 0 auto 35px auto; 
+    background-color: var(--cor-primaria);
+    border-radius: 50%;
+}
+
+/* Grupos de Formulário */
+.form-group {
+    margin-bottom: 25px; /* Mais espaço entre os campos para web */
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--cor-texto-secundario);
+    font-size: 1rem; /* Tamanho de fonte padrão */
+}
+
+/* Inputs de Texto e Senha */
+.form-input {
+    width: 100%;
+    padding: 12px 14px; /* Aumenta o padding para melhor toque/clique */
+    border: 1px solid var(--cor-borda-input);
+    border-radius: var(--borda-radius-input);
+    box-sizing: border-box;
+    font-size: 1rem;
+    color: var(--cor-texto-principal);
+}
+
+.form-input:focus {
+    border-color: var(--cor-primaria);
+    outline: none;
+    box-shadow: 0 0 0 1px var(--cor-primaria);
+}
+
+/* Texto de Categoria indisponível */
+.form-group p {
+    color: var(--cor-placeholder); 
+    font-size: 0.9rem; 
+    margin: 4px 0 0 0;
+}
+
+/* Área de Erros do Formulário */
+.form-error {
+    background-color: rgba(220, 53, 69, 0.1);
+    border: 1px solid #dc3545; 
+    border-radius: 4px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+.form-error p {
+    color: #dc3545;
+    font-size: 0.9rem;
+    margin: 3px 0;
+}
+
+
+/* Botão de Envio (Cadastre-se) */
+.btn-submit {
+    width: 100%;
+    padding: 14px;
+    background-color: var(--cor-primaria);
+    color: white;
+    border: none;
+    border-radius: var(--borda-radius-input);
+    font-size: 1.1rem;
+    font-weight: 600; /* Mais destaque */
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-top: 20px; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-submit:hover {
+    background-color: #0056b3;
+}
+
+/* Link de Registro (Login) */
+.register-link {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 1rem;
+}
+
+.register-link a {
+    color: var(--cor-primaria);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.register-link a:hover {
+    text-decoration: underline; /* Adiciona sublinhado ao passar o mouse */
+    color: #0056b3;
+}
+
+/* --- Estilos para Categorias (Pílulas) --- */
+
+.categoria-container {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 10px; 
+    margin-top: 10px;
+}
+
+.categoria-checkbox {
+    display: none;
+}
+
+.categoria-pill {
+    /* ... (Mantenha os estilos de pílula) ... */
+    padding: 8px 15px; /* Mais espaço */
+    font-size: 0.9rem;
+    font-weight: 500;
+    /* ... */
+}
+
+
+/* ------------------------------------------------------------------ */
+/* OTIMIZAÇÃO WEB: Esconder Rodapé de Navegação Mobile */
+/* ------------------------------------------------------------------ */
+
+/* Assumindo que seu rodapé de navegação tem uma classe como 'nav-footer' ou algo similar.
+   Você deve aplicar este estilo à div que contém os links Home, Buscar, Salvos e Perfil. */
+
+/* Exemplo de como esconder o rodapé na versão web: */
+/* .nav-footer {
+    display: none; 
+} */
+
+/* Se o rodapé fizer parte do template base, garanta que ele não interfira no layout. */
+/* Se não for possível esconder o rodapé, é necessário ajustar a altura do body para 
+   não empurrar o formulário. */

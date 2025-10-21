@@ -1,15 +1,15 @@
 {% extends 'Echo_app/base.html' %}
 {% load static %}
-{% block title %}Registrar{% endblock %}
 
+{% block title %}Cadastre-se - Echo{% endblock %}
+    
 {% block content %}
-<link rel="stylesheet" type="text/css" href="{% static 'Echo_app/css/login.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'Echo_app/css/registrar.css' %}">
 <div class="login-container">
-    <div class="login-header">
-        <h1>Crie sua Conta</h1>
-    </div>
+    
+    <div class="login-header-icon"></div>
 
-    <form method="post">
+    <form method="post" novalidate>
         {% csrf_token %}
 
         {% if erros %}
@@ -21,35 +21,55 @@
         {% endif %}
         
         <div class="form-group">
-            <label for="id_username">Usuário</label>
-            <input type="text" name="username" id="id_username" class="form-input" required>
-        </div>
-        
-        <div class="form-group">
-            <label for="id_first_name">Nome (Opcional)</label>
-            <input type="text" name="first_name" id="id_first_name" class="form-input">
+            <label for="id_nome_completo">Nome completo:</label>
+            <input type="text" name="nome_completo" id="id_nome_completo" class="form-input" required
+                   value="{{ dados_preenchidos.nome_completo|default:'' }}">
         </div>
 
         <div class="form-group">
-            <label for="id_email">E-mail</label>
-            <input type="email" name="email" id="id_email" class="form-input" required>
+            <label for="id_email">Email:</label>
+            <input type="email" name="email" id="id_email" class="form-input" required
+                   value="{{ dados_preenchidos.email|default:'' }}">
         </div>
 
         <div class="form-group">
-            <label for="id_password">Senha</label>
+            <label>Quais categorias você tem interesse?</label>
+            
+            <div class="categoria-container">
+                {% for categoria in todas_categorias %}
+                    <input type="checkbox" 
+                           name="categoria" 
+                           id="cat-{{ categoria.id }}" 
+                           value="{{ categoria.id }}" 
+                           class="categoria-checkbox"
+                           {% if categoria.id|stringformat:"s" in dados_preenchidos.categorias_selecionadas_ids %}checked{% endif %}>
+                           
+                    <label for="cat-{{ categoria.id }}" class="categoria-pill">
+                        {{ categoria.nome }} 
+                        <span class="icon-plus">+</span>
+                        <span class="icon-check">✓</span>
+                    </label>
+                {% empty %}
+                    <p style="color: var(--cor-texto-secundario); font-size: 0.9rem;">Nenhuma categoria disponível no momento.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="id_password">Senha:</label>
             <input type="password" name="password" id="id_password" class="form-input" required>
         </div>
         
         <div class="form-group">
-            <label for="id_password_confirm">Confirme sua Senha</label>
+            <label for="id_password_confirm">Confirme a senha:</label>
             <input type="password" name="password_confirm" id="id_password_confirm" class="form-input" required>
         </div>
         
-        <button type="submit" class="btn-submit">Registrar</button>
+        <button type="submit" class="btn-submit">Cadastre-se</button>
     </form>
-    
+
     <div class="register-link">
-        <p>Já tem uma conta? <a href="{% url 'entrar' %}">Entre aqui</a></p>
+        <a href="{% url 'entrar' %}">Login</a>
     </div>
 </div>
 {% endblock %}
