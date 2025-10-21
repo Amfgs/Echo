@@ -189,6 +189,15 @@ class PerfilUsuario(models.Model):  # Perfil do usuário
         verbose_name="Data de Criação"
     )  # Data de criação automática
 
+    # --- CAMPO ADICIONADO PARA CORRIGIR O ERRO ---
+    categorias_de_interesse = models.ManyToManyField(
+        Categoria,  # Liga este perfil a múltiplas Categorias
+        blank=True, # Permite que um perfil seja criado sem nenhuma categoria
+        related_name="perfis_interessados", # Nome da relação inversa
+        verbose_name="Categorias de Interesse"
+    )
+    # --- FIM DO CAMPO ADICIONADO ---
+
     class Meta:
         verbose_name = "Perfil de Usuário"
         verbose_name_plural = "Perfis de Usuários"

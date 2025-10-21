@@ -9,6 +9,17 @@
 </div>
 
 <h2>Suas Notícias</h2>
+
+{% if categorias_interesse %}
+    <div class="user-categories-widget">
+        <h4>Seus Interesses</h4>
+        <div class="category-pills-list">
+            {% for categoria in categorias_interesse %}
+                <span class="category-pill">{{ categoria.nome }}</span>
+            {% endfor %}
+        </div>
+    </div>
+{% endif %}
 <div class="news-feed">
     {% for noticia in noticias_recomendadas %}
         <a href="{% url 'noticia_detalhe' noticia.id %}" class="news-card-link">

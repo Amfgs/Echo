@@ -12,7 +12,6 @@
     --sombra-card: 0 0 15px rgba(0, 0, 0, 0.05); 
 }
 
-/* Estilos Globais e do Corpo (Centralização na Web) */
 /* Estilos Globais e do Corpo (Centralização Total) */
 html, body {
     height: 100%; /* Garante altura total */
@@ -46,24 +45,16 @@ body {
     width: 100%; /* Garante que ocupe a largura total para centralização horizontal */
 }
 
-/* Opcional: Se a centralização for apenas do login-container */
-.login-container {
-    /* Mantenha suas regras aqui, e o Flexbox de .app-content irá centralizá-lo */
-    width: 100%;
-    max-width: 400px;
-    /* ... o resto do seu código ... */
-    margin: 0; /* Remova qualquer margem fixa que possa desalinhar */
-}
 /* Container Principal do Formulário */
 .login-container {
     width: 100%;
-    max-width: 400px; /* Largura do formulário */
+    max-width: 550px; /* Largura do formulário */
     background-color: var(--cor-card); /* Fundo branco */
     padding: 40px; 
     border-radius: var(--borda-radius-card); 
     box-shadow: var(--sombra-card);
-    /* Se a versão anterior tivesse "margin-left: 0;" ou algo similar, remova. */
-    margin: 0; /* Garante que não haja margens fixas puxando para a esquerda */
+    /* Garante que não haja margens fixas puxando para a esquerda */
+    margin: 0; 
 }
 
 /* Cabeçalho/Ícone (Círculo Azul) */
@@ -178,12 +169,50 @@ body {
     display: none;
 }
 
+/* Estilo Básico da Pílula (Não selecionada) */
 .categoria-pill {
-    /* ... (Mantenha os estilos de pílula) ... */
+    display: inline-block;
     padding: 8px 15px; /* Mais espaço */
     font-size: 0.9rem;
     font-weight: 500;
-    /* ... */
+    cursor: pointer;
+    
+    background-color: #f8f9fa; /* Fundo claro (não selecionado) */
+    color: var(--cor-texto-principal);
+    border: 1px solid var(--cor-borda-input); 
+    border-radius: 50px; /* Pílula arredondada */
+    
+    transition: all 0.2s ease;
+}
+
+/* ESTILO DA PÍLULA SELECIONADA (NOVO TRECHO) */
+.categoria-checkbox:checked + .categoria-pill {
+    background-color: var(--cor-primaria); /* Fundo da cor principal (azul) */
+    color: white; /* Texto branco */
+    border-color: var(--cor-primaria); /* Borda azul */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Leve sombra para destaque */
+}
+
+/* Estilo dos Ícones (+ e ✓) */
+.categoria-pill .icon-plus {
+    display: inline-block;
+    margin-left: 5px;
+    font-weight: bold;
+}
+
+.categoria-pill .icon-check {
+    display: none; /* Escondido por padrão */
+    margin-left: 5px;
+    font-weight: bold;
+}
+
+/* ESTADO SELECIONADO: Esconde o + e mostra o ✓ (NOVO TRECHO) */
+.categoria-checkbox:checked + .categoria-pill .icon-plus {
+    display: none; 
+}
+
+.categoria-checkbox:checked + .categoria-pill .icon-check {
+    display: inline-block; /* Aparece quando checado */
 }
 
 
@@ -191,14 +220,7 @@ body {
 /* OTIMIZAÇÃO WEB: Esconder Rodapé de Navegação Mobile */
 /* ------------------------------------------------------------------ */
 
-/* Assumindo que seu rodapé de navegação tem uma classe como 'nav-footer' ou algo similar.
-   Você deve aplicar este estilo à div que contém os links Home, Buscar, Salvos e Perfil. */
-
-/* Exemplo de como esconder o rodapé na versão web: */
-/* .nav-footer {
-    display: none; 
-} */
-
-/* Se o rodapé fizer parte do template base, garanta que ele não interfira no layout. */
-/* Se não for possível esconder o rodapé, é necessário ajustar a altura do body para 
-   não empurrar o formulário. */
+/* Esconde a barra de navegação inferior (.bottom-nav) para permitir a centralização completa */
+.bottom-nav {
+    display: none;
+}

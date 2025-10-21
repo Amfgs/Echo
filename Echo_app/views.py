@@ -170,14 +170,29 @@ def sair(request):
 @login_required
 def dashboard(request):
     """
-    Exibe a página principal para o usuário logado.
+    Exibe a página principal para o usuário logado, incluindo
+    notícias recomendadas e suas categorias de interesse.
     """
     user = request.user
+    categorias_interesse = []
+
+    # Tenta buscar o perfil do usuário e suas categorias de interesse
+    try:
+        # Usamos 'user.perfil' por causa do related_name="perfil" no OneToOneField
+        perfil = user.perfil 
+        categorias_interesse = perfil.categorias_de_interesse.all()
+    except PerfilUsuario.DoesNotExist:
+        # Se o perfil não existir por algum motivo, cria um
+        perfil, created = PerfilUsuario.objects.get_or_create(usuario=user)
+    
+    # Monta o contexto para enviar ao template
     context = {
         "nome": user.first_name or user.username,
-        "email": user.email,
-        "noticias_recomendADAS": Noticia.recomendar_para(user)
+        "email": user.email, # Mantido conforme sua solicitação
+        "noticias_recomendadas": Noticia.recomendar_para(user), # Corrigido o erro de digitação
+        "categorias_interesse": categorias_interesse # <-- NOVO DADO ENVIADO
     }
+    
     return render(request, "Echo_app/dashboard.html", context)
 
 
