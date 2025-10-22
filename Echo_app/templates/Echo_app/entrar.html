@@ -3,9 +3,15 @@
 {% block title %}Entrar{% endblock %}
 
 {% block content %}
+<!-- CORRIGIDO: O type foi alterado de "text-css" para "text/css" -->
 <link rel="stylesheet" type="text/css" href="{% static 'Echo_app/css/login.css' %}">
 <div class="login-container">
     <div class="login-header">
+        
+        <img src="{% static 'Echo_app/images/download.jpeg' %}" 
+             alt="Logo" 
+             class="logo-image">
+
         <h1>Bem-vindo!</h1>
         <p>Acesse sua conta para continuar</p>
     </div>
@@ -37,3 +43,4 @@
     </div>
 </div>
 {% endblock %}
+
