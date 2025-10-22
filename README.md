@@ -61,3 +61,10 @@ Com ele, o público pode **navegar** pelo portal com mais facilidade, **acessar 
   Implementação do Login do usuário.
   
 </details>
+
+<details>
+  <summary>- ✅ Semana 11 </summary>
+
+  Implementação do reconhecimento do usuário para fins de recomendação futura.
+  
+</details>
