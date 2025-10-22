@@ -1,3 +1,8 @@
+ :root {
+    --cor-primaria: #dc3545; /* Vermelho */
+    --cor-primaria-hover: #c82333; /* Vermelho Escuro */
+ }
+ 
  .login-container {
         display: flex;
         flex-direction: column;
@@ -8,7 +13,7 @@
         margin: 0 auto;
     }
     .login-header { text-align: center; margin-bottom: 32px; }
-    .login-header h1 { font-size: 2rem; color: var(--cor-primaria); }
+    .login-header h1 { font-size: 2rem; color: var(--cor-primaria); } /* <-- USA A VARIÁVEL */
     .form-group { margin-bottom: 16px; }
     .form-input {
         width: 100%;
@@ -21,7 +26,8 @@
     .form-input:focus {
         outline: none;
         border-color: var(--cor-primaria);
-        box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2);
+        /* MUDADO: Sombra azul (0, 122, 255) para sombra vermelha (220, 53, 69) */
+        box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.2); 
     }
     .btn-submit {
         width: 100%;
@@ -29,11 +35,16 @@
         font-size: 1rem;
         font-weight: bold;
         color: white;
-        background-color: var(--cor-primaria);
+        background-color: var(--cor-primaria); /* <-- USA A VARIÁVEL */
         border: none;
         border-radius: 8px;
         cursor: pointer;
         margin-top: 8px;
+        transition: background-color 0.2s; /* Adicionada transição */
+    }
+    /* ADICIONADO: Efeito hover no botão */
+    .btn-submit:hover {
+        background-color: var(--cor-primaria-hover);
     }
     .form-error {
         color: #dc3545;
@@ -46,4 +57,13 @@
         font-size: 0.9rem;
     }
     .register-link { text-align: center; margin-top: 24px; }
-    .register-link a { color: var(--cor-primaria); text-decoration: none; font-weight: 500; }
+    .register-link a { 
+        color: var(--cor-primaria); /* <-- USA A VARIÁVEL */
+        text-decoration: none; 
+        font-weight: 500;
+        transition: color 0.2s; /* Adicionada transição */
+    }
+    /* ADICIONADO: Efeito hover no link */
+    .register-link a:hover {
+        color: var(--cor-primaria-hover);
+    }

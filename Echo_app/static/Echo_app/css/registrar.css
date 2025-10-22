@@ -1,6 +1,7 @@
 /* Definição de Variáveis CSS */
 :root {
-    --cor-primaria: #007bff; 
+    --cor-primaria: #dc3545; /* MUDADO: de azul para vermelho */
+    --cor-primaria-hover: #c82333; /* ADICIONADO: Vermelho escuro para hover */
     --cor-fundo: #f4f6f9; 
     --cor-card: #ffffff; 
     --cor-texto-principal: #343a40; 
@@ -62,7 +63,7 @@ body {
     width: 60px; /* Levemente maior para desktop */
     height: 60px;
     margin: 0 auto 35px auto; 
-    background-color: var(--cor-primaria);
+    background-color: var(--cor-primaria); /* <-- USA A VARIÁVEL */
     border-radius: 50%;
 }
 
@@ -93,7 +94,8 @@ body {
 .form-input:focus {
     border-color: var(--cor-primaria);
     outline: none;
-    box-shadow: 0 0 0 1px var(--cor-primaria);
+    /* MUDADO: Sombra agora usa a variável vermelha */
+    box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.2); 
 }
 
 /* Texto de Categoria indisponível */
@@ -122,7 +124,7 @@ body {
 .btn-submit {
     width: 100%;
     padding: 14px;
-    background-color: var(--cor-primaria);
+    background-color: var(--cor-primaria); /* <-- USA A VARIÁVEL */
     color: white;
     border: none;
     border-radius: var(--borda-radius-input);
@@ -135,7 +137,7 @@ body {
 }
 
 .btn-submit:hover {
-    background-color: #0056b3;
+    background-color: var(--cor-primaria-hover); /* MUDADO: de azul escuro para vermelho escuro */
 }
 
 /* Link de Registro (Login) */
@@ -146,14 +148,15 @@ body {
 }
 
 .register-link a {
-    color: var(--cor-primaria);
+    color: var(--cor-primaria); /* <-- USA A VARIÁVEL */
     text-decoration: none;
     font-weight: 500;
+    transition: color 0.2s; /* Adicionada transição */
 }
 
 .register-link a:hover {
     text-decoration: underline; /* Adiciona sublinhado ao passar o mouse */
-    color: #0056b3;
+    color: var(--cor-primaria-hover); /* MUDADO: de azul escuro para vermelho escuro */
 }
 
 /* --- Estilos para Categorias (Pílulas) --- */
@@ -187,10 +190,11 @@ body {
 
 /* ESTILO DA PÍLULA SELECIONADA (NOVO TRECHO) */
 .categoria-checkbox:checked + .categoria-pill {
-    background-color: var(--cor-primaria); /* Fundo da cor principal (azul) */
+    background-color: var(--cor-primaria); /* <-- USA A VARIÁVEL */
     color: white; /* Texto branco */
-    border-color: var(--cor-primaria); /* Borda azul */
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Leve sombra para destaque */
+    border-color: var(--cor-primaria); /* Borda vermelha */
+    /* MUDADO: Sombra azul (0, 123, 255) para sombra vermelha (220, 53, 69) */
+    box-shadow: 0 0 5px rgba(220, 53, 69, 0.5); 
 }
 
 /* Estilo dos Ícones (+ e ✓) */
