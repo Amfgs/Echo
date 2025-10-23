@@ -29,19 +29,13 @@ jobs:
       # 🛠️ Seção de Instalação de Dependências
       - name: Install dependencies
         run: |
-          pip install -r Echo/requirements.txt
+          pip install -r requirements.txt
       - name: Cleaning testing files
         run: |
-          cd Echo/
-          rm db.sqlite3
-          rm .env
-          cd ..
+          rm -f db.sqlite3
+          rm -f .env
       - name: Zip artifact for deployment
-        run: |
-          cd Echo/
-          zip release.zip ./* -r
-          cd ..
-          mv Echo/release.zip .     
+        run: |    
       # By default, when you enable GitHub CI/CD integration through the Azure portal, the platform automatically sets the SCM_DO_BUILD_DURING_DEPLOYMENT application setting to true. This triggers the use of Oryx, a build engine that handles application compilation and dependency installation (e.g., pip install) directly on the platform during deployment. Hence, we exclude the antenv virtual environment directory from the deployment artifact to reduce the payload size. 
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v4
@@ -85,4 +79,5 @@ jobs:
           slot-name: 'Production'
 
           
+
 
