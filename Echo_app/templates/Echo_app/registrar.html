@@ -7,8 +7,11 @@
 <link rel="stylesheet" type="text/css" href="{% static 'Echo_app/css/registrar.css' %}">
 <div class="login-container">
     
-    <div class="login-header-icon"></div>
+    <div class="login-container">
+    
+    <img src="{% static 'Echo_app/imagens/sua-imagem-de-perfil.png' %}" alt="Foto de Perfil" class="login-header-icon">
 
+    <form method="post" novalidate>
     <form method="post" novalidate>
         {% csrf_token %}
 

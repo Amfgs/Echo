@@ -60,11 +60,19 @@ body {
 
 /* Cabeçalho/Ícone (Círculo Azul) */
 .login-header-icon {
-    width: 60px; /* Levemente maior para desktop */
-    height: 60px;
-    margin: 0 auto 35px auto; 
-    background-color: var(--cor-primaria); /* <-- USA A VARIÁVEL */
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
+    margin: 20px auto;
+    
+    /* NOVO CÓDIGO PARA INSERIR A IMAGEM */
+    background-image: url('Echo_app/images/logo_JC.jpeg'); /* <-- Altere o caminho */
+    background-size: cover; /* Garante que a imagem preencha o círculo */
+    background-position: center; /* Centraliza a imagem no círculo */
+    background-repeat: no-repeat;
+    
+    /* Remova ou comente a linha 'background-color: red;' */
+    /* background-color: red; */ 
 }
 
 /* Grupos de Formulário */
