@@ -71,7 +71,7 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
-ROOT_URLCONF = 'Echo.urls'
+ROOT_URLCONF = 'Echoproject.urls'
 
 TEMPLATES = [
     {
