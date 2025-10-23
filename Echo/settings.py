@@ -10,7 +10,7 @@ load_dotenv(BASE_DIR / '.env')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
-TARGET_ENV = os.getenv('TARGET_ENV')
+TARGET_ENV = os.getenv('TARGET_ENV', '')
 NOT_PROD = not TARGET_ENV.lower().startswith('prod')
 
 if NOT_PROD:
