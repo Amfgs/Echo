@@ -1,44 +1,311 @@
 {% extends 'Echo_app/base.html' %}
+{% load static %} 
 
-{% load static %} {% block title %}Dashboard - Echo News{% endblock %}
+{% block title %}Dashboard - Echo {% endblock %}
 
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'Echo_app/css/dashboard.css' %}">
-<div class="dashboard-header">
-    <h1>Olá, {{ nome }}!</h1>
-</div>
 
-<h2>Suas Notícias</h2>
-
-{% if categorias_interesse %}
-    <div class="user-categories-widget">
-        <h4>Seus Interesses</h4>
-        <div class="category-pills-list">
-            {% for categoria in categorias_interesse %}
-                <span class="category-pill">{{ categoria.nome }}</span>
-            {% endfor %}
+<!-- BARRA SUPERIOR -->
+<header class="top-nav">
+    <div class="top-nav-left">
+        <a href="#" class="nav-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+            </svg>
+        </a>
+        <a href="#" class="nav-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+            </svg>
+        </a>
+    </div>
+    
+    <!-- LOGO CENTRALIZADA -->
+    <div class="top-nav-center">
+        <div class="logo-container">
+            <img src="{% static 'Echo_app/images/logo_JC.png' %}" alt="Logo JC" class="logo-img">
+            <span class="brand-name">Echo</span>
         </div>
     </div>
-{% endif %}
-<div class="news-feed">
-    {% for noticia in noticias_recomendadas %}
-        <a href="{% url 'noticia_detalhe' noticia.id %}" class="news-card-link">
-            <article class="news-card">
-                <h3>{{ noticia.titulo }}</h3>
-                <p>{{ noticia.conteudo|truncatewords:20 }}</p>
-                <div class="card-meta">
-                    <span class="category">{{ noticia.categoria.nome|default:"Geral" }}</span>
-                    <span>{{ noticia.data_publicacao|date:"d M, Y" }}</span>
-                </div>
-            </article>
+    
+    <div class="top-nav-right">
+        <a href="#" class="nav-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A1.875 1.875 0 0 1 18.126 22.5H5.874a1.875 1.875 0 0 1-1.373-2.382Z" />
+            </svg>
         </a>
-    {% empty %}
-        <div class="empty-state">
-            <p>Ainda não há notícias para você. Comece a interagir com os artigos para receber recomendações personalizadas!</p>
-        </div>
-    {% endfor %}
-</div>
+    </div>
+</header>
 
-<div style="height: 80px;"></div>
+<!-- CONTEÚDO PRINCIPAL -->
+<main class="main-content">
+    <!-- BOLHAS DE CATEGORIA CENTRALIZADAS -->
+    <section class="categories-section">
+        <div class="category-bubbles-container">
+            <div class="category-bubbles">
+                <a href="#" class="bubble active">Todas</a>
+                <a href="#" class="bubble">Esportes</a>
+                <a href="#" class="bubble">Política</a>
+                <a href="#" class="bubble">Tech</a>
+                <a href="#" class="bubble">Cultura</a>
+                <a href="#" class="bubble">Economia</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEÇÃO RECOMENDADO - APENAS UMA NOTÍCIA GRANDE -->
+    <section class="recommended-section">
+        <div class="section-header">
+            <h2 class="section-title">Recomendado para você</h2>
+            <a href="#" class="see-more subtle-btn">Ver mais</a>
+        </div>
+
+        <div class="news-feed">
+            {% if noticias_recomendadas %}
+                {% with noticia=noticias_recomendadas.0 %}
+                    <a href="{% url 'noticia_detalhe' noticia.id %}" class="news-card-link">
+                        <article class="news-card large-card">
+                            <div class="card-image-placeholder">
+                                {% if noticia.imagem %}
+                                    <img src="{{ noticia.imagem.url }}" alt="{{ noticia.titulo }}">
+                                {% else %}
+                                    <div class="image-placeholder">📰</div>
+                                {% endif %}
+                            </div>
+                            <div class="card-content">
+                                <h3>{{ noticia.titulo }}</h3>
+                                <p class="news-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
+                                <div class="card-meta">
+                                    <span class="category">{{ noticia.categoria.nome|default:"Geral" }}</span>
+                                    <span>{{ noticia.data_publicacao|date:"d M, Y" }}</span>
+                                </div>
+                            </div>
+                        </article>
+                    </a>
+                {% endwith %}
+            {% else %}
+                <div class="empty-state">
+                    <div class="empty-icon">📰</div>
+                    <p>Ainda não há notícias para você.<br>Comece a interagir com os artigos para receber recomendações personalizadas!</p>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- SEÇÃO NOTÍCIAS URGENTES - COM 5 BLOCOS E NAVEGAÇÃO CÍCLICA -->
+    <section class="urgent-section">
+        <div class="section-header">
+            <h2>Notícias urgentes</h2>
+            <a href="#" class="see-more subtle-btn">Ver mais</a>
+        </div>
+
+        <div class="urgent-news-container">
+            <button class="nav-button prev-button" id="prevBtn">‹</button>
+            
+            <div class="urgent-news-slider">
+                <!-- Bloco 1 -->
+                <div class="urgent-news active" data-index="0">
+                    {% if noticias_urgentes.0 %}
+                        <a href="{% url 'noticia_detalhe' noticias_urgentes.0.id %}" class="urgent-news-link">
+                            <div class="urgent-image">
+                                {% if noticias_urgentes.0.imagem %}
+                                    <img src="{{ noticias_urgentes.0.imagem.url }}" alt="{{ noticias_urgentes.0.titulo }}">
+                                {% else %}
+                                    <div class="urgent-image-placeholder"></div>
+                                {% endif %}
+                            </div>
+                            <h3 class="urgent-title">{{ noticias_urgentes.0.titulo }}</h3>
+                            <p class="urgent-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                        </a>
+                    {% else %}
+                        <div class="urgent-image">
+                            <div class="urgent-image-placeholder"></div>
+                        </div>
+                        <h3 class="urgent-title">Notícia Urgente 1</h3>
+                        <p class="urgent-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                    {% endif %}
+                </div>
+                
+                <!-- Bloco 2 -->
+                <div class="urgent-news" data-index="1">
+                    {% if noticias_urgentes.1 %}
+                        <a href="{% url 'noticia_detalhe' noticias_urgentes.1.id %}" class="urgent-news-link">
+                            <div class="urgent-image">
+                                {% if noticias_urgentes.1.imagem %}
+                                    <img src="{{ noticias_urgentes.1.imagem.url }}" alt="{{ noticias_urgentes.1.titulo }}">
+                                {% else %}
+                                    <div class="urgent-image-placeholder"></div>
+                                {% endif %}
+                            </div>
+                            <h3 class="urgent-title">{{ noticias_urgentes.1.titulo }}</h3>
+                            <p class="urgent-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
+                        </a>
+                    {% else %}
+                        <div class="urgent-image">
+                            <div class="urgent-image-placeholder"></div>
+                        </div>
+                        <h3 class="urgent-title">Notícia Urgente 2</h3>
+                        <p class="urgent-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
+                    {% endif %}
+                </div>
+                
+                <!-- Bloco 3 -->
+                <div class="urgent-news" data-index="2">
+                    {% if noticias_urgentes.2 %}
+                        <a href="{% url 'noticia_detalhe' noticias_urgentes.2.id %}" class="urgent-news-link">
+                            <div class="urgent-image">
+                                {% if noticias_urgentes.2.imagem %}
+                                    <img src="{{ noticias_urgentes.2.imagem.url }}" alt="{{ noticias_urgentes.2.titulo }}">
+                                {% else %}
+                                    <div class="urgent-image-placeholder"></div>
+                                {% endif %}
+                            </div>
+                            <h3 class="urgent-title">{{ noticias_urgentes.2.titulo }}</h3>
+                            <p class="urgent-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.</p>
+                        </a>
+                    {% else %}
+                        <div class="urgent-image">
+                            <div class="urgent-image-placeholder"></div>
+                        </div>
+                        <h3 class="urgent-title">Notícia Urgente 3</h3>
+                        <p class="urgent-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.</p>
+                    {% endif %}
+                </div>
+                
+                <!-- Bloco 4 -->
+                <div class="urgent-news" data-index="3">
+                    {% if noticias_urgentes.3 %}
+                        <a href="{% url 'noticia_detalhe' noticias_urgentes.3.id %}" class="urgent-news-link">
+                            <div class="urgent-image">
+                                {% if noticias_urgentes.3.imagem %}
+                                    <img src="{{ noticias_urgentes.3.imagem.url }}" alt="{{ noticias_urgentes.3.titulo }}">
+                                {% else %}
+                                    <div class="urgent-image-placeholder"></div>
+                                {% endif %}
+                            </div>
+                            <h3 class="urgent-title">{{ noticias_urgentes.3.titulo }}</h3>
+                            <p class="urgent-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.</p>
+                        </a>
+                    {% else %}
+                        <div class="urgent-image">
+                            <div class="urgent-image-placeholder"></div>
+                        </div>
+                        <h3 class="urgent-title">Notícia Urgente 4</h3>
+                        <p class="urgent-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.</p>
+                    {% endif %}
+                </div>
+                
+                <!-- Bloco 5 -->
+                <div class="urgent-news" data-index="4">
+                    {% if noticias_urgentes.4 %}
+                        <a href="{% url 'noticia_detalhe' noticias_urgentes.4.id %}" class="urgent-news-link">
+                            <div class="urgent-image">
+                                {% if noticias_urgentes.4.imagem %}
+                                    <img src="{{ noticias_urgentes.4.imagem.url }}" alt="{{ noticias_urgentes.4.titulo }}">
+                                {% else %}
+                                    <div class="urgent-image-placeholder"></div>
+                                {% endif %}
+                            </div>
+                            <h3 class="urgent-title">{{ noticias_urgentes.4.titulo }}</h3>
+                            <p class="urgent-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.</p>
+                        </a>
+                    {% else %}
+                        <div class="urgent-image">
+                            <div class="urgent-image-placeholder"></div>
+                        </div>
+                        <h3 class="urgent-title">Notícia Urgente 5</h3>
+                        <p class="urgent-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.</p>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <button class="nav-button next-button" id="nextBtn">›</button>
+        </div>
+        
+        <div class="indicators">
+            <span class="indicator active" data-index="0"></span>
+            <span class="indicator" data-index="1"></span>
+            <span class="indicator" data-index="2"></span>
+            <span class="indicator" data-index="3"></span>
+            <span class="indicator" data-index="4"></span>
+        </div>
+    </section>
+</main>
+
+<!-- ESPAÇO PARA A NAVEGAÇÃO INFERIOR -->
+<div class="bottom-spacer"></div>
+
+<!-- JAVASCRIPT CORRIGIDO PARA NAVEGAÇÃO CÍCLICA -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Elementos do slider de notícias urgentes
+    const urgentNews = document.querySelectorAll('.urgent-news');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const indicators = document.querySelectorAll('.indicator');
+    
+    let currentIndex = 0;
+    const totalNews = urgentNews.length;
+    
+    // Função para atualizar o slider
+    function updateSlider(index) {
+        // Remove a classe active de todas as notícias
+        urgentNews.forEach(news => {
+            news.classList.remove('active');
+        });
+        
+        // Adiciona a classe active à notícia atual
+        urgentNews[index].classList.add('active');
+        
+        // Atualiza os indicadores
+        indicators.forEach(indicator => {
+            indicator.classList.remove('active');
+        });
+        indicators[index].classList.add('active');
+        
+        // Atualiza o índice atual
+        currentIndex = index;
+    }
+    
+    // Evento para o botão anterior
+    prevBtn.addEventListener('click', function() {
+        let newIndex = currentIndex - 1;
+        if (newIndex < 0) {
+            newIndex = totalNews - 1; // Vai para o último item (ciclo)
+        }
+        updateSlider(newIndex);
+    });
+    
+    // Evento para o botão próximo
+    nextBtn.addEventListener('click', function() {
+        let newIndex = currentIndex + 1;
+        if (newIndex >= totalNews) {
+            newIndex = 0; // Vai para o primeiro item (ciclo)
+        }
+        updateSlider(newIndex);
+    });
+    
+    // Evento para os indicadores
+    indicators.forEach(indicator => {
+        indicator.addEventListener('click', function() {
+            const index = parseInt(this.getAttribute('data-index'));
+            updateSlider(index);
+        });
+    });
+    
+    // Inicializa o slider
+    updateSlider(currentIndex);
+    
+    // Adiciona navegação por teclado
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowLeft') {
+            prevBtn.click();
+        } else if (e.key === 'ArrowRight') {
+            nextBtn.click();
+        }
+    });
+});
+</script>
 
 {% endblock %}
