@@ -66,5 +66,8 @@ Com ele, o público pode **navegar** pelo portal com mais facilidade, **acessar 
   <summary>- ✅ Semana 11 </summary>
 
   Implementação do reconhecimento do usuário para fins de recomendação futura.
+
+  Link do Deployment das Novas Histórias
+  echo-jc.azurewebsites.net
   
 </details>
