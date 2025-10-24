@@ -67,10 +67,27 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_4991ECAE09F34A759C3F82380950C268 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_0C5EBF7DEAF94F679CB7D5CB1B52E78F }}
 
+
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
           app-name: 'JC-Echo'
           slot-name: 'Production'
-          
+
+      - name: Install dependencies
+        run: pip install -r ECHO/requirements.txt
+
+      - name: Cleaning testing files
+        run: |
+          cd ECHO/
+          rm db.sqlite3
+          rm .env
+          cd ..
+
+      - name: Zip artifact for deployment
+        run: |
+          cd ECHO/
+          zip release.zip ./* -r
+          cd ..
+          mv ECHO/release.zip .
