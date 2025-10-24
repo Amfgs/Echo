@@ -68,6 +68,6 @@ Com ele, o público pode **navegar** pelo portal com mais facilidade, **acessar 
   Implementação do reconhecimento do usuário para fins de recomendação futura.
 
   Link do Deployment das Novas Histórias
-  echo-jc.azurewebsites.net
+  [echo-jc.azurewebsites.net](https://echo-jc.azurewebsites.net/)
   
 </details>
