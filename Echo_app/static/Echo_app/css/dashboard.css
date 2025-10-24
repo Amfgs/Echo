@@ -204,7 +204,7 @@ body > .bottom-nav {
 }
 
 /* =====================================
-   4. SEÇÃO URGENTES (SEGUNDA TELA INTEIRA)
+   4. SEÇÃO URGENTES (FORMATO DE LISTA)
    ===================================== */
 .urgent-section {
     min-height: 100vh;
@@ -218,7 +218,7 @@ body > .bottom-nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
     width: 100%;
 }
 
@@ -229,11 +229,57 @@ body > .bottom-nav {
     font-weight: 700;
 }
 
-.urgent-news-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 25px;
+/* LISTA DE NOTÍCIAS URGENTES */
+.urgent-news-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
     width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.urgent-news-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 20px;
+    text-decoration: none;
+    color: inherit;
+    border-bottom: 1px solid var(--cor-borda);
+    transition: background-color 0.2s ease;
+}
+
+.urgent-news-item:last-child {
+    border-bottom: none;
+}
+
+.urgent-news-item:hover {
+    background-color: rgba(220, 53, 69, 0.05);
+    border-radius: 8px;
+}
+
+.urgent-timestamp {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--cor-destaque);
+    min-width: 80px;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.urgent-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--cor-texto);
+    line-height: 1.4;
+    flex: 1;
+}
+
+/* ESTADO VAZIO PARA LISTA */
+.urgent-empty {
+    max-width: 800px;
+    margin: 0 auto;
 }
 
 /* =====================================
