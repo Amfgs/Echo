@@ -1,0 +1,130 @@
+{% extends 'Echo_app/base.html' %}
+{% load static %}
+
+{% block title %}{{ noticia.titulo }} | Echo News{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'Echo_app/css/noticia_detalhe.css' %}">
+{% endblock %}
+
+
+{% block content %}
+<div class="detalhe-container">
+    <p><a href="{% url 'dashboard' %}">← Voltar para o Dashboard</a></p>
+    
+    <h1>{{ noticia.titulo }}</h1>
+
+    <div class="metadata">
+        <p>Publicado em: <strong>{{ noticia.data_publicacao|date:"d/m/Y H:i" }}</strong></p>
+        <p>Por: <strong>{{ noticia.autor.username|default:"Autor Desconhecido" }}</strong></p>
+        <p>Categoria: <strong>{{ noticia.categoria.nome|default:"Geral" }}</strong></p>
+        <p>
+            <span id="curtidas_count">{{ noticia.curtidas_count }}</span> Curtidas | 
+            <span id="salvamentos_count">{{ noticia.salvamentos_count }}</span> Salvamentos
+        </p>
+    </div>
+
+    <div class="conteudo">
+        {{ noticia.conteudo|linebreaksbr }}
+    </div>
+
+    <div class="interacoes">
+        {% if user.is_authenticated %}
+            {% csrf_token %}
+            
+            <button id="btn-curtir" 
+                    data-url="{% url 'noticia_curtir' noticia_id=noticia.pk %}"
+                    class="{% if usuario_curtiu %}curtida-ativa{% endif %}">
+                {% if usuario_curtiu %}Descurtir{% else %}Curtir{% endif %}
+            </button>
+
+            <button id="btn-salvar" 
+                    data-url="{% url 'noticia_salvar' noticia_id=noticia.pk %}"
+                    class="{% if usuario_salvou %}salvamento-ativa{% endif %}">
+                {% if usuario_salvou %}Desalvar{% else %}Salvar{% endif %}
+            </button>
+        {% else %}
+            <p>Faça <a href="{% url 'entrar' %}?next={{ request.path }}">login</a> para curtir ou salvar.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}
+
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // Só executa o script se os botões existirem (se o usuário estiver logado)
+    const curtirBtn = document.getElementById('btn-curtir');
+    const salvarBtn = document.getElementById('btn-salvar');
+    const csrftokenInput = document.querySelector('[name=csrfmiddlewaretoken]');
+
+    // Se o token ou os botões não existirem, não faz nada.
+    if (!csrftokenInput || (!curtirBtn && !salvarBtn)) {
+        return;
+    }
+
+    const csrftoken = csrftokenInput.value;
+    const curtidasCountSpan = document.getElementById('curtidas_count');
+    const salvamentosCountSpan = document.getElementById('salvamentos_count');
+
+    function fazerInteracao(event) {
+        const btn = event.currentTarget;
+        const url = btn.getAttribute('data-url');
+        const tipo = btn.id.includes('curtir') ? 'curtir' : 'salvar';
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrftoken,
+                'X-Requested-With': 'XMLHttpRequest', // Informa ao Django que é AJAX
+            },
+        })
+        .then(response => {
+            if (response.status === 401) { 
+                window.location.href = "{% url 'entrar' %}?next=" + window.location.pathname;
+                return; // Interrompe o processamento
+            }
+
+            if (!response.ok) {
+                throw new Error('Erro na rede ou resposta não-OK.');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data && data.success) {
+                // 1. Atualiza o texto do botão
+                if (data.status_interacao) { // true = Ação Adicionada
+                    btn.textContent = (tipo === 'curtir') ? 'Descurtir' : 'Desalvar';
+                    btn.classList.add(tipo + '-ativa');
+                } else { // false = Ação Removida
+                    btn.textContent = (tipo === 'curtir') ? 'Curtir' : 'Salvar';
+                    btn.classList.remove(tipo + '-ativa');
+                }
+
+                // 2. Atualiza a contagem
+                if (tipo === 'curtir') {
+                    curtidasCountSpan.textContent = data.nova_contagem;
+                } else {
+                    salvamentosCountSpan.textContent = data.nova_contagem;
+                }
+            } else if (data) {
+                alert(data.error || 'Ocorreu um erro ao processar sua ação.');
+            }
+        })
+        .catch(error => {
+            console.error('Erro no Fetch:', error);
+            alert('Não foi possível conectar ao servidor. Verifique sua rede.');
+        });
+    }
+
+    if (curtirBtn) {
+        curtirBtn.addEventListener('click', fazerInteracao);
+    }
+    if (salvarBtn) {
+        salvarBtn.addEventListener('click', fazerInteracao);
+    }
+});
+</script>
+{% endblock %}

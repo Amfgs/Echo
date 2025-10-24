@@ -3,11 +3,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 # Imports de formulários removidos
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from django.views.generic import DetailView
 from django.views.decorators.http import require_POST
-from django.http import JsonResponse, HttpResponseBadRequest
+from django.http import JsonResponse, HttpResponseBadRequest, HttpResponseForbidden
 from django.db import IntegrityError 
 
 # Importe os modelos da sua aplicação
@@ -102,38 +103,43 @@ def registrar(request):
 
 def entrar(request):
     """
-    Renderiza a página de login e processa a autenticação do usuário
-    usando USERNAME e SENHA (método padrão).
+    Renderiza a página de login e processa a autenticação do usuário.
     """
     contexto = {}
     
     if request.method == "POST":
-        # 1. Obter dados crus do POST (username e password)
+        # 1. Obter dados crus do POST
         username = request.POST.get('username')
         password = request.POST.get('password')
+        next_url = request.POST.get('next') # 🚨 NOVO: Obtém o parâmetro 'next' 🚨
 
         if not username or not password:
             contexto['erro_login'] = 'Por favor, preencha o usuário e a senha.'
-            contexto['username_preenchido'] = username # Repassa o username
+            contexto['username_preenchido'] = username
             return render(request, "Echo_app/entrar.html", contexto)
 
-        # 2. Autenticar o usuário diretamente com username e senha
+        # 2. Autenticar o usuário
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
             # 3. Sucesso!
             login(request, user)
-            return redirect("dashboard")
+            
+            # 🚨 CORREÇÃO DO REDIRECIONAMENTO 🚨
+            if next_url:
+                # Se o parâmetro 'next' existe, redireciona para a página original
+                return redirect(next_url)
+            else:
+                # Caso contrário, redireciona para o dashboard padrão
+                return redirect("dashboard")
         else:
             # 4. Falha na autenticação
             contexto['erro_login'] = 'Usuário ou senha inválidos. Tente novamente.'
-        
-        # Repassa o username digitado para preencher o campo
+            
         contexto['username_preenchido'] = username
             
     # Se for GET ou se a autenticação falhar, renderiza a página
     return render(request, "Echo_app/entrar.html", contexto)
-
 
 def sair(request):
     """
@@ -210,7 +216,7 @@ class NoticiaDetalheView(DetailView):
 
         return context
 
-@login_required
+
 @require_POST
 def toggle_interacao(request, noticia_id, tipo_interacao):
     """
@@ -304,3 +310,39 @@ def marcar_todas_lidas(request):
     """
     Notificacao.objects.filter(usuario=request.user, lida=False).update(lida=True)
     return redirect('lista_notificacoes')
+@login_required
+def dashboard(request):
+    """
+    Exibe a página principal para o usuário logado, incluindo
+    notícias recomendadas e suas categorias de interesse.
+    """
+    user = request.user
+    categorias_interesse = []
+
+    # Tenta buscar o perfil do usuário e suas categorias de interesse
+    try:
+        perfil = user.perfil 
+        categorias_interesse = perfil.categorias_de_interesse.all()
+    except PerfilUsuario.DoesNotExist:
+        perfil, created = PerfilUsuario.objects.get_or_create(usuario=user)
+    
+    # Adicionando Notícias Urgentes (Exemplo: as 2 mais recentes, exceto as recomendadas)
+    noticias_recomendadas = Noticia.recomendar_para(user)
+    
+    # 🚨 NOVO: BUSCA NOTÍCIAS URGENTES 🚨
+    # Buscamos as 2 notícias mais recentes que não estão na lista de recomendadas
+    noticias_urgentes = Noticia.objects.exclude(pk__in=noticias_recomendadas.values_list('pk', flat=True)).order_by('-data_publicacao')[:2]
+    # ----------------------------------
+
+    # Monta o contexto para enviar ao template
+    context = {
+        "nome": user.first_name or user.username,
+        "email": user.email,
+        "noticias_recomendadas": noticias_recomendadas,
+        "categorias_interesse": categorias_interesse,
+        # 🚨 NOVO: ADICIONA NOTÍCIAS URGENTES AO CONTEXTO 🚨
+        "noticias_urgentes": noticias_urgentes 
+        # ------------------------------------------------
+    }
+    
+    return render(request, "Echo_app/dashboard.html", context)

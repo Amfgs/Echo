@@ -97,35 +97,24 @@
   =====================================
 -->
 <div class="section-header">
-    <h2>Notícias urgentes</h2>
-    <a href="#">Ver mais</a>
+    <h2>Notícias urgentes</h2>
+    <a href="#">Ver mais</a>
 </div>
 
 <div class="urgent-news-grid">
-    <!-- Card Pequeno 1 (Estático) -->
-    <a href="#" class="news-card-link">
-        <article class="news-card small-card">
-            <div class="card-image-placeholder"></div>
-            <div class="card-content">
-                <span class="timestamp">5min atrás</span>
-                <h3>Placeholder: Nova política anunciada</h3>
-            </div>
-        </article>
-    </a>
-    <!-- Card Pequeno 2 (Estático) -->
-    <a href="#" class="news-card-link">
-        <article class="news-card small-card">
-            <div class="card-image-placeholder"></div>
-            <div class="card-content">
-                <span class="timestamp">8min atrás</span>
-                <h3>Placeholder: Mercado de ações reage</h3>
-            </div>
-        </article>
-    </a>
+    {% for noticia in noticias_urgentes %}
+                <a href="{% url 'noticia_detalhe' pk=noticia.pk %}" class="news-card-link">
+            <article class="news-card small-card">
+                <div class="card-image-placeholder"></div>
+                <div class="card-content">
+                                        <span class="timestamp">{{ noticia.data_publicacao|timesince }} atrás</span>
+                                        <h3>{{ noticia.titulo }}</h3>
+                </div>
+            </article>
+        </a>
+    {% empty %}
+        <p>Não há notícias urgentes no momento.</p>
+    {% endfor %}
 </div>
-
-<!-- Espaçador (Sem alterações) -->
-<div style="height: 20px;"></div>
-
 {% endblock %}
 

@@ -1,20 +1,22 @@
 <!DOCTYPE html>
-{% load static %} <!-- 1. ADICIONE ESTA LINHA -->
+{% load static %} 
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Echo{% endblock %}</title>
 
-    <!-- 2. SUBSTITUA O BLOCO <style> POR ESTA LINHA -->
     <link rel="stylesheet" type="text/css" href="{% static 'Echo_app/css/base.css' %}">
+
+    {% block extra_css %}{% endblock %}
 
 </head>
 <body>
     <main class="app-content">
         {% block content %}{% endblock %}
     </main>
-    
+
+    {% block navbar_footer %}
     {% if user.is_authenticated %}
     <nav class="bottom-nav">
         <a href="{% url 'dashboard' %}" class="active">Home</a>
@@ -23,5 +25,9 @@
         <a href="#">Perfil</a>
     </nav>
     {% endif %}
+    {% endblock navbar_footer %}
+
+    {% block extra_js %}{% endblock %}
+
 </body>
 </html>
