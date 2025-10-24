@@ -1,39 +1,173 @@
-.dashboard-header {
-    margin-bottom: 24px;
+/* =====================================
+   TEMA E CONFIGURAÇÃO BASE (COM VERMELHO)
+   ===================================== */
+:root {
+    --cor-primaria: #dc3545; /* Vermelho */
+    --cor-primaria-hover: #c82333; /* Vermelho Escuro */
+    --cor-fundo: #F0F2F5;
+    --cor-surface: #FFFFFF; /* Fundo dos cards */
+    --cor-texto: #1C1E21;
+    --cor-texto-secundario: #65676B;
+    --cor-borda: #CED0D4;
 }
-.dashboard-header h1 {
-    font-size: 1.8rem;
+
+/* Sobrescreve o base.html:
+  1. Esconde a barra de navegação inferior.
+  2. Adiciona espaço no topo para a nova barra superior fixa.
+*/
+body {
+    padding-top: 60px; /* Altura da nova top-nav */
+}
+body > .bottom-nav {
+    display: none; /* Esconde a barra de navegação antiga */
+}
+
+/* =====================================
+   1. BARRA DE NAVEGAÇÃO SUPERIOR
+   ===================================== */
+.top-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background-color: var(--cor-surface);
+    border-bottom: 1px solid var(--cor-borda);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px;
+    z-index: 1000;
+}
+.top-nav-left,
+.top-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+.top-nav-logo {
+    color: var(--cor-primaria); /* Logo em vermelho */
+}
+.nav-icon svg {
+    width: 28px;
+    height: 28px;
+    color: var(--cor-texto-secundario);
+}
+.top-nav-logo svg,
+.top-nav-logo img.logo-img {
+    width: 32px;  /* Define a largura */
+    height: 32px; /* Define a altura */
+    object-fit: contain; /* Garante que a imagem caiba sem esticar */
+}
+
+
+/* =====================================
+   2. BOLHAS DE CATEGORIA
+   ===================================== */
+.category-bubbles {
+    display: flex;
+    gap: 12px;
+    padding: 20px 0;
+    overflow-x: auto; /* Permite rolar horizontalmente */
+    /* Esconde a barra de rolagem */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+.category-bubbles::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+.bubble {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+    width: 60px;
+    min-width: 60px;
+    background-color: #e4e6eb; /* Placeholder cinza */
+    border-radius: 50%;
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 600;
     color: var(--cor-texto);
+    padding: 5px;
+    text-align: center;
+}
+.bubble.active {
+    background-color: var(--cor-primaria);
+    color: white;
 }
 
-.news-feed {
+/* =====================================
+   3. CABEÇALHO DA SEÇÃO
+   ===================================== */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 16px;
+}
+.section-header h2 {
+    font-size: 1.5rem;
+    color: var(--cor-texto);
+    margin: 0;
+}
+.section-header a {
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--cor-primaria);
+}
+
+/* =====================================
+   4. CARDS DE NOTÍCIA (GERAL)
+   ===================================== */
+.news-feed, .urgent-news-grid {
     display: grid;
-    gap: 16px; /* Espaço entre os cards de notícia */
+    gap: 20px;
 }
 
-/* Estilo do Card de Notícia */
 .news-card-link {
-    text-decoration: none; /* Remove o sublinhado do link */
-    color: inherit; /* O card herda a cor do texto do body */
+    text-decoration: none;
+    color: inherit;
 }
 .news-card {
     background-color: var(--cor-surface);
     border-radius: 12px;
-    padding: 16px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    overflow: hidden; /* Garante que a imagem não vaze */
     transition: transform 0.2s ease-in-out;
 }
 .news-card:hover {
-    transform: translateY(-4px); /* Efeito sutil ao passar o mouse (para web) */
+    transform: translateY(-4px);
+}
+
+.card-image-placeholder {
+    width: 100%;
+    background-color: #e4e6eb;
+    /* Placeholder com 'X' (opcional, mas ajuda a visualizar) */
+    display: grid;
+    place-items: center;
+    font-size: 2rem;
+    color: #ccc;
+}
+.card-image-placeholder::before {
+    content: 'X';
+}
+
+.card-content {
+    padding: 16px;
 }
 .news-card h3 {
-    font-size: 1.1rem;
-    margin-bottom: 8px;
+    font-size: 1.2rem;
+    margin: 0 0 8px 0;
+    color: var(--cor-texto);
 }
 .news-card p {
     font-size: 0.95rem;
     color: var(--cor-texto-secundario);
     line-height: 1.5;
+    margin: 0;
 }
 .card-meta {
     margin-top: 12px;
@@ -46,6 +180,41 @@
     font-weight: 500;
     color: var(--cor-primaria);
 }
+
+/* =====================================
+   5. LAYOUTS DE CARD ESPECÍFICOS
+   ===================================== */
+
+/* Card Grande (Recomendado) */
+.large-card .card-image-placeholder {
+    height: 200px;
+}
+
+/* Grid (Urgentes) */
+.urgent-news-grid {
+    grid-template-columns: 1fr 1fr; /* Duas colunas */
+}
+
+/* Card Pequeno (Urgentes) */
+.small-card .card-image-placeholder {
+    height: 100px;
+}
+.small-card .card-content {
+    padding: 12px;
+}
+.small-card h3 {
+    font-size: 1rem;
+    margin-bottom: 0;
+}
+.small-card .timestamp {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--cor-texto-secundario);
+    margin-bottom: 6px;
+    display: block;
+}
+
+/* Estado Vazio (igual ao seu) */
 .empty-state {
     text-align: center;
     padding: 40px 20px;
@@ -54,42 +223,4 @@
 }
 .empty-state p {
     color: var(--cor-texto-secundario);
-}
-
-
-/* ======================================= */
-/* NOVOS ESTILOS PARA CATEGORIAS        */
-/* ======================================= */
-.user-categories-widget {
-    background-color: var(--cor-surface);
-    border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 24px; /* Espaço antes da lista de notícias */
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-}
-
-.user-categories-widget h4 {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--cor-texto);
-    margin-top: 0;
-    margin-bottom: 12px;
-}
-
-.category-pills-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px; /* Espaço entre as pílulas */
-}
-
-/* Estilo da pílula (parecido com o de registrar) */
-.category-pill {
-    display: inline-block;
-    padding: 6px 12px;
-    background-color: var(--cor-primaria);
-    color: white;
-    border-radius: 16px;
-    font-size: 0.85rem;
-    font-weight: 500;
-    user-select: none;
 }

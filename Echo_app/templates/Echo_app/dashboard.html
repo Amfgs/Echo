@@ -1,34 +1,85 @@
 {% extends 'Echo_app/base.html' %}
+{% load static %} 
 
-{% load static %} {% block title %}Dashboard - Echo News{% endblock %}
+{% block title %}Dashboard - Echo News{% endblock %}
 
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'Echo_app/css/dashboard.css' %}">
-<div class="dashboard-header">
-    <h1>Olá, {{ nome }}!</h1>
+
+<!-- 
+  =====================================
+  PASSO 1: BARRA DE NAVEGAÇÃO SUPERIOR
+  =====================================
+-->
+<header class="top-nav">
+    <div class="top-nav-left">
+        <a href="#" class="nav-icon">
+            <!-- Ícone de Menu (Hamburger) -->
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+            </svg>
+        </a>
+        <a href="#" class="nav-icon">
+            <!-- Ícone de Busca -->
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+            </svg>
+        </a>
+    </div>
+    
+    <div class="top-nav-logo">
+        <img src="{% static 'Echo_app/images/logo_JC.png' %}" alt="Logo JC" class="logo-img">
+    </div>
+    
+    <div class="top-nav-right">
+        <a href="#" class="nav-icon">
+            <!-- Ícone de Perfil -->
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A1.875 1.875 0 0 1 18.126 22.5H5.874a1.875 1.875 0 0 1-1.373-2.382Z" />
+            </svg>
+        </a>
+    </div>
+</header>
+
+<!-- 
+  =====================================
+  PASSO 2: BOLHAS DE CATEGORIA
+  (Sem alterações)
+  =====================================
+-->
+<div class="category-bubbles">
+    <a href="#" class="bubble active"></a>
+    <a href="#" class="bubble"></a>
+    <a href="#" class="bubble"></a>
+    <a href="#" class="bubble"></a>
+    <a href="#" class="bubble"></a>
+    <a href="#" class="bubble"></a>
 </div>
 
-<h2>Suas Notícias</h2>
+<!-- 
+  =====================================
+  PASSO 3: SEÇÃO "RECOMENDADO PARA VOCÊ"
+  (Sem alterações)
+  =====================================
+-->
+<div class="section-header">
+    <h2>Recomendado para você</h2>
+    <a href="#">Ver mais</a>
+</div>
 
-{% if categorias_interesse %}
-    <div class="user-categories-widget">
-        <h4>Seus Interesses</h4>
-        <div class="category-pills-list">
-            {% for categoria in categorias_interesse %}
-                <span class="category-pill">{{ categoria.nome }}</span>
-            {% endfor %}
-        </div>
-    </div>
-{% endif %}
 <div class="news-feed">
     {% for noticia in noticias_recomendadas %}
         <a href="{% url 'noticia_detalhe' noticia.id %}" class="news-card-link">
-            <article class="news-card">
-                <h3>{{ noticia.titulo }}</h3>
-                <p>{{ noticia.conteudo|truncatewords:20 }}</p>
-                <div class="card-meta">
-                    <span class="category">{{ noticia.categoria.nome|default:"Geral" }}</span>
-                    <span>{{ noticia.data_publicacao|date:"d M, Y" }}</span>
+            <article class="news-card large-card">
+                <!-- Placeholder para a imagem grande -->
+                <div class="card-image-placeholder"></div>
+                <div class="card-content">
+                    <h3>{{ noticia.titulo }}</h3>
+                    <p>{{ noticia.conteudo|truncatewords:20 }}</p>
+                    <div class="card-meta">
+                        <span class="category">{{ noticia.categoria.nome|default:"Geral" }}</span>
+                        <span>{{ noticia.data_publicacao|date:"d M, Y" }}</span>
+                    </div>
                 </div>
             </article>
         </a>
@@ -39,6 +90,42 @@
     {% endfor %}
 </div>
 
-<div style="height: 80px;"></div>
+<!-- 
+  =====================================
+  PASSO 4: SEÇÃO "NOTÍCIAS URGENTES"
+  (Sem alterações)
+  =====================================
+-->
+<div class="section-header">
+    <h2>Notícias urgentes</h2>
+    <a href="#">Ver mais</a>
+</div>
+
+<div class="urgent-news-grid">
+    <!-- Card Pequeno 1 (Estático) -->
+    <a href="#" class="news-card-link">
+        <article class="news-card small-card">
+            <div class="card-image-placeholder"></div>
+            <div class="card-content">
+                <span class="timestamp">5min atrás</span>
+                <h3>Placeholder: Nova política anunciada</h3>
+            </div>
+        </article>
+    </a>
+    <!-- Card Pequeno 2 (Estático) -->
+    <a href="#" class="news-card-link">
+        <article class="news-card small-card">
+            <div class="card-image-placeholder"></div>
+            <div class="card-content">
+                <span class="timestamp">8min atrás</span>
+                <h3>Placeholder: Mercado de ações reage</h3>
+            </div>
+        </article>
+    </a>
+</div>
+
+<!-- Espaçador (Sem alterações) -->
+<div style="height: 20px;"></div>
 
 {% endblock %}
+
