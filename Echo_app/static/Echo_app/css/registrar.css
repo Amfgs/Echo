@@ -63,6 +63,7 @@ body {
     width: 100px;
     height: 100px;
     border-radius: 50%;
+    display: block;
     margin: 20px auto;
     
     /* NOVO CÓDIGO PARA INSERIR A IMAGEM */
