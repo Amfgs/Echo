@@ -89,37 +89,27 @@
         </div>
     </section>
 
-    <!-- SEÇÃO NOTÍCIAS URGENTES (APÓS ROLAGEM) -->
-    <section class="urgent-section">
-        <div class="section-header">
-            <h2>Notícias urgentes</h2>
-            <a href="#" class="see-more">Ver mais</a>
-        </div>
+    <!-- SEÇÃO NOTÍCIAS URGENTES (FORMATO DE LISTA) -->
+<section class="urgent-section">
+    <div class="section-header">
+        <h2>Notícias urgentes</h2>
+        <a href="#" class="see-more">Ver mais</a>
+    </div>
 
-        <div class="urgent-news-container">
-            {% for noticia in noticias_urgentes %}
-                <a href="{% url 'noticia_detalhe' pk=noticia.pk %}" class="news-card-link">
-                    <article class="news-card small-card urgent-card">
-                        <div class="card-image-placeholder">
-                            {% if noticia.imagem %}
-                                <img src="{{ noticia.imagem.url }}" alt="{{ noticia.titulo }}">
-                            {% endif %}
-                        </div>
-                        <div class="card-content">
-                            <span class="timestamp">{{ noticia.data_publicacao|timesince }} atrás</span>
-                            <h3>{{ noticia.titulo }}</h3>
-                        </div>
-                    </article>
-                </a>
-            {% empty %}
-                <div class="empty-state urgent-empty">
-                    <div class="empty-icon">⚡</div>
-                    <p>Não há notícias urgentes no momento.</p>
-                </div>
-            {% endfor %}
-        </div>
-    </section>
-</main>
+    <div class="urgent-news-list">
+        {% for noticia in noticias_urgentes %}
+            <a href="{% url 'noticia_detalhe' pk=noticia.pk %}" class="urgent-news-item">
+                <div class="urgent-timestamp">{{ noticia.data_publicacao|timesince }} atrás</div>
+                <div class="urgent-title">{{ noticia.titulo }}</div>
+            </a>
+        {% empty %}
+            <div class="empty-state urgent-empty">
+                <div class="empty-icon">⚡</div>
+                <p>Não há notícias urgentes no momento.</p>
+            </div>
+        {% endfor %}
+    </div>
+</section>
 
 <!-- ESPAÇO PARA A NAVEGAÇÃO INFERIOR -->
 <div class="bottom-spacer"></div>
