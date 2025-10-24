@@ -21,9 +21,12 @@
         </a>
     </div>
     
-    <div class="top-nav-logo">
-        <img src="{% static 'Echo_app/images/logo_JC.png' %}" alt="Logo JC" class="logo-img">
-        <span class="brand-name">Echo News</span>
+    <!-- LOGO CENTRALIZADA -->
+    <div class="top-nav-center">
+        <div class="logo-container">
+            <img src="{% static 'Echo_app/images/logo_JC.png' %}" alt="Logo JC" class="logo-img">
+            <span class="brand-name">Echo News</span>
+        </div>
     </div>
     
     <div class="top-nav-right">
@@ -35,77 +38,88 @@
     </div>
 </header>
 
-<!-- BOLHAS DE CATEGORIA (AGORA COM TEXTO) -->
-<div class="category-bubbles">
-    <a href="#" class="bubble active">Todas</a>
-    <a href="#" class="bubble">Esportes</a>
-    <a href="#" class="bubble">Política</a>
-    <a href="#" class="bubble">Tech</a>
-    <a href="#" class="bubble">Cultura</a>
-    <a href="#" class="bubble">Economia</a>
-</div>
-
-<!-- SEÇÃO RECOMENDADO -->
-<div class="section-header">
-    <h2>Recomendado para você</h2>
-    <a href="#" class="see-more">Ver mais</a>
-</div>
-
-<div class="news-feed">
-    {% for noticia in noticias_recomendadas %}
-        <a href="{% url 'noticia_detalhe' noticia.id %}" class="news-card-link">
-            <article class="news-card large-card">
-                <div class="card-image-placeholder">
-                    {% if noticia.imagem %}
-                        <img src="{{ noticia.imagem.url }}" alt="{{ noticia.titulo }}">
-                    {% endif %}
-                </div>
-                <div class="card-content">
-                    <h3>{{ noticia.titulo }}</h3>
-                    <p>{{ noticia.resumo|default:noticia.conteudo|truncatewords:20 }}</p>
-                    <div class="card-meta">
-                        <span class="category">{{ noticia.categoria.nome|default:"Geral" }}</span>
-                        <span>{{ noticia.data_publicacao|date:"d M, Y" }}</span>
-                    </div>
-                </div>
-            </article>
-        </a>
-    {% empty %}
-        <div class="empty-state">
-            <div class="empty-icon">📰</div>
-            <p>Ainda não há notícias para você.<br>Comece a interagir com os artigos para receber recomendações personalizadas!</p>
+<!-- CONTEÚDO PRINCIPAL -->
+<main class="main-content">
+    <!-- BOLHAS DE CATEGORIA CENTRALIZADAS -->
+    <section class="categories-section">
+        <div class="category-bubbles-container">
+            <div class="category-bubbles">
+                <a href="#" class="bubble active">Todas</a>
+                <a href="#" class="bubble">Esportes</a>
+                <a href="#" class="bubble">Política</a>
+                <a href="#" class="bubble">Tech</a>
+                <a href="#" class="bubble">Cultura</a>
+                <a href="#" class="bubble">Economia</a>
+            </div>
         </div>
-    {% endfor %}
-</div>
+    </section>
 
-<!-- SEÇÃO NOTÍCIAS URGENTES -->
-<div class="section-header">
-    <h2>Notícias urgentes</h2>
-    <a href="#" class="see-more">Ver mais</a>
-</div>
-
-<div class="urgent-news-grid">
-    {% for noticia in noticias_urgentes %}
-        <a href="{% url 'noticia_detalhe' pk=noticia.pk %}" class="news-card-link">
-            <article class="news-card small-card urgent-card">
-                <div class="card-image-placeholder">
-                    {% if noticia.imagem %}
-                        <img src="{{ noticia.imagem.url }}" alt="{{ noticia.titulo }}">
-                    {% endif %}
-                </div>
-                <div class="card-content">
-                    <span class="timestamp">{{ noticia.data_publicacao|timesince }} atrás</span>
-                    <h3>{{ noticia.titulo }}</h3>
-                </div>
-            </article>
-        </a>
-    {% empty %}
-        <div class="empty-state urgent-empty">
-            <div class="empty-icon">⚡</div>
-            <p>Não há notícias urgentes no momento.</p>
+    <!-- SEÇÃO RECOMENDADO (TELA CHEIA) -->
+    <section class="recommended-section">
+        <div class="section-header">
+            <h2>Recomendado para você</h2>
+            <a href="#" class="see-more">Ver mais</a>
         </div>
-    {% endfor %}
-</div>
+
+        <div class="news-feed">
+            {% for noticia in noticias_recomendadas %}
+                <a href="{% url 'noticia_detalhe' noticia.id %}" class="news-card-link">
+                    <article class="news-card large-card">
+                        <div class="card-image-placeholder">
+                            {% if noticia.imagem %}
+                                <img src="{{ noticia.imagem.url }}" alt="{{ noticia.titulo }}">
+                            {% endif %}
+                        </div>
+                        <div class="card-content">
+                            <h3>{{ noticia.titulo }}</h3>
+                            <p>{{ noticia.resumo|default:noticia.conteudo|truncatewords:20 }}</p>
+                            <div class="card-meta">
+                                <span class="category">{{ noticia.categoria.nome|default:"Geral" }}</span>
+                                <span>{{ noticia.data_publicacao|date:"d M, Y" }}</span>
+                            </div>
+                        </div>
+                    </article>
+                </a>
+            {% empty %}
+                <div class="empty-state">
+                    <div class="empty-icon">📰</div>
+                    <p>Ainda não há notícias para você.<br>Comece a interagir com os artigos para receber recomendações personalizadas!</p>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- SEÇÃO NOTÍCIAS URGENTES (APÓS ROLAGEM) -->
+    <section class="urgent-section">
+        <div class="section-header">
+            <h2>Notícias urgentes</h2>
+            <a href="#" class="see-more">Ver mais</a>
+        </div>
+
+        <div class="urgent-news-container">
+            {% for noticia in noticias_urgentes %}
+                <a href="{% url 'noticia_detalhe' pk=noticia.pk %}" class="news-card-link">
+                    <article class="news-card small-card urgent-card">
+                        <div class="card-image-placeholder">
+                            {% if noticia.imagem %}
+                                <img src="{{ noticia.imagem.url }}" alt="{{ noticia.titulo }}">
+                            {% endif %}
+                        </div>
+                        <div class="card-content">
+                            <span class="timestamp">{{ noticia.data_publicacao|timesince }} atrás</span>
+                            <h3>{{ noticia.titulo }}</h3>
+                        </div>
+                    </article>
+                </a>
+            {% empty %}
+                <div class="empty-state urgent-empty">
+                    <div class="empty-icon">⚡</div>
+                    <p>Não há notícias urgentes no momento.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+</main>
 
 <!-- ESPAÇO PARA A NAVEGAÇÃO INFERIOR -->
 <div class="bottom-spacer"></div>
