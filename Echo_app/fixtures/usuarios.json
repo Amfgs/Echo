@@ -1,0 +1,92 @@
+[
+{
+  "model": "auth.user",
+  "pk": 13,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$wVx6E2A2pIivpileIhrpWN$sqYz0nePAfyiZKW0JvbGqFU+8nddzOUIWSBMKUg1KZg=",
+    "last_login": "2025-10-22T17:37:44.608Z",
+    "is_superuser": true,
+    "username": "Arthur",
+    "first_name": "",
+    "last_name": "",
+    "email": "mourygodoy@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-10-22T00:11:04.865Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 14,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$O3AyBRJzDjCJW5M3ZoSpPo$zD70RJUOJWwntl1MK3mIHCcC9nJ7kkSo3CeJ+Urt3hA=",
+    "last_login": "2025-10-22T00:14:21.370Z",
+    "is_superuser": false,
+    "username": "a",
+    "first_name": "",
+    "last_name": "",
+    "email": "a@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-10-22T00:12:00.064Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 15,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$3ws8wsIOsMinuEAr9kpA1o$SQRvoG6M7+6+IG9r2d3iEBdRMYtBbG8wUK54Xzq5i9w=",
+    "last_login": "2025-10-22T17:35:42.955Z",
+    "is_superuser": false,
+    "username": "teste6",
+    "first_name": "",
+    "last_name": "",
+    "email": "teste6@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-10-22T16:36:54.002Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 16,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$Nhma8SYOsHuWgNp691k5Dv$WCUNB2AoOX3oPypuOf91ZHaz3h+2JLBC8kvmLeUbcy8=",
+    "last_login": "2025-10-23T19:20:32.067Z",
+    "is_superuser": false,
+    "username": "Julia",
+    "first_name": "",
+    "last_name": "",
+    "email": "julia@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-10-23T19:20:31.895Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 17,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$oz9Rl8PCcp81KvuxCHI63g$RaAHj2NZOjMFPYmmX297kLbSel1uZ7IFeimXoEeQMMA=",
+    "last_login": "2025-10-24T23:12:49.579Z",
+    "is_superuser": false,
+    "username": "Arthur10",
+    "first_name": "",
+    "last_name": "",
+    "email": "arthur10@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-10-24T13:41:13.562Z",
+    "groups": [],
+    "user_permissions": []
+  }
+}
+]

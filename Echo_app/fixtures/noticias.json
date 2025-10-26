@@ -1,0 +1,15 @@
+[
+{
+  "model": "Echo_app.noticia",
+  "pk": 1,
+  "fields": {
+    "titulo": "Notícia Exemplo",
+    "conteudo": "Coisa muito foda aparecendo aqui",
+    "data_publicacao": "2025-10-21T23:03:25Z",
+    "autor": null,
+    "curtidas_count": 0,
+    "salvamentos_count": 0,
+    "categoria": 1
+  }
+}
+]
