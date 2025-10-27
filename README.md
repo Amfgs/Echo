@@ -17,7 +17,7 @@ Com ele, o público pode **navegar** pelo portal com mais facilidade, **acessar 
 - 🤳 **Recomendações pessoais**  
   Notícias sugeridas especialmente pra você.
 
-- 🖼️ **Manchetes atrativas**  
+- 🖼️ **Notificações e manchetes atrativas**  
   Uma maneira de prender seu interesse.
 
 - 🎥 **Portal modernizado**  
