@@ -1,24 +1,6 @@
 [
 {
   "model": "auth.user",
-  "pk": 13,
-  "fields": {
-    "password": "pbkdf2_sha256$1000000$wVx6E2A2pIivpileIhrpWN$sqYz0nePAfyiZKW0JvbGqFU+8nddzOUIWSBMKUg1KZg=",
-    "last_login": "2025-10-22T17:37:44.608Z",
-    "is_superuser": true,
-    "username": "Arthur",
-    "first_name": "",
-    "last_name": "",
-    "email": "mourygodoy@gmail.com",
-    "is_staff": true,
-    "is_active": true,
-    "date_joined": "2025-10-22T00:11:04.865Z",
-    "groups": [],
-    "user_permissions": []
-  }
-},
-{
-  "model": "auth.user",
   "pk": 14,
   "fields": {
     "password": "pbkdf2_sha256$1000000$O3AyBRJzDjCJW5M3ZoSpPo$zD70RJUOJWwntl1MK3mIHCcC9nJ7kkSo3CeJ+Urt3hA=",
