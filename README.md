@@ -71,3 +71,14 @@ Com ele, o público pode **navegar** pelo portal com mais facilidade, **acessar 
   [echo-jc.azurewebsites.net](https://jc-echo.azurewebsites.net)
   
 </details>
+
+<details>
+  <summary>- ✅ Semana 12 </summary>
+
+  Implementação da função de salvar e curtir uma notícia.
+  Primeira versão da home.
+
+  Link do Deployment das Novas Histórias
+  [echo-jc.azurewebsites.net](https://jc-echo.azurewebsites.net)
+  
+</details>
