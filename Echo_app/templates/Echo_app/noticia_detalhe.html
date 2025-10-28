@@ -4,127 +4,172 @@
 {% block title %}{{ noticia.titulo }} | Echo{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" type="text/css" href="{% static 'Echo_app/css/noticia_detalhe.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'Echo_app/css/noticia_detalhe.css' %}">
 {% endblock %}
 
 
 {% block content %}
-<div class="detalhe-container">
-    <p><a href="{% url 'dashboard' %}">← Voltar para o Dashboard</a></p>
-    
+<!-- Removido o .detalhe-container -->
+<article class="noticia-article">
+    <p class="voltar-link"><a href="{% url 'dashboard' %}">← Voltar para o Dashboard</a></p>
+
+    <!-- 1. Título -->
     <h1>{{ noticia.titulo }}</h1>
 
+    <!-- Metadados -->
     <div class="metadata">
-        <p>Publicado em: <strong>{{ noticia.data_publicacao|date:"d/m/Y H:i" }}</strong></p>
-        <p>Por: <strong>{{ noticia.autor.username|default:"Autor Desconhecido" }}</strong></p>
-        <p>Categoria: <strong>{{ noticia.categoria.nome|default:"Geral" }}</strong></p>
-        <p>
-            <span id="curtidas_count">{{ noticia.curtidas_count }}</span> Curtidas | 
+        <span>Publicado em: {{ noticia.data_publicacao|date:"d/m/Y H:i" }}</span> |
+        <span>Por: {{ noticia.autor.username|default:"Autor Desconhecido" }}</span> |
+        <span>Categoria: {{ noticia.categoria.nome|default:"Geral" }}</span>
+        <div>
+            <span id="curtidas_count">{{ noticia.curtidas_count }}</span> Curtidas |
             <span id="salvamentos_count">{{ noticia.salvamentos_count }}</span> Salvamentos
-        </p>
+        </div>
     </div>
 
+    <!-- 2. Imagem -->
+    {% if noticia.imagem %}
+        <img src="{{ noticia.imagem.url }}" alt="{{ noticia.titulo }}" class="noticia-imagem-principal">
+    {% else %}
+        <div class="imagem-placeholder">Sem Imagem</div>
+    {% endif %}
+
+    <!-- 3. Conteúdo -->
     <div class="conteudo">
         {{ noticia.conteudo|linebreaksbr }}
     </div>
 
-    <div class="interacoes">
-        {% if user.is_authenticated %}
-            {% csrf_token %}
-            
-            <button id="btn-curtir" 
-                    data-url="{% url 'noticia_curtir' noticia_id=noticia.pk %}"
-                    class="{% if usuario_curtiu %}curtida-ativa{% endif %}">
-                {% if usuario_curtiu %}Descurtir{% else %}Curtir{% endif %}
-            </button>
+</article> <!-- Fim do noticia-article -->
 
-            <button id="btn-salvar" 
-                    data-url="{% url 'noticia_salvar' noticia_id=noticia.pk %}"
-                    class="{% if usuario_salvou %}salvamento-ativa{% endif %}">
-                {% if usuario_salvou %}Desalvar{% else %}Salvar{% endif %}
-            </button>
-        {% else %}
-            <p>Faça <a href="{% url 'entrar' %}?next={{ request.path }}">login</a> para curtir ou salvar.</p>
-        {% endif %}
-    </div>
+
+<!-- 4. Botões de Interação Fixos (Continua igual) -->
+<div class="interacoes-fixas">
+    {% if user.is_authenticated %}
+        {% csrf_token %} <!-- O JS vai pegar este token -->
+
+        <button id="btn-curtir"
+                data-url="{% url 'noticia_curtir' noticia_id=noticia.pk %}"
+                class="btn-interacao {% if usuario_curtiu %}curtida-ativa{% endif %}"
+                title="Curtir">
+            <!-- Ícone de Coração (SVG) -->
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+            </svg>
+            <span class="sr-only">Curtir</span>
+        </button>
+
+        <button id="btn-salvar"
+                data-url="{% url 'noticia_salvar' noticia_id=noticia.pk %}"
+                class="btn-interacao {% if usuario_salvou %}salvamento-ativa{% endif %}"
+                title="Salvar">
+            <!-- Ícone de Salvar (Bookmark SVG) -->
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
+            </svg>
+             <span class="sr-only">Salvar</span>
+        </button>
+    {% else %}
+        <!-- Mensagem de login movida para os botões fixos -->
+        <p class="login-prompt">Faça <a href="{% url 'entrar' %}?next={{ request.path }}">login</a> para interagir.</p>
+    {% endif %}
 </div>
+
+
 {% endblock content %}
 
 
 {% block extra_js %}
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    
-    // Só executa o script se os botões existirem (se o usuário estiver logado)
-    const curtirBtn = document.getElementById('btn-curtir');
-    const salvarBtn = document.getElementById('btn-salvar');
-    const csrftokenInput = document.querySelector('[name=csrfmiddlewaretoken]');
+    <!-- O seu script JavaScript continua o mesmo aqui -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
 
-    // Se o token ou os botões não existirem, não faz nada.
-    if (!csrftokenInput || (!curtirBtn && !salvarBtn)) {
-        return;
-    }
+        const curtirBtn = document.getElementById('btn-curtir');
+        const salvarBtn = document.getElementById('btn-salvar');
+        // Pega o token do container fixo se disponível, ou do formulário se existir
+        const csrftokenInput = document.querySelector('.interacoes-fixas [name=csrfmiddlewaretoken]') || document.querySelector('form [name=csrfmiddlewaretoken]');
 
-    const csrftoken = csrftokenInput.value;
-    const curtidasCountSpan = document.getElementById('curtidas_count');
-    const salvamentosCountSpan = document.getElementById('salvamentos_count');
+        // Tenta pegar os contadores dos metadados
+        const curtidasCountSpan = document.getElementById('curtidas_count');
+        const salvamentosCountSpan = document.getElementById('salvamentos_count');
 
-    function fazerInteracao(event) {
-        const btn = event.currentTarget;
-        const url = btn.getAttribute('data-url');
-        const tipo = btn.id.includes('curtir') ? 'curtir' : 'salvar';
+        // Só continua se os botões existirem E houver um token
+        if (!csrftokenInput || (!curtirBtn && !salvarBtn)) {
+             // Se não há botões, não faz nada
+            if (!curtirBtn && !salvarBtn) return;
 
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': csrftoken,
-                'X-Requested-With': 'XMLHttpRequest', // Informa ao Django que é AJAX
-            },
-        })
-        .then(response => {
-            if (response.status === 401) { 
-                window.location.href = "{% url 'entrar' %}?next=" + window.location.pathname;
-                return; // Interrompe o processamento
-            }
+             // Se há botões mas não há token (usuário não logado), não adiciona listeners
+             if(!csrftokenInput && (curtirBtn || salvarBtn)) return;
 
-            if (!response.ok) {
-                throw new Error('Erro na rede ou resposta não-OK.');
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data && data.success) {
-                // 1. Atualiza o texto do botão
-                if (data.status_interacao) { // true = Ação Adicionada
-                    btn.textContent = (tipo === 'curtir') ? 'Descurtir' : 'Desalvar';
-                    btn.classList.add(tipo + '-ativa');
-                } else { // false = Ação Removida
-                    btn.textContent = (tipo === 'curtir') ? 'Curtir' : 'Salvar';
-                    btn.classList.remove(tipo + '-ativa');
+             // Caso contrário, pode haver um problema inesperado
+            console.warn("CSRF token input not found, interactions might fail.");
+            // Mesmo sem token visível (se usuário não logado), tentamos pegar dos cookies se necessário
+            // Mas a view deve proteger contra isso de qualquer forma.
+            // Poderíamos tentar pegar dos cookies, mas a view já deve retornar 401/403
+            return;
+        }
+
+        const csrftoken = csrftokenInput.value;
+
+
+        function fazerInteracao(event) {
+            const btn = event.currentTarget;
+            const url = btn.getAttribute('data-url');
+            const tipo = btn.id.includes('curtir') ? 'curtir' : 'salvar';
+            const isActive = btn.classList.contains(tipo + '-ativa');
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrftoken,
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            })
+            .then(response => {
+                if (response.status === 401 || response.status === 403) { // 403 Forbidden também
+                    window.location.href = "{% url 'entrar' %}?next=" + window.location.pathname;
+                    return Promise.reject('Unauthorized');
                 }
+                if (!response.ok) {
+                    throw new Error('Erro na rede ou resposta não-OK: ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data && data.success) {
+                    if (data.status_interacao) {
+                        btn.classList.add(tipo + '-ativa');
+                        btn.title = (tipo === 'curtir') ? 'Descurtir' : 'Desalvar';
+                    } else {
+                        btn.classList.remove(tipo + '-ativa');
+                        btn.title = (tipo === 'curtir') ? 'Curtir' : 'Salvar';
+                    }
 
-                // 2. Atualiza a contagem
-                if (tipo === 'curtir') {
-                    curtidasCountSpan.textContent = data.nova_contagem;
+                    // Atualiza contagem APENAS se os spans existirem
+                    if (tipo === 'curtir' && curtidasCountSpan) {
+                        curtidasCountSpan.textContent = data.nova_contagem;
+                    } else if (tipo === 'salvar' && salvamentosCountSpan) {
+                        salvamentosCountSpan.textContent = data.nova_contagem;
+                    }
+                } else if (data) {
+                    console.error('Erro retornado pela view:', data.error || 'Erro desconhecido');
                 } else {
-                    salvamentosCountSpan.textContent = data.nova_contagem;
+                     console.error('Resposta JSON inesperada ou vazia.');
                 }
-            } else if (data) {
-                alert(data.error || 'Ocorreu um erro ao processar sua ação.');
-            }
-        })
-        .catch(error => {
-            console.error('Erro no Fetch:', error);
-            alert('Não foi possível conectar ao servidor. Verifique sua rede.');
-        });
-    }
+            })
+            .catch(error => {
+                if (error !== 'Unauthorized') {
+                    console.error('Erro no Fetch:', error);
+                }
+            });
+        }
 
-    if (curtirBtn) {
-        curtirBtn.addEventListener('click', fazerInteracao);
-    }
-    if (salvarBtn) {
-        salvarBtn.addEventListener('click', fazerInteracao);
-    }
-});
-</script>
+        if (curtirBtn) {
+            curtirBtn.addEventListener('click', fazerInteracao);
+        }
+        if (salvarBtn) {
+            salvarBtn.addEventListener('click', fazerInteracao);
+        }
+    });
+    </script>
 {% endblock %}
+

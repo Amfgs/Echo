@@ -1,98 +1,239 @@
-:root {
-    --cor-primaria: #007AFF;
-    --cor-fundo: #F0F2F5;
-    --cor-surface: #FFFFFF;
-    --cor-texto: #1C1E21;
-    --cor-texto-secundario: #65676B;
-    --cor-borda: #CED0D4;
-    --cor-erro: #d93025;
-    --cor-erro-fundo: #fce8e6;
+/* Este ficheiro contém APENAS os estilos específicos
+   para a página noticia_detalhe.html.
+   Assume-se que base.css define o tema (cores, fontes, etc.)
+*/
+
+/* =====================================
+   ESTILOS DA PÁGINA DE DETALHE (LAYOUT LARGO)
+   ===================================== */
+
+/* Container principal do artigo */
+.noticia-article {
+    /* Removemos o fundo branco e a sombra daqui,
+       o corpo já tem a cor de fundo desejada. */
+    padding: 24px 0; /* Apenas padding vertical */
+    margin: 20px auto;
+    /* max-width controla a largura máxima do CONTEÚDO, não do container */
+    /* Vamos aplicar max-width aos elementos internos */
+    /* Adiciona padding na parte inferior para não ser coberto pelos botões fixos */
+    padding-bottom: 100px; /* Ajuste conforme necessário */
 }
 
-* { 
-    box-sizing: border-box; 
-    margin: 0; 
-    padding: 0; 
+/* Link "Voltar" */
+.voltar-link {
+    margin-bottom: 24px; /* Mais espaço */
+    font-size: 0.9rem;
+    max-width: 800px; /* Limita largura */
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 15px; /* Adiciona padding lateral em telas menores */
 }
-
-html { 
-    font-size: 16px; 
-}
-
-body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background-color: var(--cor-fundo);
-    color: var(--cor-texto);
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-
-/* O .app-content é o container principal que cresce */
-.app-content {
-    flex-grow: 1;
-    width: 100%;
-    padding: 20px;
-    /* Adiciona padding para não ser coberto pelas barras de navegação fixas.
-       Assumindo 50px de top-nav e 60px de bottom-nav + 20px de espaço.
-    */
-    padding-top: 70px;
-    padding-bottom: 80px;
-}
-
-/* Estilos de links globais */
-a {
-    color: var(--cor-primaria);
+.voltar-link a {
+    color: var(--cor-texto-secundario);
     text-decoration: none;
 }
-a:hover {
+.voltar-link a:hover {
+    color: var(--cor-primaria);
     text-decoration: underline;
 }
 
-img {
-    max-width: 100%;
-    display: block;
+/* Título da Notícia */
+.noticia-article h1 {
+    font-size: 2.2rem; /* Maior */
+    margin-bottom: 16px;
+    line-height: 1.3;
+    color: var(--cor-texto);
+    text-align: center; /* Centraliza o título */
+    max-width: 900px; /* Limita largura */
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 15px;
 }
 
-h1, h2, h3 {
-    margin-bottom: 0.5rem;
-    font-weight: 700;
-}
-
-/* =====================================
-   BARRA DE NAVEGAÇÃO INFERIOR (MÓVEL)
-   =====================================
-*/
-.bottom-nav {
-    position: fixed;
-    bottom: 0; 
-    left: 0; 
-    right: 0;
-    height: 60px;
-    background-color: var(--cor-surface);
-    border-top: 1px solid var(--cor-borda);
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    box-shadow: 0 -2px 5px rgba(0,0,0,0.05);
-    z-index: 1000;
-}
-
-.bottom-nav a {
+/* Bloco de Metadados */
+.metadata {
+    font-size: 0.85rem;
     color: var(--cor-texto-secundario);
-    text-decoration: none;
-    font-size: 0.8rem;
-    text-align: center;
-    padding: 5px 10px;
+    border-top: 1px solid var(--cor-borda);
+    border-bottom: 1px solid var(--cor-borda);
+    padding: 12px 0;
+    margin-bottom: 32px; /* Mais espaço antes da imagem */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Centraliza os metadados */
+    gap: 8px 20px;
+    max-width: 800px; /* Limita largura */
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 15px; /* Padding lateral */
+    padding-right: 15px;
+}
+.metadata span {
+     white-space: nowrap;
+}
+.metadata div {
+    width: 100%;
+    margin-top: 8px;
+    font-weight: 500;
+    text-align: center; /* Centraliza curtidas/salvamentos */
 }
 
-.bottom-nav a.active { 
-    color: var(--cor-primaria); 
+/* Imagem Principal da Notícia */
+.noticia-imagem-principal {
+    width: 100%; /* Ocupa largura total disponível */
+    max-width: 1000px; /* Limita largura máxima em telas grandes */
+    height: auto;
+    max-height: 500px; /* Limita altura */
+    object-fit: cover;
+    border-radius: 8px;
+    margin: 0 auto 32px auto; /* Centraliza e adiciona espaço abaixo */
+    display: block; /* Garante que margin: auto funcione */
+    background-color: #eee;
+}
+.imagem-placeholder {
+    width: 100%;
+    max-width: 1000px;
+    height: 300px;
+    background-color: #e9ecef;
+    border-radius: 8px;
+    margin: 0 auto 32px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--cor-texto-secundario);
+    font-style: italic;
 }
 
-/* Ícones (exemplo se você usar SVGs) */
-.bottom-nav a svg {
+/* Conteúdo Principal (Texto) */
+.conteudo {
+    font-size: 1.1rem; /* Ligeiramente maior para leitura */
+    line-height: 1.8; /* Mais espaçado */
+    color: var(--cor-texto);
+    max-width: 800px; /* Largura ideal para leitura de texto */
+    margin: 0 auto; /* Centraliza o bloco de texto */
+    padding: 0 15px; /* Padding lateral */
+}
+
+.conteudo p {
+    margin-bottom: 1.5em; /* Mais espaço entre parágrafos */
+}
+.conteudo img {
+    max-width: 100%;
+    height: auto;
+    margin: 1.5em auto; /* Centraliza imagens dentro do conteúdo */
+    display: block;
+    border-radius: 8px;
+}
+
+/* ========================================
+   BOTÕES DE INTERAÇÃO FIXOS (Ajustes)
+   ======================================== */
+.interacoes-fixas {
+    position: fixed;
+    /* Coloca no canto inferior direito */
+    bottom: 20px;
+    right: 20px;
+    /* Ajustes para telas maiores podem ser necessários via media query */
+
+    display: flex;
+    /* ALTERADO: de 'column' para 'row' para ficarem lado a lado */
+    flex-direction: row;
+    gap: 12px;
+    z-index: 1050;
+}
+
+/* Estilos de .btn-interacao, svg, :hover, .curtida-ativa, etc. permanecem os mesmos */
+.btn-interacao {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    background-color: var(--cor-surface);
+    border: 1px solid var(--cor-borda);
+    border-radius: 50%; /* Botão redondo */
+    cursor: pointer;
+    color: var(--cor-texto-secundario); /* Cor padrão do ícone */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Sombra mais pronunciada */
+    transition: all 0.2s ease;
+}
+
+.btn-interacao svg {
     width: 24px;
     height: 24px;
-    margin-bottom: 2px;
+    stroke-width: 1.5;
+    fill: none;
 }
+
+.btn-interacao:hover {
+    background-color: #f8f9fa;
+    border-color: #adb5bd;
+    transform: translateY(-2px); /* Efeito de levantar */
+}
+
+/* Estilo ATIVO */
+.btn-interacao.curtida-ativa,
+.btn-interacao.salvamento-ativa {
+    color: var(--cor-primaria);
+    border-color: var(--cor-primaria);
+    background-color: rgba(220, 53, 69, 0.1); /* Usa a cor primária (vermelha) do seu tema */
+}
+
+.btn-interacao.curtida-ativa svg,
+.btn-interacao.salvamento-ativa svg {
+    fill: var(--cor-primaria); /* Preenche com a cor primária */
+    stroke: var(--cor-primaria); /* Borda também na cor primária */
+}
+
+
+/* Esconde o texto dentro dos botões (acessibilidade) */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Mensagem de login nos botões fixos (NOVO) */
+.login-prompt {
+    font-size: 0.8rem;
+    color: var(--cor-texto-secundario);
+    background-color: var(--cor-surface);
+    padding: 10px;
+    border-radius: 6px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    text-align: center;
+}
+.login-prompt a {
+    font-weight: 600;
+    color: var(--cor-primaria);
+}
+
+/* Media Query para ajustar em telas menores (opcional) */
+@media (max-width: 768px) {
+    .noticia-article h1 {
+        font-size: 1.8rem;
+    }
+    .conteudo {
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+    .interacoes-fixas {
+        bottom: 15px; /* Mais perto da borda */
+        right: 15px;
+    }
+    .btn-interacao {
+        width: 45px;
+        height: 45px;
+    }
+    .btn-interacao svg {
+        width: 20px;
+        height: 20px;
+    }
+}
+

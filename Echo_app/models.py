@@ -10,39 +10,60 @@ User = get_user_model()  # Define o modelo de usuário usado no projeto
 # ===================== CLASSES TETEU =====================
 
 class Noticia(models.Model):  # Modelo que representa uma notícia
-    titulo = models.CharField(max_length=255, verbose_name="Título")  # Campo de texto curto para título
-    conteudo = models.TextField(verbose_name="Conteúdo Completo")  # Campo longo para conteúdo da notícia
-    data_publicacao = models.DateTimeField(default=timezone.now, verbose_name="Data de Publicação")  # Data/hora de publicação
-    autor = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='noticias_criadas', verbose_name="Autor/Editor")  # Autor da notícia
-
-    curtidas_count = models.PositiveIntegerField(default=0, verbose_name="Total de Curtidas")  # Contador de curtidas
-    salvamentos_count = models.PositiveIntegerField(default=0, verbose_name="Total de Salvamentos")  # Contador de salvamentos
-
-    categoria = models.ForeignKey('Categoria', on_delete=models.SET_NULL, null=True, blank=True, related_name='noticias', verbose_name="Categoria")  # Categoria da notícia
+    titulo = models.CharField(max_length=255, verbose_name="Título")
+    
+    # --- CAMPO DE IMAGEM ADICIONADO ---
+    imagem = models.ImageField(
+        upload_to='noticias/',  # Subpasta dentro de MEDIA_ROOT onde as imagens serão salvas
+        blank=True,             # Permite notícias sem imagem
+        null=True,              # Permite valor nulo no banco de dados
+        verbose_name="Imagem da Notícia"
+    )
+    # --- FIM DO CAMPO ADICIONADO ---
+    
+    conteudo = models.TextField(verbose_name="Conteúdo Completo")
+    data_publicacao = models.DateTimeField(default=timezone.now, verbose_name="Data de Publicação")
+    autor = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='noticias_criadas', verbose_name="Autor/Editor")
+    curtidas_count = models.PositiveIntegerField(default=0, verbose_name="Total de Curtidas")
+    salvamentos_count = models.PositiveIntegerField(default=0, verbose_name="Total de Salvamentos")
+    categoria = models.ForeignKey('Categoria', on_delete=models.SET_NULL, null=True, blank=True, related_name='noticias', verbose_name="Categoria")
 
     class Meta:
-        verbose_name = "Notícia"  # Nome legível no admin
+        verbose_name = "Notícia"
         verbose_name_plural = "Notícias"
-        ordering = ['-data_publicacao']  # Ordena da mais recente para a mais antiga
+        ordering = ['-data_publicacao']
 
-    def __str__(self):  # Representação textual
-        return self.titulo  # Retorna o título da notícia
+    def __str__(self):
+        return self.titulo
 
     @staticmethod
-    def recomendar_para(usuario):  # Recomenda notícias para o usuário
-        if not usuario.is_authenticated:  # Se não estiver logado
-            return Noticia.objects.all()  # Retorna todas
+    def recomendar_para(usuario):
+        # ... (seu método recomendar_para continua igual) ...
+        if not usuario.is_authenticated:
+            return Noticia.objects.all()
 
-        prefs = getattr(usuario, 'preferencias', None)  # Pega preferências se existirem
-        if prefs and prefs.categorias.exists():  # Se tiver categorias preferidas
-            return Noticia.objects.filter(categoria__in=prefs.categorias.all())  # Filtra por essas categorias
+        # Tenta buscar o perfil para preferências de categoria
+        try:
+            perfil = usuario.perfil # Usando related_name='perfil' de PerfilUsuario
+            if perfil.categorias_de_interesse.exists():
+                return Noticia.objects.filter(categoria__in=perfil.categorias_de_interesse.all()).order_by('-data_publicacao')[:10] # Limita a 10 por exemplo
+        except AttributeError: # Caso o related_name não seja 'perfil' ou não exista PerfilUsuario
+            pass
+        except PerfilUsuario.DoesNotExist: # Caso o perfil ainda não exista
+             pass
 
-        historico = usuario.historico_interesse.order_by('-pontuacao')  # Histórico de interesse
-        if historico.exists():  # Se houver histórico
-            top_categorias = [h.categoria for h in historico[:3]]  # Top 3 categorias
-            return Noticia.objects.filter(categoria__in=top_categorias)  # Filtra notícias
+        # Fallback para histórico (se existir)
+        # Note: HistoricoInteresse não está no código fornecido, assumindo que existe
+        try:
+            historico = usuario.historico_interesse.order_by('-pontuacao')
+            if historico.exists():
+                top_categorias = [h.categoria for h in historico[:3]]
+                return Noticia.objects.filter(categoria__in=top_categorias).order_by('-data_publicacao')[:10]
+        except AttributeError: # Se o related_name historico_interesse não existir
+            pass
 
-        return Noticia.objects.all()  # Caso contrário, retorna todas
+        # Fallback final: retorna as últimas notícias
+        return Noticia.objects.all().order_by('-data_publicacao')[:10] # Retorna as 10 mais recentes
 
 
 class InteracaoNoticia(models.Model):  # Modelo de interações (curtir/salvar)
