@@ -71,13 +71,46 @@
                 </svg>
             </button>
         </div>
+
+        <!-- ===== NOVA SECÇÃO "AO VIVO" (DROPDOWN) ===== -->
+        <hr>
+            <div class="sidebar-dropdown">
+                <!-- O botão que abre/fecha -->
+                <button class="sidebar-dropdown-toggle" id="aovivo-toggle">
+                    <span>Ao vivo</span>
+                    <!-- A Seta (SVG) -->
+                    <svg class="dropdown-arrow" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                    </svg>
+                </button>
+                <!-- O conteúdo escondido -->
+                <div class="sidebar-dropdown-content" id="aovivo-content">
+                    <a href="#">Radio Jornal (Recife)</a>
+                    <a href="#">Radio Jornal (interior)</a>
+                    <a href="#">TV Jornal (Recife)</a>
+                    <a href="#">TV Jornal (interior)</a>
+                </div>
+            </div>
+        <hr>
+
         <nav class="sidebar-nav">
-            <!-- Link "Home" foi removido daqui -->
-            <a href="#">Meu Perfil</a>
-            <a href="#">Notícias Salvas</a>
-            <a href="#">Configurações</a>
-            <a href="#">Ajuda</a>
+            <!-- ===== SECÇÃO "ÚLTIMAS NOTÍCIAS" ===== -->
+            <h4 class="sidebar-subheader">Últimas notícias</h4>
+            <a href="#">Jornal digital</a>
+            <a href="#">Colunistas</a>
+            <a href="#">Pernambuco</a>
+            <a href="#">Segurança</a>
+            <a href="#">Saúde e bem-estar</a>
+            <a href="#">ENEM e educação</a>
+            <a href="#">Mobilidade</a>
+            <a href="#">Política</a>
+            <a href="#">Economia</a>
+            <a href="#">Cultura</a>
+            <a href="#">Mundo</a>
             <hr>
+            
+            <!-- ============================================== -->
+            
             <!-- Link de Sair (logout) -->
             {% if user.is_authenticated %}
                 <a href="{% url 'sair' %}">Sair (Logout)</a>
@@ -95,47 +128,55 @@
     <!-- ===================================== -->
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Seleciona os elementos
+        // --- CÓDIGO EXISTENTE (ABRIR/FECHAR SIDEBAR) ---
         const sidebarToggle = document.getElementById('sidebar-toggle');
         const sidebarClose = document.getElementById('sidebar-close');
         const sidebarMenu = document.getElementById('sidebar-menu');
         const sidebarOverlay = document.getElementById('sidebar-overlay');
 
-        // Função para abrir o menu
         function openSidebar() {
             if (sidebarMenu) sidebarMenu.classList.add('active');
             if (sidebarOverlay) sidebarOverlay.classList.add('active');
         }
-
-        // Função para fechar o menu
         function closeSidebar() {
             if (sidebarMenu) sidebarMenu.classList.remove('active');
             if (sidebarOverlay) sidebarOverlay.classList.remove('active');
         }
-
-        // Adiciona evento de clique ao botão de abrir (hambúrguer)
         if (sidebarToggle) {
             sidebarToggle.addEventListener('click', function(e) {
-                e.preventDefault(); // Impede que o link '#' mude a URL
+                e.preventDefault(); 
                 openSidebar();
             });
         }
-
-        // Adiciona evento de clique ao botão de fechar (X)
         if (sidebarClose) {
             sidebarClose.addEventListener('click', function(e) {
                 e.preventDefault();
                 closeSidebar();
             });
         }
-
-        // Adiciona evento de clique à sobreposição (para fechar ao clicar fora)
         if (sidebarOverlay) {
             sidebarOverlay.addEventListener('click', function(e) {
                 e.preventDefault();
                 closeSidebar();
             });
         }
+        // --- FIM DO CÓDIGO EXISTENTE ---
+
+
+        // --- NOVO CÓDIGO PARA O DROPDOWN "AO VIVO" ---
+        const aovivoToggle = document.getElementById('aovivo-toggle');
+        const aovivoContent = document.getElementById('aovivo-content');
+        
+        if (aovivoToggle && aovivoContent) {
+            aovivoToggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                // Alterna a classe 'active' no botão (para girar a seta)
+                this.classList.toggle('active');
+                // Alterna a classe 'active' no conteúdo (para mostrar/esconder)
+                aovivoContent.classList.toggle('active');
+            });
+        }
+        // --- FIM DO NOVO CÓDIGO ---
     });
     </script>
     <!-- ===================================== -->
