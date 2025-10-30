@@ -186,6 +186,17 @@ body {
     transition: all 0.2s ease;
 }
 
+/* ======================================= */
+/* EFEITO HOVER (PASSAR O RATO) - NOVO     */
+/* ======================================= */
+/* Aplica o efeito hover apenas se a pílula NÃO estiver selecionada */
+.categoria-checkbox:not(:checked) + .categoria-pill:hover {
+    background-color: var(--cor-primaria);
+    color: white;
+    border-color: var(--cor-primaria);
+}
+
+
 /* ESTILO DA PÍLULA SELECIONADA */
 .categoria-checkbox:checked + .categoria-pill {
     background-color: var(--cor-primaria); 
