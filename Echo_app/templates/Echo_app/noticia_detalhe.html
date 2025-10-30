@@ -79,10 +79,20 @@
 
 
 {% block extra_js %}
-    <!-- O seu script JavaScript continua o mesmo aqui -->
+    <!-- ============================================== -->
+    <!--     LINHA ADICIONADA PARA INCLUIR O JS DO BASE     -->
+    <!-- ============================================== -->
+    {{ block.super }}
+    <!-- ============================================== -->
+
+
+    <!-- O seu script de curtir/salvar (sem alterações) -->
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-
+        
+        // Esta parte do código (a partir daqui) só será executada
+        // DEPOIS que o script da sidebar (do block.super) já tiver sido carregado.
+        
         const curtirBtn = document.getElementById('btn-curtir');
         const salvarBtn = document.getElementById('btn-salvar');
         // Pega o token do container fixo se disponível, ou do formulário se existir
@@ -172,4 +182,3 @@
     });
     </script>
 {% endblock %}
-

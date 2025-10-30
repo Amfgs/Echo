@@ -16,22 +16,18 @@
     {% if user.is_authenticated %}
     <header class="top-nav">
         <div class="top-nav-left">
-            <!-- BOTÃO DO MENU AGORA TEM UM ID -->
             <a href="#" class="nav-icon" id="sidebar-toggle">
-                <!-- Ícone de Menu (Hamburger) -->
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                 </svg>
             </a>
             <a href="#" class="nav-icon">
-                <!-- Ícone de Busca -->
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                 </svg>
             </a>
         </div>
         
-        <!-- LOGO CENTRALIZADA - AGORA É UM LINK PARA O DASHBOARD -->
         <a href="{% url 'dashboard' %}" class="logo-container top-nav-center">
             <img src="{% static 'Echo_app/images/logo_JC.png' %}" alt="Logo JC" class="logo-img">
             <span class="brand-name">Echo</span>
@@ -39,7 +35,6 @@
         
         <div class="top-nav-right">
             <a href="#" class="nav-icon">
-                <!-- Ícone de Perfil -->
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A1.875 1.875 0 0 1 18.126 22.5H5.874a1.875 1.875 0 0 1-1.373-2.382Z" />
                 </svg>
@@ -53,48 +48,38 @@
         {% block content %}{% endblock %}
     </main>
     
-    <!-- ===================================== -->
-    <!-- HTML DA BARRA LATERAL E SOBREPOSIÇÃO  -->
-    <!-- ===================================== -->
-    
-    <!-- A SOBREPOSIÇÃO CINZA -->
     <div id="sidebar-overlay"></div>
     
-    <!-- A BARRA LATERAL (SIDEBAR) -->
     <aside id="sidebar-menu">
         <div class="sidebar-header">
-            <h3>Menu</h3>
+            <div class="sidebar-title-container">
+                <h3>      </h3>
+            </div>
             <button id="sidebar-close" class="nav-icon">
-                <!-- Ícone de Fechar (X) -->
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
                 </svg>
             </button>
         </div>
 
-        <!-- ===== NOVA SECÇÃO "AO VIVO" (DROPDOWN) ===== -->
         <hr>
             <div class="sidebar-dropdown">
-                <!-- O botão que abre/fecha -->
                 <button class="sidebar-dropdown-toggle" id="aovivo-toggle">
                     <span>Ao vivo</span>
-                    <!-- A Seta (SVG) -->
                     <svg class="dropdown-arrow" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                     </svg>
                 </button>
-                <!-- O conteúdo escondido -->
                 <div class="sidebar-dropdown-content" id="aovivo-content">
-                    <a href="#">Radio Jornal (Recife)</a>
-                    <a href="#">Radio Jornal (interior)</a>
+                    <a href="#">Rádio Jornal (Recife)</a>
+                    <a href="#">Rádio Jornal (Interior)</a>
                     <a href="#">TV Jornal (Recife)</a>
-                    <a href="#">TV Jornal (interior)</a>
+                    <a href="#">TV Jornal (Interior)</a>
                 </div>
             </div>
         <hr>
 
         <nav class="sidebar-nav">
-            <!-- ===== SECÇÃO "ÚLTIMAS NOTÍCIAS" ===== -->
             <h4 class="sidebar-subheader">Últimas notícias</h4>
             <a href="#">Jornal digital</a>
             <a href="#">Colunistas</a>
@@ -109,24 +94,10 @@
             <a href="#">Mundo</a>
             <hr>
             
-            <!-- ============================================== -->
-            
-            <!-- Link de Sair (logout) -->
-            {% if user.is_authenticated %}
-                <a href="{% url 'sair' %}">Sair (Logout)</a>
-            {% endif %}
-        </nav>
+            </nav>
     </aside>
-    <!-- ===================================== -->
-    <!-- FIM DO HTML DA BARRA LATERAL          -->
-    <!-- ===================================== -->
-
-
     {% block extra_js %}
-    <!-- ===================================== -->
-    <!-- JAVASCRIPT DA BARRA LATERAL           -->
-    <!-- ===================================== -->
-    <script>
+    {{ block.super }} <script>
     document.addEventListener('DOMContentLoaded', function() {
         // --- CÓDIGO EXISTENTE (ABRIR/FECHAR SIDEBAR) ---
         const sidebarToggle = document.getElementById('sidebar-toggle');
@@ -179,11 +150,7 @@
         // --- FIM DO NOVO CÓDIGO ---
     });
     </script>
-    <!-- ===================================== -->
-    <!-- FIM DO JAVASCRIPT DA BARRA LATERAL    -->
-    <!-- ===================================== -->
     {% endblock %}
 
 </body>
 </html>
-
