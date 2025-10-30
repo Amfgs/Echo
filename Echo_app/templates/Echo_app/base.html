@@ -12,22 +12,137 @@
 
 </head>
 <body>
+
+    {% if user.is_authenticated %}
+    <header class="top-nav">
+        <div class="top-nav-left">
+            <!-- BOTÃO DO MENU AGORA TEM UM ID -->
+            <a href="#" class="nav-icon" id="sidebar-toggle">
+                <!-- Ícone de Menu (Hamburger) -->
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+            </a>
+            <a href="#" class="nav-icon">
+                <!-- Ícone de Busca -->
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                </svg>
+            </a>
+        </div>
+        
+        <!-- LOGO CENTRALIZADA - AGORA É UM LINK PARA O DASHBOARD -->
+        <a href="{% url 'dashboard' %}" class="logo-container top-nav-center">
+            <img src="{% static 'Echo_app/images/logo_JC.png' %}" alt="Logo JC" class="logo-img">
+            <span class="brand-name">Echo</span>
+        </a>
+        
+        <div class="top-nav-right">
+            <a href="#" class="nav-icon">
+                <!-- Ícone de Perfil -->
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A1.875 1.875 0 0 1 18.126 22.5H5.874a1.875 1.875 0 0 1-1.373-2.382Z" />
+                </svg>
+            </a>
+        </div>
+    </header>
+    {% endif %}
+
+
     <main class="app-content">
         {% block content %}{% endblock %}
     </main>
+    
+    <!-- ===================================== -->
+    <!-- HTML DA BARRA LATERAL E SOBREPOSIÇÃO  -->
+    <!-- ===================================== -->
+    
+    <!-- A SOBREPOSIÇÃO CINZA -->
+    <div id="sidebar-overlay"></div>
+    
+    <!-- A BARRA LATERAL (SIDEBAR) -->
+    <aside id="sidebar-menu">
+        <div class="sidebar-header">
+            <h3>Menu</h3>
+            <button id="sidebar-close" class="nav-icon">
+                <!-- Ícone de Fechar (X) -->
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+        <nav class="sidebar-nav">
+            <!-- Link "Home" foi removido daqui -->
+            <a href="#">Meu Perfil</a>
+            <a href="#">Notícias Salvas</a>
+            <a href="#">Configurações</a>
+            <a href="#">Ajuda</a>
+            <hr>
+            <!-- Link de Sair (logout) -->
+            {% if user.is_authenticated %}
+                <a href="{% url 'sair' %}">Sair (Logout)</a>
+            {% endif %}
+        </nav>
+    </aside>
+    <!-- ===================================== -->
+    <!-- FIM DO HTML DA BARRA LATERAL          -->
+    <!-- ===================================== -->
 
-    {% block navbar_footer %}
-    {% if user.is_authenticated %}
-    <nav class="bottom-nav">
-        <a href="{% url 'dashboard' %}" class="active">Home</a>
-        <a href="#">Buscar</a>
-        <a href="#">Salvos</a>
-        <a href="#">Perfil</a>
-    </nav>
-    {% endif %}
-    {% endblock navbar_footer %}
 
-    {% block extra_js %}{% endblock %}
+    {% block extra_js %}
+    <!-- ===================================== -->
+    <!-- JAVASCRIPT DA BARRA LATERAL           -->
+    <!-- ===================================== -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Seleciona os elementos
+        const sidebarToggle = document.getElementById('sidebar-toggle');
+        const sidebarClose = document.getElementById('sidebar-close');
+        const sidebarMenu = document.getElementById('sidebar-menu');
+        const sidebarOverlay = document.getElementById('sidebar-overlay');
+
+        // Função para abrir o menu
+        function openSidebar() {
+            if (sidebarMenu) sidebarMenu.classList.add('active');
+            if (sidebarOverlay) sidebarOverlay.classList.add('active');
+        }
+
+        // Função para fechar o menu
+        function closeSidebar() {
+            if (sidebarMenu) sidebarMenu.classList.remove('active');
+            if (sidebarOverlay) sidebarOverlay.classList.remove('active');
+        }
+
+        // Adiciona evento de clique ao botão de abrir (hambúrguer)
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', function(e) {
+                e.preventDefault(); // Impede que o link '#' mude a URL
+                openSidebar();
+            });
+        }
+
+        // Adiciona evento de clique ao botão de fechar (X)
+        if (sidebarClose) {
+            sidebarClose.addEventListener('click', function(e) {
+                e.preventDefault();
+                closeSidebar();
+            });
+        }
+
+        // Adiciona evento de clique à sobreposição (para fechar ao clicar fora)
+        if (sidebarOverlay) {
+            sidebarOverlay.addEventListener('click', function(e) {
+                e.preventDefault();
+                closeSidebar();
+            });
+        }
+    });
+    </script>
+    <!-- ===================================== -->
+    <!-- FIM DO JAVASCRIPT DA BARRA LATERAL    -->
+    <!-- ===================================== -->
+    {% endblock %}
 
 </body>
 </html>
+

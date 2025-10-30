@@ -1,44 +1,223 @@
 :root {
-            --cor-primaria: #007AFF;
-            --cor-fundo: #F0F2F5;
-            --cor-surface: #FFFFFF;
-            --cor-texto: #1C1E21;
-            --cor-texto-secundario: #65676B;
-            --cor-borda: #CED0D4;
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        html { font-size: 16px; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--cor-fundo);
-            color: var(--cor-texto);
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        .app-content {
-            flex-grow: 1;
-            width: 100%;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-        }
-        .bottom-nav {
-            position: fixed;
-            bottom: 0; left: 0; right: 0;
-            height: 60px;
-            background-color: var(--cor-surface);
-            border-top: 1px solid var(--cor-borda);
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            box-shadow: 0 -2px 5px rgba(0,0,0,0.05);
-            z-index: 1000;
-        }
-        .bottom-nav a {
-            color: var(--cor-texto-secundario);
-            text-decoration: none;
-            font-size: 0.8rem;
-            text-align: center;
-        }
-        .bottom-nav a.active { color: var(--cor-primaria); }
+    --cor-primaria: #dc3545; /* Vermelho */
+    --cor-primaria-hover: #c82333; /* Vermelho Escuro */
+    --cor-fundo: #F0F2F5;
+    --cor-surface: #FFFFFF; /* Fundo dos cards e da sidebar */
+    --cor-texto: #1C1E21;
+    --cor-texto-secundario: #65676B;
+    --cor-borda: #CED0D4;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 16px; }
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    /* Adiciona padding no topo para a barra fixa */
+    padding-top: 60px; /* Altura da top-nav */
+}
+
+.app-content {
+    flex-grow: 1;
+    width: 100%;
+    /* O padding superior foi movido para o body */
+    padding: 20px; 
+    
+    /* Configuração para centralizar conteúdo em telas maiores */
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+
+/* =====================================
+   BARRA DE NAVEGAÇÃO SUPERIOR
+   ===================================== */
+.top-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background-color: var(--cor-surface);
+    border-bottom: 1px solid var(--cor-borda);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px;
+    z-index: 1000;
+}
+.top-nav-left,
+.top-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex: 1; /* Ocupa espaço igual */
+}
+.top-nav-right {
+    justify-content: flex-end; /* Alinha ícones à direita */
+}
+
+.top-nav-center {
+    flex: 2; /* Dá mais espaço ao logo */
+    display: flex;
+    justify-content: center;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: var(--cor-texto);
+}
+
+.logo-img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    border-radius: 50%;
+}
+
+.brand-name {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--cor-primaria); /* Cor do tema */
+}
+
+.nav-icon {
+    display: flex; /* Para centralizar o SVG */
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    color: var(--cor-texto-secundario);
+    border-radius: 50%;
+    transition: background-color 0.2s;
+}
+.nav-icon:hover {
+    background-color: var(--cor-fundo); /* Fundo cinza claro no hover */
+}
+.nav-icon svg {
+    width: 28px;
+    height: 28px;
+}
+/* Remove o sublinhado do link nos ícones */
+a.nav-icon {
+    text-decoration: none;
+}
+
+
+/* =====================================
+   NOVOS ESTILOS: SIDEBAR (BARRA LATERAL)
+   ===================================== */
+
+/* A SOBREPOSIÇÃO (FUNDO CINZA) */
+#sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    
+    /* Estado Padrão: Escondido */
+    opacity: 0;
+    visibility: hidden;
+    z-index: 1999; /* Fica abaixo da sidebar, mas acima de todo o resto */
+    
+    /* Animação */
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+/* Estado Ativo: Visível */
+#sidebar-overlay.active {
+    opacity: 0.6; /* 60% de opacidade */
+    visibility: visible;
+}
+
+
+/* A BARRA LATERAL (MENU) */
+#sidebar-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh; /* Altura total da tela */
+    width: 500px; /* MUDADO: Largura do menu aumentada de 280px para 300px */
+    background-color: var(--cor-surface);
+    z-index: 2000; /* Fica no topo de tudo */
+    
+    /* Estado Padrão: Escondido (movido para a esquerda) */
+    transform: translateX(-100%);
+    
+    /* Animação */
+    transition: transform 0.3s ease-in-out;
+    
+    /* Layout interno */
+    display: flex;
+    flex-direction: column;
+}
+/* Estado Ativo: Visível */
+#sidebar-menu.active {
+    transform: translateX(0);
+}
+
+
+/* CABEÇALHO DA SIDEBAR (Título e Botão X) */
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px;
+    height: 60px; /* Mesma altura da top-nav */
+    border-bottom: 1px solid var(--cor-borda);
+}
+.sidebar-header h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: var(--cor-texto);
+}
+/* Botão de fechar (X) */
+#sidebar-close {
+    /* Reutiliza o estilo .nav-icon */
+    color: var(--cor-texto-secundario);
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+
+/* LINKS DE NAVEGAÇÃO DA SIDEBAR */
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    gap: 8px; /* Espaço entre os links */
+}
+.sidebar-nav a {
+    display: block;
+    padding: 12px 16px;
+    text-decoration: none;
+    color: var(--cor-texto);
+    font-weight: 500;
+    border-radius: 8px;
+    transition: background-color 0.2s, color 0.2s; /* Adicionado 'color' à transição */
+}
+.sidebar-nav a:hover {
+    background-color: var(--cor-primaria); /* MUDADO: Fundo vermelho */
+    color: white; /* MUDADO: Texto branco para contraste */
+}
+.sidebar-nav hr {
+    border: none;
+    border-top: 1px solid var(--cor-borda);
+    margin: 8px 0;
+}
+/* Estilo específico para o link de Sair */
+.sidebar-nav a[href*="sair"] {
+    color: var(--cor-primaria); /* Vermelho */
+}
+
