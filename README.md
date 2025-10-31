@@ -17,7 +17,7 @@ Com ele, o público pode **navegar** pelo portal com mais facilidade, **acessar 
 - 🤳 **Recomendações pessoais**  
   Notícias sugeridas especialmente pra você.
 
-- 🖼️ **Manchetes atrativas**  
+- 🖼️ **Notificações e manchetes atrativas**  
   Uma maneira de prender seu interesse.
 
 - 🎥 **Portal modernizado**  
@@ -68,6 +68,17 @@ Com ele, o público pode **navegar** pelo portal com mais facilidade, **acessar 
   Implementação do reconhecimento do usuário para fins de recomendação futura.
 
   Link do Deployment das Novas Histórias
-  [echo-jc.azurewebsites.net](https://echo-jc.azurewebsites.net/)
+  [echo-jc.azurewebsites.net](https://jc-echo.azurewebsites.net)
+  
+</details>
+
+<details>
+  <summary>- ✅ Semana 12 </summary>
+
+  Implementação da função de salvar e curtir uma notícia.
+  Primeira versão da home.
+
+  Link do Deployment das Novas Histórias
+  [echo-jc.azurewebsites.net](https://jc-echo.azurewebsites.net)
   
 </details>

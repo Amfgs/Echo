@@ -12,22 +12,180 @@
 
 </head>
 <body>
+
+    {% if user.is_authenticated %}
+    <header class="top-nav">
+        <div class="top-nav-left">
+            <a href="#" class="nav-icon" id="sidebar-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+            </a>
+            <a href="#" class="nav-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                </svg>
+            </a>
+        </div>
+        
+        <a href="{% url 'dashboard' %}" class="logo-container top-nav-center">
+            <img src="{% static 'Echo_app/images/logo_JC.png' %}" alt="Logo JC" class="logo-img">
+            <span class="brand-name">Echo</span>
+        </a>
+        
+        <div class="top-nav-right">
+            <a href="#" class="nav-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A1.875 1.875 0 0 1 18.126 22.5H5.874a1.875 1.875 0 0 1-1.373-2.382Z" />
+                </svg>
+            </a>
+        </div>
+    </header>
+    {% endif %}
+
+
     <main class="app-content">
         {% block content %}{% endblock %}
     </main>
+    
+    <div id="sidebar-overlay"></div>
+    
+    <aside id="sidebar-menu">
+        <div class="sidebar-header">
+            
+            <!-- TÍTULO SUBSTITUÍDO PELA BARRA DE PESQUISA -->
+            <div class="sidebar-search-container">
+                <div class="sidebar-search-wrapper">
+                    <!-- Ícone de Lupa -->
+                    <svg class="sidebar-search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                    </svg>
+                    <!-- O Input de Pesquisa -->
+                    <input type="text" id="sidebar-search-input" placeholder="Pesquisar no menu...">
+                </div>
+            </div>
+            
+            <button id="sidebar-close" class="nav-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
 
-    {% block navbar_footer %}
-    {% if user.is_authenticated %}
-    <nav class="bottom-nav">
-        <a href="{% url 'dashboard' %}" class="active">Home</a>
-        <a href="#">Buscar</a>
-        <a href="#">Salvos</a>
-        <a href="#">Perfil</a>
-    </nav>
-    {% endif %}
-    {% endblock navbar_footer %}
+        <hr>
+            <div class="sidebar-dropdown">
+                <button class="sidebar-dropdown-toggle" id="aovivo-toggle">
+                    <img src="{% static 'Echo_app/images/circulo.png' %}" alt="Ao vivo" class="logo-img">
+                    <span>Ao vivo</span>
+                    <svg class="dropdown-arrow" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                    </svg>
+                </button>
+                <div class="sidebar-dropdown-content" id="aovivo-content">
+                    <a href="#">Rádio Jornal (Recife)</a>
+                    <a href="#">Rádio Jornal (Interior)</a>
+                    <a href="#">TV Jornal (Recife)</a>
+                    <a href="#">TV Jornal (Interior)</a>
+                </div>
+            </div>
+        <hr>
 
-    {% block extra_js %}{% endblock %}
+        <nav class="sidebar-nav">
+            <a href="#">Últimas notícias</a>
+            <a href="#">Jornal digital</a>
+            <a href="#">Colunistas</a>
+            <a href="#">Pernambuco</a>
+            <a href="#">Segurança</a>
+            <a href="#">Saúde e bem-estar</a>
+            <a href="#">ENEM e educação</a>
+            <a href="#">Mobilidade</a>
+            <a href="#">Política</a>
+            <a href="#">Economia</a>
+            <a href="#">Cultura</a>
+            <a href="#">Mundo</a>
+            <hr>
+            
+            {% if user.is_authenticated %}
+                <a href="{% url 'sair' %}">Sair (Logout)</a>
+            {% endif %}
+            </nav>
+    </aside>
+    {% block extra_js %}
+    {{ block.super }} <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // --- CÓDIGO EXISTENTE (ABRIR/FECHAR SIDEBAR) ---
+        const sidebarToggle = document.getElementById('sidebar-toggle');
+        const sidebarClose = document.getElementById('sidebar-close');
+        const sidebarMenu = document.getElementById('sidebar-menu');
+        const sidebarOverlay = document.getElementById('sidebar-overlay');
+
+        function openSidebar() {
+            if (sidebarMenu) sidebarMenu.classList.add('active');
+            if (sidebarOverlay) sidebarOverlay.classList.add('active');
+        }
+        function closeSidebar() {
+            if (sidebarMenu) sidebarMenu.classList.remove('active');
+            if (sidebarOverlay) sidebarOverlay.classList.remove('active');
+        }
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', function(e) {
+                e.preventDefault(); 
+                openSidebar();
+            });
+        }
+        if (sidebarClose) {
+            sidebarClose.addEventListener('click', function(e) {
+                e.preventDefault();
+                closeSidebar();
+            });
+        }
+        if (sidebarOverlay) {
+            sidebarOverlay.addEventListener('click', function(e) {
+                e.preventDefault();
+                closeSidebar();
+            });
+        }
+        // --- FIM DO CÓDIGO EXISTENTE ---
+
+
+        // --- CÓDIGO EXISTENTE (DROPDOWN "AO VIVO") ---
+        const aovivoToggle = document.getElementById('aovivo-toggle');
+        const aovivoContent = document.getElementById('aovivo-content');
+        
+        if (aovivoToggle && aovivoContent) {
+            aovivoToggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                this.classList.toggle('active');
+                aovivoContent.classList.toggle('active');
+            });
+        }
+        // --- FIM DO CÓDIGO EXISTENTE ---
+
+        
+        // --- NOVO CÓDIGO PARA A PESQUISA DA SIDEBAR ---
+        const searchInput = document.getElementById('sidebar-search-input');
+        // Seleciona APENAS os links clicáveis (não os cabeçalhos ou o dropdown)
+        const allLinks = document.querySelectorAll('.sidebar-nav a, .sidebar-dropdown-content a');
+
+        if (searchInput && allLinks.length > 0) {
+            searchInput.addEventListener('input', function(e) {
+                const filter = e.target.value.toLowerCase();
+                
+                // Itera sobre cada link individual
+                allLinks.forEach(link => {
+                    const text = link.textContent.toLowerCase();
+                    if (text.includes(filter)) {
+                        link.style.display = ''; // Mostra o link se o texto bater
+                    } else {
+                        link.style.display = 'none'; // Esconde o link se não bater
+                    }
+                });
+            });
+        }
+        // --- FIM DO NOVO CÓDIGO ---
+    });
+    </script>
+    {% endblock %}
 
 </body>
 </html>

@@ -1,14 +1,21 @@
-# /Users/godoy/Desktop/Echo/Echo/urls.py
+# Echoproject/urls.py
 
 from django.contrib import admin
 from django.urls import path, include
-
-# REMOVA ESTA LINHA: from Echo_app import views 
+# --- NOVOS IMPORTS ---
+from django.conf import settings
+from django.conf.urls.static import static
+# --- FIM DOS NOVOS IMPORTS ---
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     
-    # Esta linha faz todo o trabalho: delega todas as URLs do Echo_app
-    # para a raiz (path='').
+    # Delega as URLs do seu app para a raiz
     path('', include('Echo_app.urls')),
 ]
+
+# --- BLOCO ADICIONADO ---
+# Adiciona as URLs para servir ficheiros de media APENAS em modo DEBUG
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# --- FIM DO BLOCO ADICIONADO ---

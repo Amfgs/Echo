@@ -1,7 +1,7 @@
 /* Definição de Variáveis CSS */
 :root {
-    --cor-primaria: #dc3545; /* MUDADO: de azul para vermelho */
-    --cor-primaria-hover: #c82333; /* ADICIONADO: Vermelho escuro para hover */
+    --cor-primaria: #dc3545; /* Vermelho */
+    --cor-primaria-hover: #c82333; /* Vermelho Escuro */
     --cor-fundo: #f4f6f9; 
     --cor-card: #ffffff; 
     --cor-texto-principal: #343a40; 
@@ -15,7 +15,7 @@
 
 /* Estilos Globais e do Corpo (Centralização Total) */
 html, body {
-    height: 100%; /* Garante altura total */
+    height: 100%; 
     margin: 0;
     padding: 0;
 }
@@ -27,58 +27,46 @@ body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-
-    /* Essencial para centralizar a coluna de conteúdo: */
     display: flex;
-    flex-direction: column; /* Organiza o conteúdo em coluna (topo para baixo) */
-    align-items: center;    /* Centraliza o conteúdo horizontalmente */
+    flex-direction: column; 
+    align-items: center;    
     min-height: 100vh;
 }
 
-/* Certifique-se de que o app-content ocupe o espaço para empurrar o rodapé, 
-   MAS vamos centralizá-lo com Flexbox verticalmente */
 .app-content {
-    /* Estas três linhas garantirão a centralização vertical do seu conteúdo */
     display: flex;
-    justify-content: center; /* Centraliza o conteúdo (o login-container) horizontalmente */
-    align-items: center;     /* Centraliza o conteúdo (o login-container) verticalmente */
-    flex-grow: 1;            /* Permite que o conteúdo principal ocupe todo o espaço disponível */
-    width: 100%; /* Garante que ocupe a largura total para centralização horizontal */
+    justify-content: center; 
+    align-items: center;     
+    flex-grow: 1;            
+    width: 100%; 
+    padding: 20px; /* Adiciona padding para telas pequenas */
 }
 
 /* Container Principal do Formulário */
 .login-container {
     width: 100%;
-    max-width: 550px; /* Largura do formulário */
-    background-color: var(--cor-card); /* Fundo branco */
+    max-width: 550px; 
+    background-color: var(--cor-card); 
     padding: 40px; 
     border-radius: var(--borda-radius-card); 
     box-shadow: var(--sombra-card);
-    /* Garante que não haja margens fixas puxando para a esquerda */
-    margin: 0; 
+    margin: 20px 0; 
 }
 
-/* Cabeçalho/Ícone (Círculo Azul) */
+/* Cabeçalho/Ícone (agora controlado pelo HTML) */
 .login-header-icon {
     width: 100px;
     height: 100px;
     border-radius: 50%;
     display: block;
-    margin: 20px auto;
-    
-    /* NOVO CÓDIGO PARA INSERIR A IMAGEM */
-    background-image: url('Echo_app/images/logo_JC.jpeg'); /* <-- Altere o caminho */
-    background-size: cover; /* Garante que a imagem preencha o círculo */
-    background-position: center; /* Centraliza a imagem no círculo */
-    background-repeat: no-repeat;
-    
-    /* Remova ou comente a linha 'background-color: red;' */
-    /* background-color: red; */ 
+    margin: 0 auto 35px auto; 
+    object-fit: cover; 
+    background-color: #eee; 
 }
 
 /* Grupos de Formulário */
 .form-group {
-    margin-bottom: 25px; /* Mais espaço entre os campos para web */
+    margin-bottom: 25px; 
 }
 
 .form-group label {
@@ -86,13 +74,13 @@ body {
     margin-bottom: 8px;
     font-weight: 500;
     color: var(--cor-texto-secundario);
-    font-size: 1rem; /* Tamanho de fonte padrão */
+    font-size: 1rem; 
 }
 
 /* Inputs de Texto e Senha */
 .form-input {
     width: 100%;
-    padding: 12px 14px; /* Aumenta o padding para melhor toque/clique */
+    padding: 12px 14px; 
     border: 1px solid var(--cor-borda-input);
     border-radius: var(--borda-radius-input);
     box-sizing: border-box;
@@ -103,7 +91,6 @@ body {
 .form-input:focus {
     border-color: var(--cor-primaria);
     outline: none;
-    /* MUDADO: Sombra agora usa a variável vermelha */
     box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.2); 
 }
 
@@ -133,12 +120,12 @@ body {
 .btn-submit {
     width: 100%;
     padding: 14px;
-    background-color: var(--cor-primaria); /* <-- USA A VARIÁVEL */
+    background-color: var(--cor-primaria); 
     color: white;
     border: none;
     border-radius: var(--borda-radius-input);
     font-size: 1.1rem;
-    font-weight: 600; /* Mais destaque */
+    font-weight: 600; 
     cursor: pointer;
     transition: background-color 0.2s;
     margin-top: 20px; 
@@ -146,7 +133,7 @@ body {
 }
 
 .btn-submit:hover {
-    background-color: var(--cor-primaria-hover); /* MUDADO: de azul escuro para vermelho escuro */
+    background-color: var(--cor-primaria-hover); 
 }
 
 /* Link de Registro (Login) */
@@ -157,15 +144,15 @@ body {
 }
 
 .register-link a {
-    color: var(--cor-primaria); /* <-- USA A VARIÁVEL */
+    color: var(--cor-primaria); 
     text-decoration: none;
     font-weight: 500;
-    transition: color 0.2s; /* Adicionada transição */
+    transition: color 0.2s; 
 }
 
 .register-link a:hover {
-    text-decoration: underline; /* Adiciona sublinhado ao passar o mouse */
-    color: var(--cor-primaria-hover); /* MUDADO: de azul escuro para vermelho escuro */
+    text-decoration: underline; 
+    color: var(--cor-primaria-hover); 
 }
 
 /* --- Estilos para Categorias (Pílulas) --- */
@@ -175,6 +162,10 @@ body {
     flex-wrap: wrap; 
     gap: 10px; 
     margin-top: 10px;
+    /* ======================================= */
+    /* ESTA LINHA CENTRALIZA AS LINHAS         */
+    /* ======================================= */
+    justify-content: center; 
 }
 
 .categoria-checkbox {
@@ -184,25 +175,33 @@ body {
 /* Estilo Básico da Pílula (Não selecionada) */
 .categoria-pill {
     display: inline-block;
-    padding: 8px 15px; /* Mais espaço */
+    padding: 8px 15px; 
     font-size: 0.9rem;
     font-weight: 500;
     cursor: pointer;
-    
-    background-color: #f8f9fa; /* Fundo claro (não selecionado) */
+    background-color: #f8f9fa; 
     color: var(--cor-texto-principal);
     border: 1px solid var(--cor-borda-input); 
-    border-radius: 50px; /* Pílula arredondada */
-    
+    border-radius: 50px; 
     transition: all 0.2s ease;
 }
 
-/* ESTILO DA PÍLULA SELECIONADA (NOVO TRECHO) */
+/* ======================================= */
+/* EFEITO HOVER (PASSAR O RATO) - NOVO     */
+/* ======================================= */
+/* Aplica o efeito hover apenas se a pílula NÃO estiver selecionada */
+.categoria-checkbox:not(:checked) + .categoria-pill:hover {
+    background-color: var(--cor-primaria);
+    color: white;
+    border-color: var(--cor-primaria);
+}
+
+
+/* ESTILO DA PÍLULA SELECIONADA */
 .categoria-checkbox:checked + .categoria-pill {
-    background-color: var(--cor-primaria); /* <-- USA A VARIÁVEL */
-    color: white; /* Texto branco */
-    border-color: var(--cor-primaria); /* Borda vermelha */
-    /* MUDADO: Sombra azul (0, 123, 255) para sombra vermelha (220, 53, 69) */
+    background-color: var(--cor-primaria); 
+    color: white; 
+    border-color: var(--cor-primaria); 
     box-shadow: 0 0 5px rgba(220, 53, 69, 0.5); 
 }
 
@@ -214,26 +213,38 @@ body {
 }
 
 .categoria-pill .icon-check {
-    display: none; /* Escondido por padrão */
+    display: none; 
     margin-left: 5px;
     font-weight: bold;
 }
 
-/* ESTADO SELECIONADO: Esconde o + e mostra o ✓ (NOVO TRECHO) */
+/* ESTADO SELECIONADO: Esconde o + e mostra o ✓ */
 .categoria-checkbox:checked + .categoria-pill .icon-plus {
     display: none; 
 }
 
 .categoria-checkbox:checked + .categoria-pill .icon-check {
-    display: inline-block; /* Aparece quando checado */
+    display: inline-block; 
 }
 
+/* =====================================
+   7. RESPONSIVIDADE (PARA TELAS PEQUENAS)
+   ===================================== */
+@media screen and (max-width: 600px) {
+    /* Em telas de celular... */
+    .app-content {
+        align-items: flex-start; 
+        padding-top: 20px;
+        justify-content: flex-start; 
+    }
 
-/* ------------------------------------------------------------------ */
-/* OTIMIZAÇÃO WEB: Esconder Rodapé de Navegação Mobile */
-/* ------------------------------------------------------------------ */
-
-/* Esconde a barra de navegação inferior (.bottom-nav) para permitir a centralização completa */
-.bottom-nav {
-    display: none;
+    .login-container {
+        padding: 20px;
+        box-shadow: none;
+        border-radius: 0;
+        max-width: 100%;
+        margin: 0; 
+        background-color: var(--cor-fundo); 
+    }
 }
+
