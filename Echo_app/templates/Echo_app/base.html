@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Echo{% endblock %}</title>
+    <title>{% block title %}JC PE{% endblock %}</title>
 
     <link rel="stylesheet" type="text/css" href="{% static 'Echo_app/css/base.css' %}">
 
@@ -14,53 +14,104 @@
 <body>
 
     {% if user.is_authenticated %}
-    <header class="top-nav">
-        <div class="top-nav-left">
-            <a href="#" class="nav-icon" id="sidebar-toggle">
+    <!-- PARTE 1 - BLOCO PRETO COM LOGO UOL -->
+    <header class="header-uol">
+        <a href="https://www.uol.com.br" target="_blank" class="uol-logo">
+            UOL
+        </a>
+    </header>
+
+    <!-- PARTE 2 - BARRA DE NAVEGAÇÃO JC PE -->
+    <nav class="nav-bar">
+        <div class="nav-left">
+            <button class="nav-icon" id="sidebar-toggle">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                 </svg>
-            </a>
-            <a href="#" class="nav-icon">
+            </button>
+            <button class="nav-icon" id="search-toggle">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                 </svg>
+            </button>
+        </div>
+
+        <div class="nav-center">
+            <img src="{% static 'Echo_app/images/logo_JC.png' %}" alt="JC PE" class="jc-logo">
+        </div>
+
+        <div class="nav-right">
+            <div class="user-profile" id="user-profile">
+                U
+            </div>
+        </div>
+    </nav>
+
+    <!-- PARTE 3 - PRODUTOS JC PE -->
+    <section class="partners-section">
+        <div class="partners-title">Nossos Produtos</div>
+        <div class="partners-grid">
+            <!-- Produto 1 - Interior NE10 -->
+            <a href="https://interior.ne10.uol.com.br/" target="_blank" class="partner-circle">
+                <img src="{% static 'Echo_app/images/ne10.png' %}" alt="Interior NE10" class="partner-logo" 
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div class="partner-placeholder" style="display: none;">NE</div>
+            </a>
+            
+            <!-- Produto 2 - Rádio Jornal -->
+            <a href="https://jc.uol.com.br/radio-jornal" target="_blank" class="partner-circle">
+                <img src="{% static 'Echo_app/images/radio_jornal.png' %}" alt="Rádio Jornal" class="partner-logo"
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div class="partner-placeholder" style="display: none;">RJ</div>
+            </a>
+            
+            <!-- Produto 3 - TV Jornal -->
+            <a href="https://jc.uol.com.br/tv-jornal" target="_blank" class="partner-circle">
+                <img src="{% static 'Echo_app/images/tv_jornal.png' %}" alt="TV Jornal" class="partner-logo"
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div class="partner-placeholder" style="display: none;">TV</div>
+            </a>
+            
+            <!-- Produto 4 - Blog do Torcedor -->
+            <a href="https://jc.uol.com.br/blog-do-torcedor" target="_blank" class="partner-circle">
+                <img src="{% static 'Echo_app/images/blog_torcedor.png' %}" alt="Blog do Torcedor" class="partner-logo"
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div class="partner-placeholder" style="display: none;">BT</div>
+            </a>
+            
+            <!-- Produto 5 - Social1 -->
+            <a href="https://jc.uol.com.br/social1" target="_blank" class="partner-circle">
+                <img src="{% static 'Echo_app/images/social1.png' %}" alt="Social1" class="partner-logo"
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div class="partner-placeholder" style="display: none;">S1</div>
+            </a>
+            
+            <!-- Produto 6 - Receita da Boa -->
+            <a href="https://receitadaboa.com.br/" target="_blank" class="partner-circle">
+                <img src="{% static 'Echo_app/images/receita_boa.png' %}" alt="Receita da Boa" class="partner-logo"
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div class="partner-placeholder" style="display: none;">RB</div>
             </a>
         </div>
-        
-        <a href="{% url 'dashboard' %}" class="logo-container top-nav-center">
-            <img src="{% static 'Echo_app/images/logo_JC.png' %}" alt="Logo JC" class="logo-img">
-            <span class="brand-name">Echo</span>
-        </a>
-        
-        <div class="top-nav-right">
-            <a href="#" class="nav-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A1.875 1.875 0 0 1 18.126 22.5H5.874a1.875 1.875 0 0 1-1.373-2.382Z" />
-                </svg>
-            </a>
-        </div>
-    </header>
+    </section>
     {% endif %}
 
-
+    <!-- CONTEÚDO PRINCIPAL DAS PÁGINAS -->
     <main class="app-content">
         {% block content %}{% endblock %}
     </main>
     
+    <!-- OVERLAY E SIDEBAR -->
     <div id="sidebar-overlay"></div>
     
     <aside id="sidebar-menu">
         <div class="sidebar-header">
-            
-            <!-- TÍTULO SUBSTITUÍDO PELA BARRA DE PESQUISA -->
+            <!-- BARRA DE PESQUISA NA SIDEBAR -->
             <div class="sidebar-search-container">
                 <div class="sidebar-search-wrapper">
-                    <!-- Ícone de Lupa -->
                     <svg class="sidebar-search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                     </svg>
-                    <!-- O Input de Pesquisa -->
                     <input type="text" id="sidebar-search-input" placeholder="Pesquisar no menu...">
                 </div>
             </div>
@@ -73,21 +124,21 @@
         </div>
 
         <hr>
-            <div class="sidebar-dropdown">
-                <button class="sidebar-dropdown-toggle" id="aovivo-toggle">
-                    <img src="{% static 'Echo_app/images/circulo.png' %}" alt="Ao vivo" class="logo-img">
-                    <span>Ao vivo</span>
-                    <svg class="dropdown-arrow" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                    </svg>
-                </button>
-                <div class="sidebar-dropdown-content" id="aovivo-content">
-                    <a href="#">Rádio Jornal (Recife)</a>
-                    <a href="#">Rádio Jornal (Interior)</a>
-                    <a href="#">TV Jornal (Recife)</a>
-                    <a href="#">TV Jornal (Interior)</a>
-                </div>
+        <div class="sidebar-dropdown">
+            <button class="sidebar-dropdown-toggle" id="aovivo-toggle">
+                <img src="{% static 'Echo_app/images/circulo.png' %}" alt="Ao vivo" class="logo-img">
+                <span>Ao vivo</span>
+                <svg class="dropdown-arrow" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                </svg>
+            </button>
+            <div class="sidebar-dropdown-content" id="aovivo-content">
+                <a href="#">Rádio Jornal (Recife)</a>
+                <a href="#">Rádio Jornal (Interior)</a>
+                <a href="#">TV Jornal (Recife)</a>
+                <a href="#">TV Jornal (Interior)</a>
             </div>
+        </div>
         <hr>
 
         <nav class="sidebar-nav">
@@ -108,12 +159,14 @@
             {% if user.is_authenticated %}
                 <a href="{% url 'sair' %}">Sair (Logout)</a>
             {% endif %}
-            </nav>
+        </nav>
     </aside>
+
     {% block extra_js %}
-    {{ block.super }} <script>
+    {{ block.super }}
+    <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // --- CÓDIGO EXISTENTE (ABRIR/FECHAR SIDEBAR) ---
+        // --- CÓDIGO DO SIDEBAR ---
         const sidebarToggle = document.getElementById('sidebar-toggle');
         const sidebarClose = document.getElementById('sidebar-close');
         const sidebarMenu = document.getElementById('sidebar-menu');
@@ -145,10 +198,8 @@
                 closeSidebar();
             });
         }
-        // --- FIM DO CÓDIGO EXISTENTE ---
 
-
-        // --- CÓDIGO EXISTENTE (DROPDOWN "AO VIVO") ---
+        // --- DROPDOWN "AO VIVO" ---
         const aovivoToggle = document.getElementById('aovivo-toggle');
         const aovivoContent = document.getElementById('aovivo-content');
         
@@ -159,30 +210,65 @@
                 aovivoContent.classList.toggle('active');
             });
         }
-        // --- FIM DO CÓDIGO EXISTENTE ---
 
-        
-        // --- NOVO CÓDIGO PARA A PESQUISA DA SIDEBAR ---
+        // --- PESQUISA NA SIDEBAR ---
         const searchInput = document.getElementById('sidebar-search-input');
-        // Seleciona APENAS os links clicáveis (não os cabeçalhos ou o dropdown)
         const allLinks = document.querySelectorAll('.sidebar-nav a, .sidebar-dropdown-content a');
 
         if (searchInput && allLinks.length > 0) {
             searchInput.addEventListener('input', function(e) {
                 const filter = e.target.value.toLowerCase();
                 
-                // Itera sobre cada link individual
                 allLinks.forEach(link => {
                     const text = link.textContent.toLowerCase();
                     if (text.includes(filter)) {
-                        link.style.display = ''; // Mostra o link se o texto bater
+                        link.style.display = '';
                     } else {
-                        link.style.display = 'none'; // Esconde o link se não bater
+                        link.style.display = 'none';
                     }
                 });
             });
         }
-        // --- FIM DO NOVO CÓDIGO ---
+
+        // --- CÓDIGO DOS PRODUTOS ---
+        const searchToggle = document.getElementById('search-toggle');
+        if (searchToggle) {
+            searchToggle.addEventListener('click', function() {
+                alert('Busca ativada!');
+            });
+        }
+
+        const userProfile = document.getElementById('user-profile');
+        if (userProfile) {
+            userProfile.addEventListener('click', function() {
+                alert('Perfil do usuário');
+            });
+        }
+
+        // Verificar se as imagens dos produtos carregaram
+        const partnerLogos = document.querySelectorAll('.partner-logo');
+        partnerLogos.forEach(logo => {
+            logo.addEventListener('load', function() {
+                this.nextElementSibling.style.display = 'none';
+            });
+            
+            logo.addEventListener('error', function() {
+                this.style.display = 'none';
+                this.nextElementSibling.style.display = 'flex';
+            });
+        });
+
+        // Efeitos hover nos produtos
+        const partnerCircles = document.querySelectorAll('.partner-circle');
+        partnerCircles.forEach(circle => {
+            circle.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.1)';
+            });
+            
+            circle.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
     });
     </script>
     {% endblock %}
