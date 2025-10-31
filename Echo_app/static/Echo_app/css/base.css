@@ -168,24 +168,60 @@ body {
     padding: 0 16px; /* Ajusta padding para alinhar com top-nav */
     border-bottom: 1px solid var(--cor-borda);
     height: 60px; /* Altura igual à top-nav */
+    gap: 16px; /* Espaço entre os itens do header */
 }
-/* Novo container para o título */
+
+/* === MODIFICADO: Remove o flex: 1 de .sidebar-title-container === */
 .sidebar-title-container {
-    flex: 1; /* Ocupa o espaço, empurrando o botão para a direita */
+    /* Não precisa mais de flex: 1 */
 }
 .sidebar-header h3 {
     margin: 0;
     font-size: 1.2rem;
+    white-space: nowrap; /* Impede que "Menu" quebre a linha */
 }
+
+/* === NOVOS ESTILOS PARA A BARRA DE PESQUISA === */
+.sidebar-search-container {
+    flex-grow: 1; /* Faz a barra de pesquisa ocupar o espaço central */
+    min-width: 100px; /* Garante que não encolha demais */
+}
+.sidebar-search-wrapper {
+    position: relative; /* Para posicionar o ícone */
+}
+.sidebar-search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    color: var(--cor-texto-secundario);
+    z-index: 2;
+}
+#sidebar-search-input {
+    width: 100%;
+    padding: 10px 12px 10px 40px; /* Padding à esquerda para o ícone */
+    font-size: 0.9rem;
+    border: none;
+    background-color: var(--cor-fundo); /* Fundo cinza claro */
+    border-radius: 8px;
+    color: var(--cor-texto);
+}
+#sidebar-search-input:focus {
+    outline: 1px solid var(--cor-primaria);
+    background-color: var(--cor-surface);
+}
+/* ============================================= */
+
+
 #sidebar-close {
     color: var(--cor-texto);
 }
-/* === NOVO HOVER VERMELHO PARA O BOTÃO FECHAR === */
 #sidebar-close:hover {
     background-color: var(--cor-primaria);
     color: white;
 }
-/* ============================================== */
 
 
 .sidebar-nav {
@@ -199,10 +235,12 @@ body {
 .sidebar-nav a {
     padding: 12px 16px;
     text-decoration: none;
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     color: var(--cor-texto-secundario);
-    border-radius: 6px;
+    border-radius: 0px;
     transition: background-color 0.2s ease, color 0.2s ease;
+    /* === ADICIONADO: Para o JS de filtro funcionar === */
+    display: block; /* Garante que o display: none funcione */
 }
 
 .sidebar-nav a:hover {
@@ -227,7 +265,7 @@ body {
 }
 
 /* =====================================
-   DROPDOWN "AO VIVO" (MODIFICADO)
+   DROPDOWN "AO VIVO"
    ===================================== */
 .sidebar-dropdown {
     width: 100%;
@@ -240,7 +278,7 @@ body {
     width: 100%;
     padding: 12px 16px;
     font-size: 1.5rem;
-    font-weight: 600; /* Dando mais destaque */
+    font-weight: 600; 
     cursor: pointer;
     text-align: left;
     border-radius: 0px;
@@ -255,6 +293,14 @@ body {
     background-color: var(--cor-primaria);
     color: white;
 }
+
+/* === NOVO: Estilo para o ícone 'circulo.png' === */
+.sidebar-dropdown-toggle .logo-img {
+    width: 20px; /* Tamanho do ícone */
+    height: 20px;
+    margin-right: 10px; /* Espaço entre o ícone e o texto */
+}
+/* ============================================== */
 
 .dropdown-arrow {
     width: 16px;
@@ -277,24 +323,18 @@ body {
 }
 
 .sidebar-dropdown-content a {
-    /* === ALTERAÇÃO AQUI === */
-    display: block; /* Garante que o link ocupe a linha toda e empilhe */
-    text-align: left; /* Garante alinhamento à esquerda */
-    /* === FIM DA ALTERAÇÃO === */
-
+    display: block; 
+    text-align: left; 
     font-size: 1.1rem;
     padding-left: 32px;
     color: var(--cor-aovivo-texto); /* Texto branco */
-    
-    /* Herda o padding vertical e o border-radius do .sidebar-nav a */
     padding-top: 12px;
     padding-bottom: 12px;
-    border-radius: 6px;
+    border-radius: 0px;
     text-decoration: none;
     transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-/* Hover dos sub-links (mantém o vermelho) */
 .sidebar-dropdown-content a:hover {
     background-color: var(--cor-primaria);
     color: white;
@@ -316,5 +356,9 @@ body {
     }
     .top-nav-center {
         flex: 1;
+    }
+    /* Diminui a sidebar em telemóveis */
+    #sidebar-menu {
+        width: 300px; /* Mais estreito em telemóveis */
     }
 }
