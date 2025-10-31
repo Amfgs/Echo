@@ -171,7 +171,6 @@ body {
     gap: 16px; /* Espaço entre os itens do header */
 }
 
-/* === MODIFICADO: Remove o flex: 1 de .sidebar-title-container === */
 .sidebar-title-container {
     /* Não precisa mais de flex: 1 */
 }
@@ -181,7 +180,6 @@ body {
     white-space: nowrap; /* Impede que "Menu" quebre a linha */
 }
 
-/* === NOVOS ESTILOS PARA A BARRA DE PESQUISA === */
 .sidebar-search-container {
     flex-grow: 1; /* Faz a barra de pesquisa ocupar o espaço central */
     min-width: 100px; /* Garante que não encolha demais */
@@ -212,7 +210,6 @@ body {
     outline: 1px solid var(--cor-primaria);
     background-color: var(--cor-surface);
 }
-/* ============================================= */
 
 
 #sidebar-close {
@@ -235,11 +232,10 @@ body {
 .sidebar-nav a {
     padding: 12px 16px;
     text-decoration: none;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     color: var(--cor-texto-secundario);
     border-radius: 0px;
     transition: background-color 0.2s ease, color 0.2s ease;
-    /* === ADICIONADO: Para o JS de filtro funcionar === */
     display: block; /* Garante que o display: none funcione */
 }
 
@@ -273,7 +269,10 @@ body {
 
 .sidebar-dropdown-toggle {
     display: flex;
-    justify-content: space-between;
+    /* === ALTERAÇÃO AQUI === */
+    justify-content: flex-start; /* Alinha tudo à esquerda */
+    gap: 12px; /* Adiciona espaço entre os itens */
+    /* === FIM DA ALTERAÇÃO === */
     align-items: center;
     width: 100%;
     padding: 12px 16px;
@@ -294,19 +293,19 @@ body {
     color: white;
 }
 
-/* === NOVO: Estilo para o ícone 'circulo.png' === */
 .sidebar-dropdown-toggle .logo-img {
     width: 20px; /* Tamanho do ícone */
     height: 20px;
-    margin-right: 10px; /* Espaço entre o ícone e o texto */
+    /* margin-right: 10px; */ /* Removido, 'gap' controla o espaço */
 }
-/* ============================================== */
 
 .dropdown-arrow {
     width: 16px;
     height: 16px;
     stroke: currentColor;
     transition: transform 0.3s ease;
+    /* === ALTERAÇÃO AQUI === */
+    margin-left: auto; /* Empurra a seta para a direita */
 }
 
 .sidebar-dropdown-toggle.active .dropdown-arrow {
