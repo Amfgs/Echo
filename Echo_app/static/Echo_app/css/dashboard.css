@@ -1,144 +1,20 @@
-/* ESTILOS GERAIS */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+/* ================================================================
+   AJUSTE DE COMPATIBILIDADE
+   
+   O 'base.html' tem uma classe '.app-content' com padding.
+   Este design do dashboard precisa de largura total ("full bleed").
+   Esta regra ANULA o padding e max-width do 'base.css'
+   APENAS quando esta folha de estilo (dashboard.css) é carregada.
+   ================================================================ */
+.app-content {
+    padding: 0 !important;
+    max-width: none !important;
 }
 
-body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 50%, #991b1b 100%);
-    color: #333;
-    line-height: 1.6;
-    min-height: 100vh;
-}
-
-/* BARRA SUPERIOR */
-.top-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 16px 20px;
-    background: white;
-    border-bottom: 2px solid #dc2626;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 2px 10px rgba(220, 38, 38, 0.1);
-}
-
-.top-nav-left,
-.top-nav-right {
-    display: flex;
-    gap: 20px;
-}
-
-.top-nav-center {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-}
-
-.logo-container {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.logo-img {
-    width: 40px;
-    height: 40px;
-    border-radius: 8px;
-}
-
-.brand-name {
-    font-size: 22px;
-    font-weight: 800;
-    color: #dc2626;
-    text-transform: uppercase;
-    letter-spacing: -0.5px;
-}
-
-.nav-icon {
-    width: 44px;
-    height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 10px;
-    color: #666;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    background: #f8f9fa;
-}
-
-.nav-icon:hover {
-    background: #dc2626;
-    color: white;
-    transform: translateY(-2px);
-}
-
-.nav-icon svg {
-    width: 22px;
-    height: 22px;
-}
-
-/* CONTEÚDO PRINCIPAL - TELA INTEIRA */
-.main-content {
-    padding: 0;
-    min-height: 100vh;
-}
-
-/* BOLHAS DE CATEGORIA - CENTRALIZADAS */
-.categories-section {
-    background: white;
-    padding: 30px 0;
-    border-bottom: 2px solid #f0f0f0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.category-bubbles-container {
-    overflow-x: auto;
-    padding: 8px 20px;
-    -webkit-overflow-scrolling: touch;
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: center;
-}
-
-.category-bubbles {
-    display: flex;
-    gap: 12px;
-    padding: 0 4px;
-    min-width: min-content;
-    justify-content: center;
-}
-
-.bubble {
-    padding: 14px 28px;
-    background: white;
-    border: 2px solid #e5e5e5;
-    border-radius: 25px;
-    text-decoration: none;
-    color: #666;
-    font-size: 16px;
-    font-weight: 600;
-    white-space: nowrap;
-    transition: all 0.3s ease;
-    flex-shrink: 0;
-}
-
-.bubble.active,
-.bubble:hover {
-    background: #dc2626;
-    color: white;
-    border-color: #dc2626;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
-}
+/* SECÇÃO DE BOLHAS DE CATEGORIA REMOVIDA
+   .categories-section, .category-bubbles-container, .bubble, etc.
+   foram removidos deste ficheiro.
+*/
 
 /* SEÇÕES DE TELA INTEIRA */
 .recommended-section,
@@ -146,11 +22,13 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background: white;
+    background: var(--cor-surface);
 }
 
 .recommended-section {
-    border-bottom: 3px solid #dc2626;
+    border-bottom: 3px solid var(--cor-primaria);
+    /* Adiciona padding no topo para compensar a remoção das categorias */
+    padding-top: 30px; 
 }
 
 .urgent-section {
@@ -171,7 +49,7 @@ body {
 .section-header h2 {
     font-size: 32px;
     font-weight: 800;
-    color: #1a1a1a;
+    color: var(--cor-texto);
     position: relative;
 }
 
@@ -182,23 +60,23 @@ body {
     left: 0;
     width: 80px;
     height: 5px;
-    background: #dc2626;
+    background: var(--cor-primaria);
     border-radius: 3px;
 }
 
 .see-more.subtle-btn {
-    color: #dc2626;
+    color: var(--cor-primaria);
     text-decoration: none;
     font-size: 16px;
     font-weight: 600;
     padding: 12px 24px;
-    border: 2px solid #dc2626;
+    border: 2px solid var(--cor-primaria);
     border-radius: 25px;
     transition: all 0.3s ease;
 }
 
 .see-more.subtle-btn:hover {
-    background: #dc2626;
+    background: var(--cor-primaria);
     color: white;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
@@ -218,11 +96,11 @@ body {
     color: inherit;
     display: block;
     width: 100%;
-    max-width: 1400px;
+    max-width: 1400px; /* Era 1400px, mantido */
 }
 
 .news-card.large-card {
-    background: white;
+    background: var(--cor-surface);
     border-radius: 25px;
     overflow: hidden;
     box-shadow: 0 12px 40px rgba(220, 38, 38, 0.2);
@@ -233,24 +111,26 @@ body {
 .news-card.large-card:hover {
     transform: translateY(-12px);
     box-shadow: 0 20px 60px rgba(220, 38, 38, 0.3);
-    border-color: #dc2626;
+    border-color: var(--cor-primaria);
 }
 
 .large-card .card-image-placeholder {
     height: 600px;
     overflow: hidden;
-    background: linear-gradient(135deg, #dc2626 0%, #b91c1b 100%);
+    background: linear-gradient(135deg, var(--cor-primaria) 0%, var(--cor-primaria-hover) 100%);
     position: relative;
 }
 
-.large-card .card-image-placeholder img {
+.large-card .card-image-placeholder img,
+.urgent-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition: transform 0.4s ease;
 }
 
-.news-card.large-card:hover .card-image-placeholder img {
+.news-card.large-card:hover .card-image-placeholder img,
+.urgent-news:hover .urgent-image img {
     transform: scale(1.05);
 }
 
@@ -261,9 +141,15 @@ body {
     align-items: center;
     justify-content: center;
     font-size: 84px;
-    background: linear-gradient(135deg, #dc2626 0%, #b91c1b 100%);
+    background: linear-gradient(135deg, var(--cor-primaria) 0%, var(--cor-primaria-hover) 100%);
     color: white;
 }
+
+/* Placeholder azul específico para a seção "Recomendado" (e agora "Urgente") */
+.recommended-placeholder {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%); /* Gradiente azul */
+}
+
 
 .card-content {
     padding: 50px;
@@ -273,19 +159,26 @@ body {
     font-size: 42px;
     font-weight: 800;
     margin-bottom: 20px;
-    color: #1a1a1a;
+    color: var(--cor-texto);
     line-height: 1.2;
     letter-spacing: -0.5px;
 }
 
-.news-description {
-    color: #666;
+.news-description,
+.urgent-description {
+    color: var(--cor-texto-secundario);
     font-size: 20px;
     line-height: 1.7;
     margin: 25px 0 35px;
     font-weight: 400;
     opacity: 1;
     max-width: 800px;
+    /* Adiciona o estilo de destaque que estava no CSS dos colegas */
+    background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+    padding: 20px;
+    border-radius: 15px;
+    border-left: 4px solid var(--cor-primaria);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 .card-meta {
@@ -299,7 +192,7 @@ body {
 }
 
 .category {
-    background: #dc2626;
+    background: var(--cor-primaria);
     color: white;
     padding: 10px 20px;
     border-radius: 20px;
@@ -338,7 +231,7 @@ body {
     height: 100%;
     opacity: 0;
     transition: opacity 0.5s ease;
-    background: white;
+    background: var(--cor-surface);
     border-radius: 25px;
     box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
 }
@@ -359,24 +252,14 @@ body {
     height: 400px;
     overflow: hidden;
     border-radius: 25px 25px 0 0;
-    background: linear-gradient(135deg, #dc2626 0%, #b91c1b 100%);
-}
-
-.urgent-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.4s ease;
-}
-
-.urgent-news:hover .urgent-image img {
-    transform: scale(1.05);
+    background: linear-gradient(135deg, var(--cor-primaria) 0%, var(--cor-primaria-hover) 100%);
 }
 
 .urgent-image-placeholder {
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, #dc2626 0%, #b91c1b 100%);
+    /* A LINHA ABAIXO FOI REMOVIDA para permitir que .recommended-placeholder (azul) funcione */
+    /* background: linear-gradient(135deg, var(--cor-primaria) 0%, var(--cor-primaria-hover) 100%); */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -387,7 +270,7 @@ body {
 .urgent-title {
     padding: 45px 45px 20px;
     font-size: 32px;
-    color: #1a1a1a;
+    color: var(--cor-texto);
     font-weight: 800;
     line-height: 1.3;
     letter-spacing: -0.5px;
@@ -395,17 +278,12 @@ body {
 
 .urgent-description {
     padding: 0 45px 45px;
-    color: #666;
-    font-size: 18px;
-    line-height: 1.7;
-    font-weight: 400;
-    opacity: 1;
 }
 
 /* BOTÕES DE NAVEGAÇÃO */
 .nav-button {
-    background: white;
-    border: 3px solid #dc2626;
+    background: var(--cor-surface);
+    border: 3px solid var(--cor-primaria);
     width: 70px;
     height: 70px;
     border-radius: 50%;
@@ -417,12 +295,12 @@ body {
     box-shadow: 0 6px 25px rgba(220, 38, 38, 0.25);
     transition: all 0.3s ease;
     z-index: 10;
-    color: #dc2626;
+    color: var(--cor-primaria);
     margin: 0 25px;
 }
 
 .nav-button:hover {
-    background: #dc2626;
+    background: var(--cor-primaria);
     color: white;
     box-shadow: 0 10px 35px rgba(220, 38, 38, 0.4);
     transform: scale(1.1);
@@ -452,13 +330,13 @@ body {
 }
 
 .indicator.active {
-    background: #dc2626;
+    background: var(--cor-primaria);
     transform: scale(1.3);
-    border-color: #dc2626;
+    border-color: var(--cor-primaria);
 }
 
 .indicator:hover {
-    background: #dc2626;
+    background: var(--cor-primaria);
     transform: scale(1.2);
 }
 
@@ -466,7 +344,7 @@ body {
 .empty-state {
     text-align: center;
     padding: 100px 50px;
-    background: white;
+    background: var(--cor-surface);
     border-radius: 25px;
     box-shadow: 0 12px 40px rgba(220, 38, 38, 0.1);
     border: 3px solid #f0f0f0;
@@ -480,7 +358,7 @@ body {
 }
 
 .empty-state p {
-    color: #666;
+    color: var(--cor-texto-secundario);
     line-height: 1.6;
     font-size: 20px;
 }
@@ -495,23 +373,13 @@ body {
     height: 50px;
 }
 
-/* RESPONSIVIDADE */
+/* RESPONSIVIDADE (AJUSTADA) */
 @media (max-width: 768px) {
-    .main-content {
-        padding: 0;
-    }
-    
-    .top-nav {
-        padding: 12px 16px;
-    }
-    
-    .nav-icon {
-        width: 40px;
-        height: 40px;
-    }
-    
-    .brand-name {
-        font-size: 18px;
+    /* ANULA o padding do 'app-content' (do base.css) 
+      para permitir que as secções ocupem a tela toda 
+    */
+    .app-content {
+        padding: 0 !important;
     }
     
     .section-header {
@@ -539,8 +407,10 @@ body {
         font-size: 28px;
     }
     
-    .news-description {
+    .news-description,
+    .urgent-description {
         font-size: 16px;
+        padding: 15px; /* Menos padding em telas pequenas */
     }
     
     .urgent-news-slider {
@@ -558,7 +428,6 @@ body {
     
     .urgent-description {
         padding: 0 25px 35px;
-        font-size: 16px;
     }
     
     .nav-button {
@@ -568,14 +437,7 @@ body {
         margin: 0 15px;
     }
     
-    .bubble {
-        padding: 12px 22px;
-        font-size: 14px;
-    }
-    
-    .category-bubbles {
-        justify-content: flex-start;
-    }
+    /* Estilos de .bubble e .category-bubbles removidos da media query */
 }
 
 @media (max-width: 480px) {
@@ -604,19 +466,12 @@ body {
         font-size: 24px;
     }
     
-    .news-description {
+    .news-description,
+    .urgent-description {
         font-size: 15px;
     }
     
-    .category-bubbles {
-        justify-content: flex-start;
-        gap: 8px;
-    }
-    
-    .bubble {
-        padding: 10px 18px;
-        font-size: 13px;
-    }
+    /* Estilos de .bubble e .category-bubbles removidos da media query */
 }
 
 /* ANIMAÇÕES */
@@ -636,44 +491,4 @@ body {
     animation: fadeIn 0.7s ease-out;
 }
 
-/* SCROLLBAR PERSONALIZADO */
-.category-bubbles-container::-webkit-scrollbar {
-    height: 6px;
-}
-
-.category-bubbles-container::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 3px;
-}
-
-.category-bubbles-container::-webkit-scrollbar-thumb {
-    background: #dc2626;
-    border-radius: 3px;
-}
-
-.category-bubbles-container::-webkit-scrollbar-thumb:hover {
-    background: #b91c1c;
-}
-
-/* EFEITO DE GRADIENTE NO FUNDO */
-body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at 50% 50%, rgba(220, 38, 38, 0.1) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: -1;
-}
-
-/* DESTAQUE PARA O LOREM IPSUM */
-.news-description,
-.urgent-description {
-    background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
-    padding: 20px;
-    border-radius: 15px;
-    border-left: 4px solid #dc2626;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-}
+/* SCROLLBAR PERSONALIZADO (REMOVIDO - Era das categorias) */
