@@ -19,8 +19,8 @@
     <!-- PARTE 1 - BLOCO PRETO COM LOGO UOL (DOS COLEGAS) -->
     <!-- ===================================== -->
     <header class="header-uol">
-        <a href="https://www.uol.com.br" target="_blank" class="uol-logo">
-            UOL
+        <a href="https://www.uol.com.br" target="_blank" class="uol-logo-link">
+             <img src="{% static 'Echo_app/images/uol_logo.png' %}" alt="Logo UOL" class="uol-logo-img">
         </a>
     </header>
 
@@ -47,10 +47,8 @@
         </a>
         
         <div class="top-nav-right">
-            <a href="#" class="nav-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A1.875 1.875 0 0 1 18.126 22.5H5.874a1.875 1.875 0 0 1-1.373-2.382Z" />
-                </svg>
+             <a href="#" class="nav-icon-profile-link">
+                <img src="{% static 'Echo_app/images/perfil.png' %}" alt="Foto de Perfil" class="nav-icon-img">
             </a>
         </div>
     </header>
@@ -141,7 +139,7 @@
         <hr>
 
         <nav class="sidebar-nav">
-            <a href="https://jc.uol.com.br/ultimas">Últimas notícias</a>
+            <a href="https://jc.uol.com.br/ultimas" class="sidebar-subheader">Últimas notícias</a>
             <a href="https://digital.jc.uol.com.br/?_gl=1*nn61da*_gcl_au*OTM4NDYxMTY2LjE3NTUyNjU3Njc.*_ga*NDA2MjAyMzAxLjE3NTQxNDc2Nzk.*_ga_B1QG8PGV8C*czE3NjE5NjE0NDIkbzIzJGcxJHQxNzYxOTYzMjA1JGo1OSRsMCRoMA..">Jornal digital</a>
             <a href="https://jc.uol.com.br/colunas">Colunistas</a>
             <a href="https://jc.uol.com.br/pernambuco">Pernambuco</a>
@@ -160,11 +158,9 @@
             {% if user.is_authenticated %}
                 <a href="{% url 'sair' %}">Sair (Logout)</a>
             {% endif %}
+            
         </nav>
         
-        <!-- ===================================== -->
-        <!-- "NOSSAS REDES" MOVIDO PARA FORA DA NAV -->
-        <!-- ===================================== -->
         <div class="sidebar-social">
             <h4 class="sidebar-social-title">Nossas redes</h4>
             <div class="sidebar-social-links">
@@ -251,7 +247,8 @@
 
         // --- PESQUISA NA SIDEBAR ---
         const searchInput = document.getElementById('sidebar-search-input');
-        const allLinks = document.querySelectorAll('.sidebar-nav a, .sidebar-dropdown-content a');
+        // MODIFICADO: Seleciona todos os 'a' dentro da sidebar-nav E dropdown-content
+        const allLinks = document.querySelectorAll('.sidebar-nav > a, .sidebar-dropdown-content > a');
 
         if (searchInput && allLinks.length > 0) {
             searchInput.addEventListener('input', function(e) {
@@ -260,18 +257,19 @@
                 allLinks.forEach(link => {
                     const text = link.textContent.toLowerCase();
                     if (text.includes(filter)) {
-                        link.style.display = '';
+                        link.style.display = 'block'; // Garante que é 'block'
                     } else {
-                        link.style.display = 'none';
+                        link.style.display = 'none'; // Esconde o link se não bater
                     }
                 });
+
+                // Também filtra os cabeçalhos (subheaders) e dropdowns
+                // Esta é uma lógica mais complexa: se todos os filhos de um grupo estiverem escondidos,
+                // escondemos o grupo. Por agora, vamos manter simples e filtrar apenas os links.
             });
         }
 
         // --- CÓDIGO DOS PRODUTOS (DOS COLEGAS) ---
-        // (Removi o 'search-toggle' e 'user-profile' pois já temos na nossa nav)
-
-        // Verificar se as imagens dos produtos carregaram
         const partnerLogos = document.querySelectorAll('.partner-logo');
         partnerLogos.forEach(logo => {
             logo.addEventListener('load', function() {
@@ -283,7 +281,6 @@
                 this.nextElementSibling.style.display='flex';
             });
             
-            // Força a verificação caso a imagem já esteja em cache
             if (logo.complete && logo.naturalWidth === 0) {
                  logo.dispatchEvent(new Event('error'));
             }
