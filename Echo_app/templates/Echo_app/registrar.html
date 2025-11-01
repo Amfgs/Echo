@@ -1,79 +1,96 @@
-{% extends 'Echo_app/base.html' %}
+<!DOCTYPE html>
 {% load static %}
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastre-se - Echo</title>
 
-{% block title %}Cadastre-se - Echo{% endblock %}
+    <link rel="stylesheet" type="text/css" href="{% static 'Echo_app/css/base.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'Echo_app/css/registrar.css' %}">
     
-{% block content %}
-<link rel="stylesheet" type="text/css" href="{% static 'Echo_app/css/registrar.css' %}">
-<div class="login-container">
-    
-    
-    <img src="{% static 'Echo_app/images/logo_JC.png' %}" alt="logo" class="login-header-icon">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: var(--cor-fundo, #f0f2f5);
+            padding: 20px 0; /* Adiciona padding vertical */
+        }
+    </style>
+</head>
+<body>
 
-    <form method="post" novalidate>
-    
-        {% csrf_token %}
-
-        {% if erros %}
-            <div class="form-error">
-                {% for erro in erros %}
-                    <p>{{ erro }}</p>
-                {% endfor %}
-            </div>
-        {% endif %}
+    <div class="form-wrapper">
         
-        <div class="form-group">
-            <label for="id_username">Nome de Usuário:</label>
-            <input type="text" 
-                   name="username" 
-                   id="id_username" 
-                   class="form-input" required
-                   value="{{ dados_preenchidos.username|default:'' }}">
-        </div>
-        <div class="form-group">
-            <label for="id_email">Email:</label>
-            <input type="email" name="email" id="id_email" class="form-input" required
-                   value="{{ dados_preenchidos.email|default:'' }}">
-        </div>
+        <img src="{% static 'Echo_app/images/logo_JC.png' %}" alt="logo" class="logo-image">
 
-        <div class="form-group">
-            <label>Quais categorias você tem interesse?</label>
+        <form method="post" novalidate autocomplete="off">
+            {% csrf_token %}
+
+            {% if erros %}
+                <div class="form-error">
+                    {% for erro in erros %}
+                        <p>{{ erro }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
             
-            <div class="categoria-container">
-                {% for categoria in todas_categorias %}
-                    <input type="checkbox" 
-                           name="categoria" 
-                           id="cat-{{ categoria.id }}" 
-                           value="{{ categoria.id }}" 
-                           class="categoria-checkbox"
-                           {% if categoria.id|stringformat:"s" in dados_preenchidos.categorias_selecionadas_ids %}checked{% endif %}>
-                           
-                    <label for="cat-{{ categoria.id }}" class="categoria-pill">
-                        {{ categoria.nome }} 
-                        <span class="icon-plus">+</span>
-                        <span class="icon-check">✓</span>
-                    </label>
-                {% empty %}
-                    <p style="color: var(--cor-texto-secundario); font-size: 0.9rem;">Nenhuma categoria disponível no momento.</p>
-                {% endfor %}
+            <div class="form-group">
+                <label for="id_username">Nome de Usuário:</label>
+                <input type="text" 
+                       name="username" 
+                       id="id_username" 
+                       class="form-input" required
+                       value="{{ dados_preenchidos.username|default:'' }}">
             </div>
-        </div>
+            <div class="form-group">
+                <label for="id_email">Email:</label>
+                <input type="email" name="email" id="id_email" class="form-input" required
+                       value="{{ dados_preenchidos.email|default:'' }}">
+            </div>
 
-        <div class="form-group">
-            <label for="id_password">Senha:</label>
-            <input type="password" name="password" id="id_password" class="form-input" required>
-        </div>
-        
-        <div class="form-group">
-            <label for="id_password_confirm">Confirme a senha:</label>
-            <input type="password" name="password_confirm" id="id_password_confirm" class="form-input" required>
-        </div>
-        
-        <button type="submit" class="btn-submit">Cadastre-se</button>
-    </form>
+            <div class="form-group">
+                <label>Quais categorias você tem interesse?</label>
+                
+                <div class="categoria-container">
+                    {% for categoria in todas_categorias %}
+                        <input type="checkbox" 
+                               name="categoria" 
+                               id="cat-{{ categoria.id }}" 
+                               value="{{ categoria.id }}" 
+                               class="categoria-checkbox"
+                               {% if categoria.id|stringformat:"s" in dados_preenchidos.categorias_selecionadas_ids %}checked{% endif %}>
+                               
+                        <label for="cat-{{ categoria.id }}" class="categoria-pill">
+                            {{ categoria.nome }} 
+                            <span class="icon-plus">+</span>
+                            <span class="icon-check">✓</span>
+                        </label>
+                    {% empty %}
+                        <p style="color: var(--cor-texto-secundario); font-size: 0.9rem;">Nenhuma categoria disponível no momento.</p>
+                    {% endfor %}
+                </div>
+            </div>
 
-    <div class="register-link">
-        <a href="{% url 'entrar' %}">Login</a>
+            <div class="form-group">
+                <label for="id_password">Senha:</label>
+                <input type="password" name="password" id="id_password" class="form-input" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="id_password_confirm">Confirme a senha:</label>
+                <input type="password" name="password_confirm" id="id_password_confirm" class="form-input" required>
+            </div>
+            
+            <button type="submit" class="btn-submit">Cadastre-se</button>
+        </form>
+
+        <div class="extra-links">
+            <span>Já tem uma conta?</span>
+            <a href="{% url 'entrar' %}">Faça login</a>
+        </div>
     </div>
-</div>
-{% endblock %}
+</body>
+</html>

@@ -1,255 +1,175 @@
-/* Este ficheiro contém APENAS os estilos específicos
-   para a página noticia_detalhe.html.
-*/
-
-/* =====================================
-   ESTILOS DA PÁGINA DE DETALHE (LAYOUT LARGO - ESTILO ESPORTES COM AJUSTES)
-   ===================================== */
-
-/* Container principal do artigo */
-.noticia-article {
-    padding: 24px 0;
-    margin: 20px auto;
-    /* Adicionamos um padding-bottom para evitar que o conteúdo da notícia seja coberto
-       pelos botões de interação se a imagem for muito curta e o texto muito longo */
-    padding-bottom: 100px; /* Ajuste conforme necessário */
-    position: relative; /* Necessário para posicionar elementos filhos dentro dele */
+/* Remove o 'quadrado' (fundo branco, sombra) do container antigo */
+.login-container {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    border: none !important;
 }
 
-/* Link "Voltar" */
-.voltar-link {
-    margin-bottom: 24px;
-    font-size: 0.9rem;
-    padding: 0 15px; 
+/* Novo wrapper para o formulário */
+.form-wrapper {
+    width: 100%;
+    max-width: 500px; /* Um pouco mais largo para caber as categorias */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px; /* Adiciona padding para o wrapper */
 }
-.voltar-link a {
+
+/* Logo (baseado na imagem) */
+.logo-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 40px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* Estilo do formulário e grupos */
+.form-wrapper form {
+    width: 100%;
+}
+
+.form-group {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
     color: var(--cor-texto-secundario);
-    text-decoration: none;
+    text-align: left; /* Alinha labels à esquerda */
 }
-.voltar-link a:hover {
+
+/* Inputs (maiores e redondos) */
+.form-input {
+    width: 100%;
+    padding: 16px 20px; /* Mais padding */
+    font-size: 1rem;
+    border: 1px solid var(--cor-borda);
+    border-radius: 25px; /* Bordas redondas */
+    background-color: var(--cor-surface);
+}
+.form-input:focus {
+    outline: none;
+    border-color: var(--cor-primaria);
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.15);
+}
+
+/* Botão (maior e redondo) */
+.btn-submit {
+    width: 100%;
+    padding: 16px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: white;
+    background-color: var(--cor-primaria);
+    border: none;
+    border-radius: 25px; /* Bordas redondas */
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.2s ease;
+}
+.btn-submit:hover {
+    background-color: var(--cor-primaria-hover);
+}
+
+/* Links extras (Já tem uma conta?) */
+.extra-links {
+    width: 100%;
+    display: flex;
+    justify-content: center; /* Centraliza o link de login */
+    gap: 8px;
+    padding: 0 10px;
+    margin-top: 15px;
+    font-size: 0.9rem;
+    color: var(--cor-texto-secundario);
+    font-weight: 500;
+}
+.extra-links a {
     color: var(--cor-primaria);
+    text-decoration: none;
+    font-weight: 600;
+}
+.extra-links a:hover {
     text-decoration: underline;
 }
 
-/* NOVO/ALTERADO: Tag/Chip da Categoria (como "Esportes") */
-.noticia-categoria-tag {
-    display: block; /* Para ocupar sua própria linha e centralizar/alinhar */
-    /* REMOVIDO: background-color: var(--cor-primaria); */
-    /* REMOVIDO: color: #ffffff; */
-    font-size: 0.8rem;
-    font-weight: 700; /* Negrito */
-    /* REMOVIDO: padding: 4px 12px; */
-    /* REMOVIDO: border-radius: 4px; */
-    margin-bottom: 8px; /* Espaço menor antes do título */
-    text-transform: uppercase; /* Capslock */
-    letter-spacing: 0.5px;
-    padding: 0 15px; /* Alinha com o padding do título */
-    color: var(--cor-primaria); /* Cor do texto da categoria, pode ser o vermelho */
-}
-
-/* Título da Notícia */
-.noticia-article h1 {
-    font-size: 2.2rem;
-    margin-bottom: 16px;
-    line-height: 1.3;
-    color: var(--cor-texto);
-    padding: 0 15px;
-}
-
-/* Bloco de Metadados (Data, Autor) */
-.metadata {
-    font-size: 0.85rem;
-    color: var(--cor-texto-secundario);
-    padding: 8px 15px;
-    margin-bottom: 16px; /* Espaço antes da imagem */
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px 12px;
-    border-bottom: 1px solid var(--cor-borda); /* Mantém a linha abaixo dos metadados */
-    padding-bottom: 16px; /* Adiciona padding para a linha */
-}
-.metadata span {
-    white-space: nowrap;
-}
-.metadata div {
-    font-weight: 500;
-}
-
-/* REMOVIDO: Estilos para os botões de interação inline no metadado */
-/* .metadata-interacoes { ... } */
-/* .metadata-interacoes .btn-interacao { ... } */
-/* etc. */
-
-/* Imagem Principal da Notícia */
-.noticia-imagem-principal-wrapper {
-    position: relative; /* Para posicionar os botões sobre a imagem */
-    width: 100%; /* Ocupa a largura total */
-    margin-bottom: 32px; /* Espaço abaixo da imagem/botões */
-    /* Adicione padding lateral se quiser que a imagem não vá de ponta a ponta */
-    /* padding: 0 15px; */
-}
-
-.noticia-imagem-principal {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    display: block;
-    background-color: #eee;
-    /* Se você optou por padding no wrapper, a imagem não precisa de margin */
-    /* margin: 0 auto; */
-}
-.imagem-placeholder {
-    width: 100%;
-    height: 300px;
-    background-color: #e9ecef;
-    margin-bottom: 32px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: var(--cor-texto-secundario);
-    font-style: italic;
-    /* Se você optou por padding no wrapper, o placeholder também precisa */
-    /* margin: 0 auto; */
-}
-
-/* NOVO: Botões de Interação flutuando no canto inferior direito da imagem */
-.imagem-interacoes {
-    position: absolute;
-    bottom: 15px; /* Distância da parte inferior da imagem */
-    right: 15px; /* Distância da parte direita da imagem */
-    display: flex;
-    flex-direction: column; /* Para ficarem um abaixo do outro */
-    gap: 8px; /* Espaçamento entre os botões */
-    z-index: 10; /* Garante que fiquem acima da imagem */
-}
-
-.imagem-interacoes .btn-interacao {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 45px; /* Largura do botão */
-    height: 45px; /* Altura do botão */
-    border-radius: 50%; /* Botão redondo */
-    background-color: rgba(255, 255, 255, 0.9); /* Fundo branco semi-transparente */
-    border: 1px solid var(--cor-borda);
-    color: var(--cor-texto-secundario);
-    cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    transition: all 0.2s ease;
-    padding: 0;
-    font-size: 0.9rem; /* Tamanho da fonte para a contagem */
-}
-
-.imagem-interacoes .btn-interacao:hover {
-    background-color: #f8f9fa;
-    border-color: #adb5bd;
-    transform: translateY(-2px);
-}
-
-.imagem-interacoes .btn-interacao svg {
-    width: 22px;
-    height: 22px;
-    stroke-width: 1.5;
-    fill: none;
-    margin-right: 4px; /* Espaço entre ícone e número */
-}
-
-/* Estilos ATIVOS para os botões flutuantes */
-.imagem-interacoes .btn-interacao.curtida-ativa,
-.imagem-interacoes .btn-interacao.salvamento-ativa {
-    color: var(--cor-primaria);
-    border-color: var(--cor-primaria);
-    background-color: rgba(220, 53, 69, 0.1);
-}
-.imagem-interacoes .btn-interacao.curtida-ativa svg,
-.imagem-interacoes .btn-interacao.salvamento-ativa svg {
-    fill: var(--cor-primaria);
-    stroke: var(--cor-primaria);
-}
-/* Ocultar o texto "Curtir"/"Salvar" nos botões flutuantes e mostrar apenas a contagem */
-.imagem-interacoes .btn-interacao span:last-of-type { /* Seleciona o span da contagem */
-    display: block; /* Garante que o número apareça */
-}
-.imagem-interacoes .btn-interacao .sr-only { /* Oculta o texto para leitores de tela */
+/* Esconde o link antigo de "Crie uma agora" */
+.register-link {
     display: none;
 }
 
+/* --- Estilos para Categorias (Pílulas) --- */
 
-/* NOVO: Mensagem de login para os botões da imagem */
-.imagem-interacoes .login-prompt {
-    font-size: 0.8rem;
-    color: var(--cor-texto-secundario);
-    background-color: rgba(255, 255, 255, 0.9);
-    padding: 8px;
-    border-radius: 6px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    text-align: center;
-    width: 100px; /* Largura ajustada */
-    align-self: flex-end; /* Alinha o prompt à direita */
-}
-.imagem-interacoes .login-prompt a {
-    font-weight: 600;
-    color: var(--cor-primaria);
+.categoria-container {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 10px; 
+    margin-top: 10px;
+    justify-content: center; /* Centraliza as pílulas */
 }
 
-
-/* Conteúdo Principal (Texto) */
-.conteudo {
-    font-size: 1.1rem;
-    line-height: 1.8;
-    color: var(--cor-texto);
-    padding: 0 15px;
-}
-.conteudo p {
-    margin-bottom: 1.5em;
-}
-.conteudo img {
-    max-width: 100%;
-    height: auto;
-    margin: 1.5em auto;
-    display: block;
+.categoria-checkbox {
+    display: none;
 }
 
-/* REMOVIDO: Regras de interacoes-fixas, pois agora os botões são na imagem */
-/* .interacoes-fixas { ... } */
-
-
-/* Esconde o texto dentro dos botões (acessibilidade) */
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
+.categoria-pill {
+    display: inline-block;
+    padding: 8px 15px; 
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    background-color: #f8f9fa; 
+    color: var(--cor-texto-principal);
+    border: 1px solid var(--cor-borda); 
+    border-radius: 50px; 
+    transition: all 0.2s ease;
 }
 
-/* Media Query (Ajustes) */
-@media (max-width: 768px) {
-    .noticia-article h1 {
-        font-size: 1.8rem;
-    }
-    .conteudo {
-        font-size: 1rem;
-        line-height: 1.7;
-    }
-    .imagem-interacoes {
-        bottom: 10px;
-        right: 10px;
-    }
-    .imagem-interacoes .btn-interacao {
-        width: 40px;
-        height: 40px;
-    }
-    .imagem-interacoes .btn-interacao svg {
-        width: 20px;
-        height: 20px;
-    }
-    .imagem-interacoes .login-prompt {
-        width: 90px;
-        font-size: 0.75rem;
-    }
+.categoria-checkbox:not(:checked) + .categoria-pill:hover {
+    background-color: var(--cor-primaria);
+    color: white;
+    border-color: var(--cor-primaria);
+}
+
+.categoria-checkbox:checked + .categoria-pill {
+    background-color: var(--cor-primaria); 
+    color: white; 
+    border-color: var(--cor-primaria); 
+    box-shadow: 0 0 5px rgba(220, 53, 69, 0.5); 
+}
+
+.categoria-pill .icon-plus {
+    display: inline-block;
+    margin-left: 5px;
+    font-weight: bold;
+}
+.categoria-pill .icon-check {
+    display: none; 
+    margin-left: 5px;
+    font-weight: bold;
+}
+.categoria-checkbox:checked + .categoria-pill .icon-plus {
+    display: none; 
+}
+.categoria-checkbox:checked + .categoria-pill .icon-check {
+    display: inline-block; 
+}
+
+/* Área de Erros do Formulário */
+.form-error {
+    background-color: rgba(220, 53, 69, 0.1);
+    border: 1px solid #dc3545; 
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+.form-error p {
+    color: #dc3545;
+    font-size: 0.9rem;
+    margin: 3px 0;
 }
