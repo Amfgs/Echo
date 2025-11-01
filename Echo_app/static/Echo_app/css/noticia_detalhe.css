@@ -1,32 +1,21 @@
-/* Este ficheiro contém APENAS os estilos específicos
-   para a página noticia_detalhe.html.
-   Assume-se que base.css define o tema (cores, fontes, etc.)
-*/
-
 /* =====================================
-   ESTILOS DA PÁGINA DE DETALHE (LAYOUT LARGO)
+   ARQUIVO: noticia_detalhe.css
+   VERSÃO COM IMAGEM REDUZIDA E BOTÕES ABAIXO
    ===================================== */
 
 /* Container principal do artigo */
 .noticia-article {
-    /* Removemos o fundo branco e a sombra daqui,
-       o corpo já tem a cor de fundo desejada. */
-    padding: 24px 0; /* Apenas padding vertical */
+    padding: 24px 0;
     margin: 20px auto;
-    /* max-width controla a largura máxima do CONTEÚDO, não do container */
-    /* Vamos aplicar max-width aos elementos internos */
-    /* Adiciona padding na parte inferior para não ser coberto pelos botões fixos */
-    padding-bottom: 100px; /* Ajuste conforme necessário */
+    padding-bottom: 100px;
+    position: relative; 
 }
 
 /* Link "Voltar" */
 .voltar-link {
-    margin-bottom: 24px; /* Mais espaço */
+    margin-bottom: 24px;
     font-size: 0.9rem;
-    max-width: 800px; /* Limita largura */
-    margin-left: auto;
-    margin-right: auto;
-    padding: 0 15px; /* Adiciona padding lateral em telas menores */
+    padding: 0 15px; 
 }
 .voltar-link a {
     color: var(--cor-texto-secundario);
@@ -37,66 +26,72 @@
     text-decoration: underline;
 }
 
+/* Categoria (ex: "TURISMO") */
+.noticia-categoria-tag {
+    display: block; 
+    font-size: 2.2rem; /* <<< ALTERADO: Aumentado de 0.8rem */
+    font-weight: 700;
+    margin-bottom: 12px; /* <<< ALTERADO: Mais espaço abaixo */
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 0 15px; 
+    color: var(--cor-primaria);
+    text-align: center;
+}
+
 /* Título da Notícia */
 .noticia-article h1 {
-    font-size: 2.2rem; /* Maior */
+    font-size: 2.2rem;
     margin-bottom: 16px;
     line-height: 1.3;
     color: var(--cor-texto);
-    text-align: center; /* Centraliza o título */
-    max-width: 900px; /* Limita largura */
-    margin-left: auto;
-    margin-right: auto;
     padding: 0 15px;
+    text-align: center;
 }
 
-/* Bloco de Metadados */
+/* Bloco de Metadados (Data, Autor) */
 .metadata {
     font-size: 0.85rem;
     color: var(--cor-texto-secundario);
-    border-top: 1px solid var(--cor-borda);
-    border-bottom: 1px solid var(--cor-borda);
-    padding: 12px 0;
-    margin-bottom: 32px; /* Mais espaço antes da imagem */
+    padding: 8px 15px;
+    margin-bottom: 16px;
     display: flex;
     flex-wrap: wrap;
-    justify-content: center; /* Centraliza os metadados */
-    gap: 8px 20px;
-    max-width: 800px; /* Limita largura */
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 15px; /* Padding lateral */
-    padding-right: 15px;
+    gap: 8px 12px;
+    border-bottom: 1px solid var(--cor-borda);
+    padding-bottom: 16px;
+    justify-content: center;
 }
 .metadata span {
-     white-space: nowrap;
-}
-.metadata div {
-    width: 100%;
-    margin-top: 8px;
-    font-weight: 500;
-    text-align: center; /* Centraliza curtidas/salvamentos */
+    white-space: nowrap;
 }
 
-/* Imagem Principal da Notícia */
+/* Wrapper da Imagem Principal */
+.noticia-imagem-principal-wrapper {
+    position: relative;
+    width: 100%;
+    margin-bottom: 32px; 
+    
+    /* <<< ALTERADO: Reduz e centraliza a imagem */
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 8px; /* Arredonda as bordas da imagem */
+    overflow: hidden;     /* Garante que a imagem interna respeite o radius */
+}
+
 .noticia-imagem-principal {
-    width: 100%; /* Ocupa largura total disponível */
-    max-width: 1000px; /* Limita largura máxima em telas grandes */
+    width: 100%;
     height: auto;
-    max-height: 500px; /* Limita altura */
     object-fit: cover;
-    border-radius: 8px;
-    margin: 0 auto 32px auto; /* Centraliza e adiciona espaço abaixo */
-    display: block; /* Garante que margin: auto funcione */
+    display: block;
     background-color: #eee;
 }
 .imagem-placeholder {
     width: 100%;
-    max-width: 1000px;
     height: 300px;
     background-color: #e9ecef;
-    border-radius: 8px;
-    margin: 0 auto 32px auto;
+    margin-bottom: 32px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -104,87 +99,105 @@
     font-style: italic;
 }
 
-/* Conteúdo Principal (Texto) */
-.conteudo {
-    font-size: 1.1rem; /* Ligeiramente maior para leitura */
-    line-height: 1.8; /* Mais espaçado */
-    color: var(--cor-texto);
-    max-width: 800px; /* Largura ideal para leitura de texto */
-    margin: 0 auto; /* Centraliza o bloco de texto */
-    padding: 0 15px; /* Padding lateral */
+/* Botões de Interação (AGORA ABAIXO DA IMAGEM) */
+.imagem-interacoes {
+    /* <<< REMOVIDO: position: absolute e related (bottom, right, left, z-index) */
+    
+    display: flex;
+    flex-direction: row;  /* Lado a lado */
+    gap: 8px;
+    align-items: center; 
+
+    /* <<< ALTERADO: Novas regras de layout */
+    max-width: 800px;          /* Alinha com a imagem e conteúdo */
+    margin-left: auto;         /* Centraliza o container */
+    margin-right: auto;        /* Centraliza o container */
+    margin-top: -24px;         /* Puxa para mais perto da imagem */
+    margin-bottom: 32px;       /* Espaço antes do .conteudo */
+    padding: 0 15px;           /* Padding lateral para segurança */
+    justify-content: flex-end; /* Alinha os botões à DIREITA */
 }
 
+/* Estilo dos botões "pílula" */
+.imagem-interacoes .btn-interacao {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px;
+    border-radius: 20px;
+    background-color: #FFFFFF; /* <<< ALTERADO: Fundo branco sólido */
+    border: 1px solid var(--cor-borda);
+    color: var(--cor-texto-secundario);
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+}
+
+.imagem-interacoes .btn-interacao:hover {
+    background-color: #f8f9fa;
+    border-color: #adb5bd;
+    transform: translateY(-2px);
+}
+
+.imagem-interacoes .btn-interacao svg {
+    width: 20px;
+    height: 20px;
+    stroke-width: 1.5;
+    fill: none;
+    margin-right: 6px;
+}
+
+/* Estilos ATIVOS */
+.imagem-interacoes .btn-interacao.curtida-ativa,
+.imagem-interacoes .btn-interacao.salvamento-ativa {
+    color: var(--cor-primaria);
+    border-color: var(--cor-primaria);
+    background-color: rgba(220, 53, 69, 0.1);
+}
+.imagem-interacoes .btn-interacao.curtida-ativa svg,
+.imagem-interacoes .btn-interacao.salvamento-ativa svg {
+    fill: var(--cor-primaria);
+    stroke: var(--cor-primaria);
+}
+.imagem-interacoes .btn-interacao .sr-only { 
+    display: none;
+}
+
+/* Mensagem de login "pílula" */
+.imagem-interacoes .login-prompt {
+    font-size: 0.8rem;
+    color: var(--cor-texto-secundario);
+    background-color: #FFFFFF; /* <<< ALTERADO: Fundo branco sólido */
+    padding: 8px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--cor-borda);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    text-align: center;
+}
+.imagem-interacoes .login-prompt a {
+    font-weight: 600;
+    color: var(--cor-primaria);
+}
+
+/* Conteúdo Principal (Texto) */
+.conteudo {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--cor-texto);
+    padding: 0 15px;
+    max-width: 800px; 
+    margin: 0 auto; 
+}
 .conteudo p {
-    margin-bottom: 1.5em; /* Mais espaço entre parágrafos */
+    margin-bottom: 1.5em;
 }
 .conteudo img {
     max-width: 100%;
     height: auto;
-    margin: 1.5em auto; /* Centraliza imagens dentro do conteúdo */
+    margin: 1.5em auto;
     display: block;
-    border-radius: 8px;
 }
-
-/* ========================================
-   BOTÕES DE INTERAÇÃO FIXOS (Ajustes)
-   ======================================== */
-.interacoes-fixas {
-    position: fixed;
-    /* Coloca no canto inferior direito */
-    bottom: 20px;
-    right: 20px;
-    /* Ajustes para telas maiores podem ser necessários via media query */
-
-    display: flex;
-    /* ALTERADO: de 'column' para 'row' para ficarem lado a lado */
-    flex-direction: row;
-    gap: 12px;
-    z-index: 1050;
-}
-
-/* Estilos de .btn-interacao, svg, :hover, .curtida-ativa, etc. permanecem os mesmos */
-.btn-interacao {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 50px;
-    height: 50px;
-    background-color: var(--cor-surface);
-    border: 1px solid var(--cor-borda);
-    border-radius: 50%; /* Botão redondo */
-    cursor: pointer;
-    color: var(--cor-texto-secundario); /* Cor padrão do ícone */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Sombra mais pronunciada */
-    transition: all 0.2s ease;
-}
-
-.btn-interacao svg {
-    width: 24px;
-    height: 24px;
-    stroke-width: 1.5;
-    fill: none;
-}
-
-.btn-interacao:hover {
-    background-color: #f8f9fa;
-    border-color: #adb5bd;
-    transform: translateY(-2px); /* Efeito de levantar */
-}
-
-/* Estilo ATIVO */
-.btn-interacao.curtida-ativa,
-.btn-interacao.salvamento-ativa {
-    color: var(--cor-primaria);
-    border-color: var(--cor-primaria);
-    background-color: rgba(220, 53, 69, 0.1); /* Usa a cor primária (vermelha) do seu tema */
-}
-
-.btn-interacao.curtida-ativa svg,
-.btn-interacao.salvamento-ativa svg {
-    fill: var(--cor-primaria); /* Preenche com a cor primária */
-    stroke: var(--cor-primaria); /* Borda também na cor primária */
-}
-
 
 /* Esconde o texto dentro dos botões (acessibilidade) */
 .sr-only {
@@ -199,22 +212,7 @@
   border-width: 0;
 }
 
-/* Mensagem de login nos botões fixos (NOVO) */
-.login-prompt {
-    font-size: 0.8rem;
-    color: var(--cor-texto-secundario);
-    background-color: var(--cor-surface);
-    padding: 10px;
-    border-radius: 6px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    text-align: center;
-}
-.login-prompt a {
-    font-weight: 600;
-    color: var(--cor-primaria);
-}
-
-/* Media Query para ajustar em telas menores (opcional) */
+/* Media Query (Ajustes) */
 @media (max-width: 768px) {
     .noticia-article h1 {
         font-size: 1.8rem;
@@ -223,17 +221,82 @@
         font-size: 1rem;
         line-height: 1.7;
     }
-    .interacoes-fixas {
-        bottom: 15px; /* Mais perto da borda */
-        right: 15px;
-    }
-    .btn-interacao {
-        width: 45px;
-        height: 45px;
-    }
-    .btn-interacao svg {
-        width: 20px;
-        height: 20px;
-    }
+    /* As regras dos botões agora não precisam de @media */
+}
+/* =====================================
+   NOVOS ESTILOS PARA PUBLICIDADE
+   ===================================== */
+
+/* 1. O novo container que usa Flexbox */
+/* (Este container está dentro do .app-content de 1200px do base.css) */
+.noticia-container-with-ads {
+    display: flex;
+    justify-content: space-between; /* Cria espaço entre os 3 itens */
+    width: 100%;
 }
 
+/* 2. A coluna do artigo (central) */
+.noticia-container-with-ads .noticia-article {
+    /* O .noticia-article agora se torna a coluna central */
+    width: 100%;
+    
+    /* Limitamos o artigo para que as colunas de anúncio tenham espaço */
+    /* Os 800px que já definimos para o conteúdo/imagem vão 
+       funcionar perfeitamente aqui */
+    max-width: 800px; 
+    
+    flex-shrink: 0; /* Não deixa o artigo encolher */
+    /* Remove a margem automática para o flexbox funcionar */
+    margin-left: 0;
+    margin-right: 0;
+}
+
+/* 3. As colunas de anúncio (Sidebars) */
+.ad-sidebar {
+    width: 160px; /* Largura padrão de "skyscraper" */
+    flex-shrink: 0; /* Não deixa as colunas de anúncio encolherem */
+}
+
+/* 4. O placeholder do anúncio (o bloco cinza) */
+.ad-placeholder {
+    width: 160px;
+    height: 600px; /* Altura padrão de "skyscraper" */
+    background-color: #f0f0f0;
+    border: 1px dashed #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #999;
+    font-size: 0.9rem;
+    
+    /* Efeito "Sticky" (gruda no topo ao rolar) */
+    position: sticky;
+    /* Distância do topo. 
+      Seu base.css tem .top-nav (60px) e .partners-section (~100px).
+      Deixar 20px abaixo do header fixo (se ele for fixo) é seguro.
+      Ajuste 'top: 20px;' se necessário.
+    */
+    top: 20px; 
+}
+
+/* 5. Esconder anúncios em telas menores */
+/* O seu .app-content (base) tem 1200px.
+   Nosso conteúdo é: 160 (ad) + 800 (artigo) + 160 (ad) = 1120px.
+   Quando a tela for menor que 1160px, os anúncios quebram.
+*/
+@media (max-width: 1160px) { 
+    .ad-sidebar {
+        display: none; /* Esconde os anúncios */
+    }
+    
+    .noticia-container-with-ads {
+        justify-content: center; /* Centraliza o artigo quando os anúncios somem */
+    }
+
+    /* Devolve a margem automática para o .noticia-article */
+    .noticia-container-with-ads .noticia-article {
+        margin-left: auto;
+        margin-right: auto;
+    }
+}

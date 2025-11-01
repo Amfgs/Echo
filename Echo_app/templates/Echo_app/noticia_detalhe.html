@@ -4,123 +4,114 @@
 {% block title %}{{ noticia.titulo }} | Echo{% endblock %}
 
 {% block extra_css %}
-    <link rel="stylesheet" type="text/css" href="{% static 'Echo_app/css/noticia_detalhe.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'Echo_app/css/noticia_detalhe.css' %}?v=1.3">
 {% endblock %}
 
 
 {% block content %}
-<!-- Removido o .detalhe-container -->
-<article class="noticia-article">
-    <p class="voltar-link"><a href="{% url 'dashboard' %}">← Voltar para o Dashboard</a></p>
 
-    <!-- 1. Título -->
-    <h1>{{ noticia.titulo }}</h1>
+<div class="noticia-container-with-ads">
 
-    <!-- Metadados -->
-    <div class="metadata">
-        <span>Publicado em: {{ noticia.data_publicacao|date:"d/m/Y H:i" }}</span> |
-        <span>Por: {{ noticia.autor.username|default:"Autor Desconhecido" }}</span> |
-        <span>Categoria: {{ noticia.categoria.nome|default:"Geral" }}</span>
-        <div>
-            <span id="curtidas_count">{{ noticia.curtidas_count }}</span> Curtidas |
-            <span id="salvamentos_count">{{ noticia.salvamentos_count }}</span> Salvamentos
+    <aside class="ad-sidebar ad-left">
+        <div class="ad-placeholder">
+            (Publicidade Esquerda)
+            <br>
+            160x600
         </div>
-    </div>
+    </aside>
 
-    <!-- 2. Imagem -->
-    {% if noticia.imagem %}
-        <img src="{{ noticia.imagem.url }}" alt="{{ noticia.titulo }}" class="noticia-imagem-principal">
-    {% else %}
-        <div class="imagem-placeholder">Sem Imagem</div>
-    {% endif %}
+    <article class="noticia-article">
+        <p class="voltar-link"><a href="{% url 'dashboard' %}">← Voltar para o Dashboard</a></p>
 
-    <!-- 3. Conteúdo -->
-    <div class="conteudo">
-        {{ noticia.conteudo|linebreaksbr }}
-    </div>
+        <span class="noticia-categoria-tag">{{ noticia.categoria.nome|default:"Geral" }}</span>
 
-</article> <!-- Fim do noticia-article -->
+        <h1>{{ noticia.titulo }}</h1>
 
+        <div class="metadata">
+            <span>Publicado em: {{ noticia.data_publicacao|date:"d/m/Y H:i" }}</span> |
+            <span>Por: {{ noticia.autor.username|default:"Autor Desconhecido" }}</span>
+        </div>
 
-<!-- 4. Botões de Interação Fixos (Continua igual) -->
-<div class="interacoes-fixas">
-    {% if user.is_authenticated %}
-        {% csrf_token %} <!-- O JS vai pegar este token -->
+        <div class="noticia-imagem-principal-wrapper">
+            {% if noticia.imagem %}
+                <img src="{{ noticia.imagem.url }}" alt="{{ noticia.titulo }}" class="noticia-imagem-principal">
+            {% else %}
+                <div class="imagem-placeholder">Sem Imagem</div>
+            {% endif %}
+        </div>
 
-        <button id="btn-curtir"
-                data-url="{% url 'noticia_curtir' noticia_id=noticia.pk %}"
-                class="btn-interacao {% if usuario_curtiu %}curtida-ativa{% endif %}"
-                title="Curtir">
-            <!-- Ícone de Coração (SVG) -->
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
-            </svg>
-            <span class="sr-only">Curtir</span>
-        </button>
+        <div class="imagem-interacoes">
+            {% if user.is_authenticated %}
+                {% csrf_token %} 
 
-        <button id="btn-salvar"
-                data-url="{% url 'noticia_salvar' noticia_id=noticia.pk %}"
-                class="btn-interacao {% if usuario_salvou %}salvamento-ativa{% endif %}"
-                title="Salvar">
-            <!-- Ícone de Salvar (Bookmark SVG) -->
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
-            </svg>
-             <span class="sr-only">Salvar</span>
-        </button>
-    {% else %}
-        <!-- Mensagem de login movida para os botões fixos -->
-        <p class="login-prompt">Faça <a href="{% url 'entrar' %}?next={{ request.path }}">login</a> para interagir.</p>
-    {% endif %}
-</div>
+                <button id="btn-curtir"
+                        data-url="{% url 'noticia_curtir' noticia_id=noticia.pk %}"
+                        class="btn-interacao {% if usuario_curtiu %}curtida-ativa{% endif %}"
+                        title="Curtir">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+                    </svg>
+                    <span>{{ noticia.curtidas_count }}</span>
+                    <span class="sr-only">Curtir</span>
+                </button>
 
+                <button id="btn-salvar"
+                        data-url="{% url 'noticia_salvar' noticia_id=noticia.pk %}"
+                        class="btn-interacao {% if usuario_salvou %}salvamento-ativa{% endif %}"
+                        title="Salvar">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
+                    </svg>
+                     <span>{{ noticia.salvamentos_count }}</span>
+                     <span class="sr-only">Salvar</span>
+                </button>
 
-{% endblock content %}
+            {% else %}
+                <p class="login-prompt">Faça <a href="{% url 'entrar' %}?next={{ request.path }}">login</a> para interagir.</p>
+            {% endif %}
+        </div>
+        
+        <div class="conteudo">
+            {{ noticia.conteudo|linebreaksbr }}
+        </div>
+
+    </article>
+
+    <aside class="ad-sidebar ad-right">
+        <div class="ad-placeholder">
+            (Publicidade Direita)
+            <br>
+            160x600
+        </div>
+    </aside>
+
+</div> {% endblock content %}
 
 
 {% block extra_js %}
-    <!-- ============================================== -->
-    <!--     LINHA ADICIONADA PARA INCLUIR O JS DO BASE     -->
-    <!-- ============================================== -->
     {{ block.super }}
-    <!-- ============================================== -->
-
-
-    <!-- O seu script de curtir/salvar (sem alterações) -->
+    
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         
-        // Esta parte do código (a partir daqui) só será executada
-        // DEPOIS que o script da sidebar (do block.super) já tiver sido carregado.
-        
         const curtirBtn = document.getElementById('btn-curtir');
         const salvarBtn = document.getElementById('btn-salvar');
-        // Pega o token do container fixo se disponível, ou do formulário se existir
-        const csrftokenInput = document.querySelector('.interacoes-fixas [name=csrfmiddlewaretoken]') || document.querySelector('form [name=csrfmiddlewaretoken]');
+        
+        const csrftokenInput = document.querySelector('.imagem-interacoes [name=csrfmiddlewaretoken]') || document.querySelector('form [name=csrfmiddlewaretoken]');
 
-        // Tenta pegar os contadores dos metadados
-        const curtidasCountSpan = document.getElementById('curtidas_count');
-        const salvamentosCountSpan = document.getElementById('salvamentos_count');
+        const curtidasCountSpan = document.querySelector('#btn-curtir span:first-of-type');
+        const salvamentosCountSpan = document.querySelector('#btn-salvar span:first-of-type');
 
-        // Só continua se os botões existirem E houver um token
         if (!csrftokenInput || (!curtirBtn && !salvarBtn)) {
-             // Se não há botões, não faz nada
             if (!curtirBtn && !salvarBtn) return;
-
-             // Se há botões mas não há token (usuário não logado), não adiciona listeners
-             if(!csrftokenInput && (curtirBtn || salvarBtn)) return;
-
-             // Caso contrário, pode haver um problema inesperado
+            if(!csrftokenInput && (curtirBtn || salvarBtn)) return;
             console.warn("CSRF token input not found, interactions might fail.");
-            // Mesmo sem token visível (se usuário não logado), tentamos pegar dos cookies se necessário
-            // Mas a view deve proteger contra isso de qualquer forma.
-            // Poderíamos tentar pegar dos cookies, mas a view já deve retornar 401/403
             return;
         }
 
         const csrftoken = csrftokenInput.value;
 
-
+        // ... (O resto do seu script 'fazerInteracao' vai aqui, sem alterações) ...
         function fazerInteracao(event) {
             const btn = event.currentTarget;
             const url = btn.getAttribute('data-url');
@@ -135,7 +126,7 @@
                 },
             })
             .then(response => {
-                if (response.status === 401 || response.status === 403) { // 403 Forbidden também
+                if (response.status === 401 || response.status === 403) { 
                     window.location.href = "{% url 'entrar' %}?next=" + window.location.pathname;
                     return Promise.reject('Unauthorized');
                 }
@@ -154,7 +145,6 @@
                         btn.title = (tipo === 'curtir') ? 'Curtir' : 'Salvar';
                     }
 
-                    // Atualiza contagem APENAS se os spans existirem
                     if (tipo === 'curtir' && curtidasCountSpan) {
                         curtidasCountSpan.textContent = data.nova_contagem;
                     } else if (tipo === 'salvar' && salvamentosCountSpan) {
@@ -163,7 +153,7 @@
                 } else if (data) {
                     console.error('Erro retornado pela view:', data.error || 'Erro desconhecido');
                 } else {
-                     console.error('Resposta JSON inesperada ou vazia.');
+                    console.error('Resposta JSON inesperada ou vazia.');
                 }
             })
             .catch(error => {
